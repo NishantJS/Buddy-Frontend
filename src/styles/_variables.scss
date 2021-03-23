@@ -1,0 +1,17 @@
+$primary_color: var(--primary-color);
+$font_color: var(--font-color);
+$bg_color: var(--bg-color);
+$heading_color: var(--heading-color);
+$border: 1px solid $font_color;
+$body_color: var(--body-color);
+$accent: var(--accent);
+
+$fira: "Fira Mono", monospace;
+$poppins: "Poppins", sans-serif;
+$danger: var(--danger);
+$success: var(--success);
+
+$darken: var(--darken);
+
+$dark_shadow: rgba(#121227, 0.2) 0px 1px 2px 0px;
+$light_shadow: rgba(#121227, 0.1) 0px 1px 2px 0px;

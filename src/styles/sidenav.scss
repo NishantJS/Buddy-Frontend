@@ -1,0 +1,16 @@
+@import "variables";
+
+.sidenav {
+  position: fixed;
+  width: 100%;
+  max-width: 300px;
+  height: 100vh;
+  background-color: $bg_color;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  box-shadow: 0 0 20px 2px #6661;
+}
