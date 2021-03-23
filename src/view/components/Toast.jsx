@@ -1,22 +1,42 @@
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
+import { connect } from "react-redux";
+import "../../styles/toast.scss";
+import { removeToast } from "../services/actions";
 
-const Toast = ({ message, timer, type }) => {
-  
-  const [visible, setVisible] = useState(false);
-
-  // todo figure to pass props from any component
-  useEffect(() => {
-    setTimeout(() => {
-      setVisible(()=>true)
-    },timer)
-  },[timer])
-  
+const Toast = ({toast ,dispatch}) => {
   return (
-    <div className="toast">
-      
-    </div>
-  )
+    <>
+      <aside className="toasts">
+        {toast && toast.map((item, index) => (
+            <ToastItem
+              key={index}
+              data={{ color: item.color, msg: item.message }} dispatch={dispatch}
+            />
+            ))}
+        </aside>
+    </>
+  );
 }
 
-export default Toast
+const ToastItem = ({ dispatch, data: { color, msg, id } }) => {
+  useEffect(() => {
+    const timer=setTimeout(() => {
+      dispatch(removeToast(msg))
+    }, 2000);
+    return ()=>clearTimeout(timer)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
+  return (
+    <div className={`toast ${color}`}>
+      {msg}{id}
+      <span className="delete"></span>
+    </div>);
+};
 
+
+const mapStateToProps = (state) => ({
+  toast : state.toast,
+});
+
+export default connect(mapStateToProps)(Toast);

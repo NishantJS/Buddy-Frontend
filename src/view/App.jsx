@@ -1,9 +1,10 @@
 import { BrowserRouter as Router } from "react-router-dom";
 ////components
 import Nav from "./components/header/Nav";
-import Routes from "./containers/Routes";
+import Routes from "./pages/Routes";
 import Footer from "./components/Footer";
 import useTheme from "../hooks/useTheme";
+import Toast from "./components/Toast";
 
 const App = () => {
   useTheme();
@@ -18,6 +19,7 @@ const App = () => {
         </header>
         <main>
           <Routes />
+          <Toast/>
         </main>
         <footer>
           <Footer />

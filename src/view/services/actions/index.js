@@ -1,30 +1,38 @@
-import createToast from "../factories/createToast";
+import {ADD_CART,REMOVE_CART,ADD_TOAST,REMOVE_TOAST, ADD_USER,REMOVE_USER} from "../constants/"
 
-const ADD_CART = "ADD_CART";
-export const addCart = (cart_item, id) => ({
+export const addCart = (cart_item) => ({
   type: ADD_CART,
-  cart_item,
-  id,
+  payload:cart_item
 });
 
-export const REMOVE_CART = "REMOVE_CART";
 export const removeCart = (id) => ({
   type: REMOVE_CART,
-  id,
+  payload: id,
 });
 
-export const ADD_TOAST = "ADD_TOAST";
 export const addToast = (options = {}) => {
   return {
-    payload: createToast(options),
-    type: ADD_TOAST
+    type: ADD_TOAST,
+    payload: options
   };
 };
 
-export const REMOVE_TOAST = "REMOVE_TOAST";
-export function removeToast(id) {
+export const removeToast=(id)=> {
   return {
-    payload: id,
     type: REMOVE_TOAST,
+    payload: id
   };
+};
+
+export const addUser = (user_data = {})=>{
+  return {
+    type: ADD_USER,
+    payload: user_data
+  }
+};
+
+export const removeUser = ()=>{
+  return {
+    type: REMOVE_USER
+  }
 }

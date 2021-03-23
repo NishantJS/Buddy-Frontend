@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
+import {connect} from "react-redux"
+import { addUser, addToast } from "../services/actions";
 
-const AuthForm = ({ handler, method }) => {
+const AuthForm = ({ handler, method,dispatch }) => {
   const stateDefaults = {
     email: {
       value: "",
@@ -128,7 +130,7 @@ const AuthForm = ({ handler, method }) => {
     const reqPath = method === "signup" ? "register" : "login";
     axios({
       method: "POST",
-      url: `http://localhost:5000/user/${reqPath}/`,
+      url: `http://localhost:5000/user/${reqPath}`,
       data: {
         email: state.email.value,
         pass: state.pass.value,
@@ -136,9 +138,13 @@ const AuthForm = ({ handler, method }) => {
       responseType: "json",
       validateStatus: (status) => status < 500,
     })
-      .then(({ data, status, statusText, headers, config }) => {
-        
-        console.info({ data, status, statusText, headers, config });
+      .then(({ data}) => {
+        if (!data.error) {
+          dispatch(addToast({ message: data.msg, color: "success" }));
+          dispatch(addUser({ token: data.token, user: data.user }));
+        } else {
+          dispatch(addToast({ message: data.msg, color: "danger" }));
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -206,4 +212,4 @@ const AuthForm = ({ handler, method }) => {
   );
 };
 
-export default AuthForm;
+export default connect()(AuthForm);
