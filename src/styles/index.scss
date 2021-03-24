@@ -16,6 +16,15 @@ a {
   color: $font_color;
 }
 
+#root{
+  display: flex;
+  flex-direction: column;
+
+  main{
+    min-height: 80vh;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;

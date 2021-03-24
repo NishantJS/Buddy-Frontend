@@ -20,17 +20,17 @@
   --darken: #003c;
 }
 
-@media (prefers-color-scheme: dark) {
-body{
-  --primary-color: #222;
-  --font-color: #fafafa;
-  --bg-color: #334;
-  --heading-color: #fff;
-  --body-color: #121227;
-  --accent: #01579b;
-  --success: #5f5;
-  --darken: #003c;
-}
-}
+// @media (prefers-color-scheme: dark) {
+// body{
+//   --primary-color: #222;
+//   --font-color: #fafafa;
+//   --bg-color: #334;
+//   --heading-color: #fff;
+//   --body-color: #121227;
+//   --accent: #01579b;
+//   --success: #5f5;
+//   --darken: #003c;
+// }
+// }
 
 @import url("https://fonts.googleapis.com/css2?family=Fira+Mono&family=Poppins&display=swap");

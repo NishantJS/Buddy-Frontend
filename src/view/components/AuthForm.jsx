@@ -2,8 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import {connect} from "react-redux"
 import { addUser, addToast } from "../services/actions";
+import {useHistory} from "react-router-dom"
 
-const AuthForm = ({ handler, method,dispatch }) => {
+const AuthForm = ({ handler, method, dispatch }) => {
+  let history =useHistory()
   const stateDefaults = {
     email: {
       value: "",
@@ -142,6 +144,7 @@ const AuthForm = ({ handler, method,dispatch }) => {
         if (!data.error) {
           dispatch(addToast({ message: data.msg, color: "success" }));
           dispatch(addUser({ token: data.token, user: data.user }));
+          history.push("/")
         } else {
           dispatch(addToast({ message: data.msg, color: "danger" }));
         }

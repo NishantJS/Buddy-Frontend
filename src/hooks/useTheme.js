@@ -1,12 +1,26 @@
 import { useEffect } from "react";
 
 export default function useTheme() {
-  // todo Check if there is a theme chosen in local storage
+  // ? Set theme
   useEffect(() => {
-    // !localStorage.getItem("theme") && localStorage.setItem("theme", "dark");
-
-    localStorage.getItem("theme") === "dark"
-      ? document.documentElement.setAttribute("data-theme", "dark")
-      : document.documentElement.setAttribute("data-theme", "");    
+  let prefer = localStorage.getItem("theme");
+  switch (prefer) {
+    case "dark":
+      document.documentElement.setAttribute("data-theme", "dark");
+      break;
+    case "light":
+      document.documentElement.setAttribute("data-theme", "light");
+      break;
+    case "system":
+    default:
+      localStorage.setItem("theme", "system");
+      if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+  }
   }, []);
 }

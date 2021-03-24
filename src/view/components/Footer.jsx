@@ -16,7 +16,7 @@ const Footer = () => {
 };
 
 const FooterContent = () => {
-  return <h1>Hi</h1>;
+  return <footer>hi</footer>;
 };
 
 export default Footer;

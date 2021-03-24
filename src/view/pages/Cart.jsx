@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 
 const Cart = ({ cart }) => {
-  console.log(cart);
   let toRender =
     cart && cart.length < 1 ? <CartEmpty /> : <CartContent data={cart} />;
 
@@ -9,7 +8,7 @@ const Cart = ({ cart }) => {
 };
 
 const CartEmpty = () => {
-  return <h1>Nishant</h1>;
+  return <></>;
 };
 
 const CartContent = ({ data }) => {
@@ -47,7 +46,7 @@ const CartContent = ({ data }) => {
 };
 
 const cartData = (state) => ({
-  cart: state.cart.data,
+  cart: state.auth.user.cart
 });
 
 export default connect(cartData)(Cart);
