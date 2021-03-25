@@ -9,6 +9,7 @@ const Notification = lazy(() => import("./Notification"));
 const Home = lazy(() => import("./Home"));
 const Auth = lazy(() => import("./Auth"));
 const NotFound = lazy(() => import("./NotFound"));
+const SubCategory = lazy(() => import("../components/SubCategory"));
 
 const Routes = () => {
   return (
@@ -21,6 +22,7 @@ const Routes = () => {
         <Route exact path="/categories" component={CategoryPage} />
         <Route exact path="/auth/register" component={Auth} />
         <Route exact path="/auth/login" component={Auth} />
+        <Route exact path="/shop/:type" component={SubCategory}/>
         <Route exact path="/" component={Home} />
         <Route component={NotFound} />
       </Switch>

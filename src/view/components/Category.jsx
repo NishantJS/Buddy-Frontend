@@ -6,9 +6,9 @@ const Category = () => {
   return (
     <div className="category-container">
       {categoryData.map((category) => {
-        let { title, thumbnail, path } = category;
+        let { title, thumbnail } = category;
         return (
-          <Link to={path} key={title} className="category">
+          <Link to={`shop/${title.toLowerCase()}`} key={title} className="category">
             {thumbnail}
             <h5>{title}</h5>
           </Link>

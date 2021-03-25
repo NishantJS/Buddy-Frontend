@@ -6,17 +6,14 @@ const categoryData = [
   {
     title: "DOG",
     thumbnail: <Dog />,
-    path: "shop_for_your_dog",
   },
   {
     title: "CAT",
     thumbnail: <Cat />,
-    path: "shop_for_your_cat",
   },
   {
-    title: "BIRDS",
+    title: "BIRD",
     thumbnail: <Bird />,
-    path: "shop_for_your_fish",
   },
 ];
 export default categoryData;

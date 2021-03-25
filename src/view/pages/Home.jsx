@@ -1,17 +1,14 @@
 import Category from "../components/Category";
-import User from "../components/User";
-// import Slider from "../components/Slider";
+// import User from "../components/User";
+import Slider from "../components/Slider";
 
 
 const Home = () => {
   return (
     <>
       <Category />
-      <User/>
-      {/* <Slider path="dog/food/?type=wet" title="top in dog wet food" />
-      <Slider path="dog/food/?type=dry" title="top in dog dry food" />
-      <Slider path="dog/food/?type=dry" title="top in dog dry food" />
-      <Slider path="dog/food/?type=wet" title="top in dog wet food" /> */}
+      {/* <User/> */}
+      <Slider />
     </>
   );
 };

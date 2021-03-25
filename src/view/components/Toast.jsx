@@ -23,9 +23,12 @@ const ToastItem = ({ dispatch, data: { color, msg, id } }) => {
     const timer=setTimeout(() => {
       dispatch(removeToast(msg))
     }, 2000);
-    return ()=>clearTimeout(timer)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    return () => {
+      clearTimeout(timer);
+    }
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [msg])
   
   return (
     <div className={`toast ${color}`}>
