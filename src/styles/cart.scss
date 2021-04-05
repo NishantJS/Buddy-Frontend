@@ -1,45 +1,70 @@
 @import "variables";
 
-.cart_list {
+.cart {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: left;
+  flex-direction: column;
+  
+  .cart_list{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
 
   .list_item {
+    width: 100%;
+    min-width: 200px;
     display: flex;
-    overflow: hidden;
     background-color: $bg_color;
     margin: 10px;
-    max-width: 500px;
+    align-items: center;
+    max-width: 350px;
 
     img {
+      padding: 10px;
       width: 100px;
       height: 100px;
       object-fit: cover;
       overflow: hidden;
     }
 
-    .item_details {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+    .info{
+      flex: auto;
 
-      h3 {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      .price{
+        display: flex;
+        align-items: baseline;
+
+        .offer{
+          color: $success;
+        }
+
+        del{
+          margin-left: 10px;
+          font-size: 0.8rem;
+        }
       }
     }
 
-    .item_counter {
-      display: flex;
-      flex-direction: column;
+    .counter{
       align-items: center;
+      justify-content: space-between;
+      width: 30px;
+      display: flex;
+      flex-direction:column;
 
-      button {
-        width: 30px;
-        height: 30px;
+      button{
+        color: $font_color;
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 1.2rem;
       }
     }
-  }
+
+    .wishlist{
+      font-size: 0.8rem;
+    }
+
+  }}
 }

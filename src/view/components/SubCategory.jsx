@@ -4,9 +4,10 @@ import Health from "../../icons/Health"
 import Toys from "../../icons/Toys"
 import Treats from "../../icons/Treats"
 import "../../styles/sub_category.scss"
-
+import {Link } from "react-router-dom";
 const SubCategory = ({ location, match, history }) => {
   const param = match.params.type;
+  console.log(param)
   switch (param) {
     case "dog":
     case "cat":
@@ -19,10 +20,10 @@ const SubCategory = ({ location, match, history }) => {
     <section className="sub_category">
       {subCategoryData.map(({title,icon})=> {
         return (
-          <section className="category_item">
+          <Link to={`${param}/${title.toLowerCase()}`} className="category_item" key={title}>
             <div className="icon">{icon}</div>
             <div className="title">{title}</div>
-          </section>
+          </Link>
         );
       })}
     </section>
@@ -30,7 +31,6 @@ const SubCategory = ({ location, match, history }) => {
 }
 
 export default SubCategory
-
 
 const subCategoryData = [
   {

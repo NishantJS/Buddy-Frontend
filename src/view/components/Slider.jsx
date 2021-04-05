@@ -2,9 +2,13 @@
 import Cart from "../../icons/Cart";
 import Heart from "../../icons/Heart";
 import "../../styles/slider.scss";
-import {connect} from "react-redux"
+import {useSelector,useDispatch} from "react-redux"
+import { addCart, addWishlist } from "../services/actions";
 
-const Slider = ({ path, title,product }) => {
+const Slider = ({ path, title}) => {
+  
+  const product = useSelector(state => state.product)
+  
   const productSlider = (!product) ? <></> : Object.keys(product).map((key) => (<SlideContainer key={key} slide={{ sliderTitle: key, product: product[`${key}`] }} />))
 
   return (<>
@@ -12,13 +16,6 @@ const Slider = ({ path, title,product }) => {
     </>
   );
 };
-
-const mapStateToProps = (state) => ({
-  product: state.product,
-});
-
-
-export default connect(mapStateToProps)(Slider);
 
 const SlideContainer = ({ slide }) => {
   const { sliderTitle, product } = slide;
@@ -29,7 +26,7 @@ const SlideContainer = ({ slide }) => {
         <div className="slider">
           {product.data && product.data.map((item) => {
             return <Slide product={item} key={item._id}/>
-        })}
+          })}
         </div>
       </section>
     </>
@@ -37,14 +34,30 @@ const SlideContainer = ({ slide }) => {
 };
 
 const Slide = ({ product }) => {
-  const {title,thumbnail,price,size } = product;
+    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  const dispatch = useDispatch();
+  
+  
+  const favHandler = () => {
+    dispatch(addWishlist(product))
+  }
+
+  const cartHandler = () => {
+    dispatch(addCart(product))
+  }
+  
+  const { title, thumbnail, price, size } = product;
+  
   return (
     <div className="slide">
       <div className="img">
         <img src={thumbnail} alt={title} />
       </div>
       <div className="desc">
-      <h4>{title} {size }</h4>
+        <h4>
+          {title} {size}
+        </h4>
         <div className="price">
           <span>
             <h4>{`₹ ${price.price}`}</h4>
@@ -57,10 +70,12 @@ const Slide = ({ product }) => {
           )}% off`}</h5>
         </div>
       </div>
-      <div className="cta">
-        <Heart />
-        <Cart/>
-      </div>
+      {isAuthenticated && <div className="cta">
+        <Heart handler={favHandler} />
+        <Cart handler={cartHandler} />
+      </div>}
     </div>
   );
 }
+
+export default Slider;

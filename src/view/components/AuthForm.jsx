@@ -142,8 +142,9 @@ const AuthForm = ({ handler, method, dispatch }) => {
     })
       .then(({ data}) => {
         if (!data.error) {
+          localStorage.setItem("jwt", data.token)
           dispatch(addToast({ message: data.msg, color: "success" }));
-          dispatch(addUser({ token: data.token, user: data.user }));
+          dispatch(addUser(data.user));
           history.push("/")
         } else {
           dispatch(addToast({ message: data.msg, color: "danger" }));

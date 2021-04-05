@@ -1,19 +1,12 @@
 import { useState } from "react";
-import { connect } from "react-redux";
-import { addCart } from "../view/services/actions/";
 
-const Cart = ({ data, dispatch }) => {
-  const [isActive, setActive] = useState(() => false);
-  const addToCart = (data) => {
-    let id = data && `${data.title} ${data.price.price}`;
-    data && dispatch(addCart(data, id));
-    setActive((p) => !p);
-  };
+const Cart = ({ handler }) => {
+  
   return (
     <svg
-      onClick={() => addToCart(data)}
+      onClick={handler}
       xmlns="http://www.w3.org/2000/svg"
-      className={`bag ${isActive ? "active" : ""}`}
+      className="bag"
       width="30"
       height="30"
       viewBox="0 0 24 24"
@@ -31,4 +24,4 @@ const Cart = ({ data, dispatch }) => {
   );
 };
 
-export default connect()(Cart);
+export default Cart;

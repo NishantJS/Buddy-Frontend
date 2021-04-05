@@ -1,4 +1,4 @@
-const Heart = ({ cl }) => {
+const Heart = ({handler}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,9 +6,10 @@ const Heart = ({ cl }) => {
       height="30"
       viewBox="0 0 24 20"
       strokeWidth="1.5"
-      className={`heart ${cl ? "active" : ""}`}
+      className="heart"
       stroke="currentColor"
       fill="none"
+      onClick={handler}
     >
       <path
         fillRule="evenodd"

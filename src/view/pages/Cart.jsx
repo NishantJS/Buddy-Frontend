@@ -1,52 +1,70 @@
-import { connect } from "react-redux";
+import { useState} from "react";
+import { useSelector } from "react-redux";
+import "../../styles/cart.scss";
 
-const Cart = ({ cart }) => {
-  let toRender =
-    cart && cart.length < 1 ? <CartEmpty /> : <CartContent data={cart} />;
+const Cart = () => {
+  const cart = useSelector(state => state.auth.user.cart)
+  let toRender = (!cart || cart.length < 1) ? <CartEmpty /> : <CartContent data={cart} />;
 
   return toRender;
 };
 
 const CartEmpty = () => {
-  return <></>;
+  return <>Cart Empty</>;
 };
 
 const CartContent = ({ data }) => {
   return (
-    <>
-      {data.map((item) => {
-        let {
-          item: {
-            brand: { seller_name },
-            price: { price, retail_price },
-            thumbnail,
-            title,
-          },
-          id,
-        } = item;
+  <section className="cart">
 
-        console.log(item);
-
-        return (
-          <section key={id}>
-            <picture>
-              <img src={thumbnail} alt={title} />
-            </picture>
-            <div className="desc">
-              <h3>{title}</h3>
-              <h4>{price}</h4>
-              <h5>{retail_price}</h5>
-              <h6>{seller_name}</h6>
-            </div>
-          </section>
-        );
-      })}
-    </>
+  <div className="cart_list">
+    {data.map((item) => (
+      <CartItem data={item} key={item["_id"]}/>))}
+  </div>
+  <div className="checkout">
+    <button>Checkout</button>
+  </div>
+  </section>
   );
-};
+}
 
-const cartData = (state) => ({
-  cart: state.auth.user.cart
-});
+const CartItem = ({ data }) => {
+  const { title, size,thumbnail, allowed,price:{price,retail_price}} = data;
+  
+  let [count, setCount] = useState(() => 1)
+  const incrementCount = () => {
+  if (count < allowed) setCount((p) => p + 1);  
+  }
 
-export default connect(cartData)(Cart);
+  const decrementCount = () => {
+    if (count > 1) setCount((p) => p - 1);
+  };
+  
+  return (
+    <div className="list_item">
+      <img src={thumbnail} alt={title} />
+
+      <div className="info">
+        <span className="title">
+          {title} {size}
+        </span>
+
+        <div className="price">
+          <span className="offer">₹{price * count}</span>
+
+          <del>{retail_price * count}</del>
+        </div>
+
+        <span className="wishlist">Add to Wishlist</span>
+      </div>
+
+      <div className="counter">
+        <button onClick={incrementCount}>+</button>
+        {count}
+        <button onClick={decrementCount}>-</button>
+      </div>
+    </div>
+  );
+}
+
+export default Cart;
