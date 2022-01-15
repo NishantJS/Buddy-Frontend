@@ -1,0 +1,30 @@
+@import "variables";
+
+aside.toasts{
+  position: fixed;
+  bottom: 20px;
+  right: 10px;
+  z-index: 2;
+  
+  div.toast{
+    margin: 10px 0;
+    display: block;
+    background-color: $darken;
+    max-width: 280px;
+    padding: 20px;
+    border-radius: 10px 0 0 10px;
+
+    &.success{
+      border-left: 5px solid $success;
+    }
+
+    &.danger{
+      border-left: 5px solid $danger;  
+    }
+
+    & .delete{
+      position: absolute;
+      right: 10px;
+    }
+  }
+}

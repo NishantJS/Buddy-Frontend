@@ -1,0 +1,70 @@
+@import "variables";
+
+.cart {
+  display: flex;
+  flex-direction: column;
+  
+  .cart_list{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+
+  .list_item {
+    width: 100%;
+    min-width: 200px;
+    display: flex;
+    background-color: $bg_color;
+    margin: 10px;
+    align-items: center;
+    max-width: 350px;
+
+    img {
+      padding: 10px;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      overflow: hidden;
+    }
+
+    .info{
+      flex: auto;
+
+      .price{
+        display: flex;
+        align-items: baseline;
+
+        .offer{
+          color: $success;
+        }
+
+        del{
+          margin-left: 10px;
+          font-size: 0.8rem;
+        }
+      }
+    }
+
+    .counter{
+      align-items: center;
+      justify-content: space-between;
+      width: 30px;
+      display: flex;
+      flex-direction:column;
+
+      button{
+        color: $font_color;
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        font-size: 1.2rem;
+      }
+    }
+
+    .wishlist{
+      font-size: 0.8rem;
+    }
+
+  }}
+}

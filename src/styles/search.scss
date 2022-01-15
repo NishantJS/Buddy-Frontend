@@ -1,0 +1,31 @@
+@import "variables";
+
+form.search_bar {
+  width: 100%;
+  height: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $bg-color;
+  padding: 0 0 10px 0;
+
+  .search {
+    width: 80%;
+    height: 30px;
+    font-size: 16px;
+    font-family: $fira;
+    max-width: 500px;
+    background-color: transparent;
+    outline: none;
+    color: $font_color;
+    padding: 0 10px;
+    border: $border;
+    border-right: none;
+    border-color: #6664;
+  }
+  .n {
+    height: 30px;
+    border: $border;
+    border-color: #6664;
+  }
+}
