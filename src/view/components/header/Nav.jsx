@@ -9,8 +9,11 @@ import Logo from "./Logo";
 import "../../../styles/nav.scss";
 
 function Nav() {
-// todo add seller to redux
-  const isAuthenticated = useSelector(state=>state.auth.isAuthenticated)
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
+  const seller = useSelector((state) => state.auth.seller);
+  const isSeller = seller &&
+    Object.keys(seller).length !== 0 &&
+    seller.constructor === Object;
 
   const compact =(
     <Route
@@ -26,7 +29,8 @@ function Nav() {
     />
   );
 
-  const loggedIn = (<div className="links">
+  const loggedIn = (
+    <div className="links">
     <NavLink to="/my_notifications">
       <Notification />
     </NavLink>
@@ -36,14 +40,25 @@ function Nav() {
     <NavLink to="/my_cart">
       <Cart />
     </NavLink>
-  </div>)
+  </div>
+  );
 
-  const loggedOut = (<div className="links">
+  const loggedOut = (
+    <div className="links">
     <NavLink to="/auth/login">Login</NavLink>
     <NavLink to="/auth/register">Register</NavLink>
-  </div >)
+  </div >
+  );
+
   
-  const navToRender = isAuthenticated ? loggedIn: loggedOut;
+  const loggedInSeller = (
+    <div className="links">
+      <NavLink to="/auth/login">Add Product</NavLink>
+      <NavLink to="/auth/register">Dashboard</NavLink>
+    </div>
+  );
+  
+  const navToRender = isAuthenticated ? (isSeller? loggedInSeller: loggedIn): loggedOut;
 
   return (
     <nav>
@@ -68,7 +83,5 @@ function Nav() {
     </nav>
   );
 }
-
-
 
 export default Nav;

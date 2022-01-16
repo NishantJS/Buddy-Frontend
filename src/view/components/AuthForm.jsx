@@ -146,15 +146,17 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
         if (!data.error) {
           if (isSeller) {
             localStorage.setItem("jwt_seller", data.token);
+            localStorage.removeItem("jwt");
             dispatch(addToast({ message: data.msg, color: "success" }));
             dispatch(addSeller(data.seller));
-          }
-          else {
+            history.push("/dashboard");
+          }else {
             localStorage.setItem("jwt", data.token);
+            localStorage.removeItem("jwt_seller");
             dispatch(addToast({ message: data.msg, color: "success" }));
             dispatch(addUser(data.user));
+            history.push("/");
           }
-          history.push("/");
         } else {
           dispatch(addToast({ message: data.msg, color: "danger" }));
         }

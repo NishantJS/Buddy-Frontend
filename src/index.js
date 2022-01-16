@@ -7,9 +7,12 @@ import App from "./view/App";
 ////style
 import "./styles/global.scss";
 import "./styles/index.scss";
-import { fetchUser,fetchProduct } from "./view/services/actions";
+import { fetchUser,fetchProduct,fetchSeller } from "./view/services/actions";
 
-store.dispatch(fetchUser());
+if (localStorage.getItem("jwt_seller")) {
+  store.dispatch(fetchSeller());
+}else store.dispatch(fetchUser());
+
 store.dispatch(fetchProduct());
 
 ReactDOM.render(
