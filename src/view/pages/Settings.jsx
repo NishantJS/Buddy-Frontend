@@ -1,26 +1,19 @@
-import "../../styles/settings.scss";
+import "../../styles/setting.scss";
 import { useSelector } from "react-redux";
+import SellerLogged from "../components/setting/SellerLogged";
+import UserLogged from "../components/setting/UserLogged";
+import Theme from "../components/setting/Theme";
+import { connect } from "react-redux";
 
-const Settings = () => {
-  
+const Settings = ({dispatch}) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
+  
   return (
     <section className="settings">
-      {!isAuthenticated ? <Seller/> : <></>}
-      <h1>settings</h1>
+      {!isAuthenticated ? <SellerLogged /> : <UserLogged dispatch={dispatch}/>}
+      <Theme dispatch={dispatch}/>
     </section>
   );
 };
 
-const Seller = () => {
-  return (
-    <div>
-      <h1>seller login</h1>
-      <h2>seller register</h2>
-    </div>
-  )
-}
-
-
-export default Settings;
+export default connect()(Settings);

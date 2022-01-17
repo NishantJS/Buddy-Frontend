@@ -142,7 +142,6 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
       validateStatus: (status) => status < 500,
     })
       .then(({ data }) => {
-        console.log(data)
         if (!data.error) {
           if (isSeller) {
             localStorage.setItem("jwt_seller", data.token);

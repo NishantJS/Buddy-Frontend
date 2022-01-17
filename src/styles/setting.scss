@@ -1,0 +1,62 @@
+@import "variables";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 100vw;
+  height: max-content;
+  margin: 10px ;
+  
+  .title {
+    padding: 5px 10px;
+    text-transform: capitalize;
+  }
+
+  .box-container {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+    overflow: hidden;
+    align-items: center;
+    justify-content: left;
+
+    .box{
+      display: flex;
+      background-color: $bg_color;
+      width: 300px;
+      max-width: 33vw;
+      margin: 0 10px;
+      padding: 10px 0;
+      justify-content: space-evenly;
+      cursor: pointer;
+    
+      img{
+        color: red;
+        width: 30px;
+      }
+      &.active {
+        border: 1px solid green;
+      }
+
+      span{
+        text-transform: capitalize;
+      }
+    }
+    
+  }
+}
+
+@media only screen and (max-width: 400px){
+  .container{
+    .box-container{
+      width: 100%;
+      flex-direction: column;  
+      .box{
+      justify-content: space-between;
+        min-width: 90vw;
+        margin: 2px 0;
+        padding: 10px;
+      }   
+    }
+  }
+}
