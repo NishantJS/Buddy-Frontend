@@ -8,4 +8,3 @@ export const LOAD_PRODUCT = "LOAD_PRODUCT";
 export const ADD_USER = "SET_CURRENT_USER";
 export const REMOVE_USER = "REMOVE_USER";
 export const ADD_SELLER = "SET_CURRENT_SELLER";
-export const REMOVE_SELLER = "REMOVE_SELLER";

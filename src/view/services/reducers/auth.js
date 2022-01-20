@@ -3,8 +3,7 @@ import {
   REMOVE_USER,
   ADD_CART,
   ADD_WISHLIST,
-  ADD_SELLER,
-  REMOVE_SELLER
+  ADD_SELLER
 } from "../constants";
 
 const initialState = {
@@ -80,7 +79,6 @@ export default function auth(state = initialState, action) {
         seller: payload,
       };
 
-    case REMOVE_SELLER:
     case REMOVE_USER:
       return {
         ...state,

@@ -10,9 +10,6 @@ const Theme = ({dispatch}) => {
     if (theme === local_theme) {
       dispatch(addToast({ message: `${theme} theme is already applied`, color: "danger" }));
     }else {
-      dispatch(
-        addToast({ message: `Theme is changed to ${theme}`, color: "success" })
-      );
       localStorage.setItem("theme", theme);
       window.location.reload(false);
     }

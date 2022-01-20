@@ -30,9 +30,9 @@
       justify-content: space-evenly;
       cursor: pointer;
     
-      img{
-        color: red;
-        width: 30px;
+      img,svg{
+        width: 32px;
+        height: 32px;
       }
       &.active {
         border: 1px solid green;

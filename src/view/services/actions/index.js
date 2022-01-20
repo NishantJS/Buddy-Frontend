@@ -9,8 +9,7 @@ import {
   LOAD_PRODUCT,
   REMOVE_WISHLIST,
   ADD_WISHLIST,
-  ADD_SELLER,
-  REMOVE_SELLER
+  ADD_SELLER
 } from "../constants/";
 import axios from "axios";
 
@@ -69,12 +68,6 @@ export const addSeller = (seller) => {
   };
 };
 
-export const removeSeller = () => {
-  return {
-    type: REMOVE_SELLER,
-  };
-};
-
 export const loadProduct = (payload = {}) => {
   return {
     type: LOAD_PRODUCT,
@@ -101,8 +94,17 @@ export const fetchProduct = () => {
   }
 }
 
+export const logoutUser = () => {
+  return async dispatch => {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("jwt_seller");
+    dispatch(removeUser());
+  };
+}
+
 export const fetchUser = () => {
   return async dispatch => {
+    if (!localStorage.getItem("jwt")) return;
     try {
       const jwt = localStorage.getItem("jwt");
       if (!jwt) throw new Error("!JWT");
@@ -125,9 +127,9 @@ export const fetchUser = () => {
   };
 };
 
-
 export const fetchSeller = () => {
   return async (dispatch) => {
+    if(!localStorage.getItem("jwt_seller")) return
     try {
       const jwt = localStorage.getItem("jwt_seller");
       if (!jwt) throw new Error("!JWT");

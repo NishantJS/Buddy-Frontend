@@ -9,9 +9,8 @@ import "./styles/global.scss";
 import "./styles/index.scss";
 import { fetchUser,fetchProduct,fetchSeller } from "./view/services/actions";
 
-if (localStorage.getItem("jwt_seller")) {
-  store.dispatch(fetchSeller());
-}else store.dispatch(fetchUser());
+store.dispatch(fetchUser());
+store.dispatch(fetchSeller());
 
 store.dispatch(fetchProduct());
 

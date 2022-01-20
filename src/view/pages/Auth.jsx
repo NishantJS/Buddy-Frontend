@@ -7,6 +7,7 @@ import AuthForm from "../components/AuthForm";
 
 const Auth = ({isSeller = false}) => {
   const location = useLocation();
+  
   const [onLogin, setOnLogin] = useState(
     location.pathname === "/auth/login" ||
       location.pathname === "/auth/login/" ||

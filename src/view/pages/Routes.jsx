@@ -13,12 +13,16 @@ const Auth = lazy(() => import("./Auth.jsx"));
 const NotFound = lazy(() => import("./NotFound.jsx"));
 const SubCategory = lazy(() => import("../components/SubCategory.jsx"));
 const Shop = lazy(() => import("./Shop.jsx"));
+const Profile = lazy(() => import("./Profile.jsx"));
+const Dashboard = lazy(() => import("./Dashboard.jsx"));
 
 const Routes = () => {
   return (
     <Suspense fallback={<Loading />}>
       <Switch>
         <Route exact path="/settings" component={Settings} />
+        <Route exact path="/profile" component={Profile} />
+        <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/product/:id" component={Product} />
         <Route exact path="/my_wishlist" component={Wishlist} />
         <Route exact path="/my_notifications" component={Notification} />
