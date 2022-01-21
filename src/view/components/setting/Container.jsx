@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Container = (props) => {
-  const { heading,content } = props;
+  const { heading, content } = props;
  return (
     <section className="container">
       <h4 className="title">{heading}</h4>
@@ -16,7 +16,10 @@ const Container = (props) => {
 const ContentMap = ({content}) => {
   return content.map(({ path, title}) => {
     return (
-      <Link to={path} key={path+Math.random()}>
+      <Link
+        to={path}
+        key={path}
+      >
         <div className="box">
           <span>{title}</span>
         </div>

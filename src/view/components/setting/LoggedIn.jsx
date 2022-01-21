@@ -7,23 +7,24 @@ import { ContentMap } from "./Container";
 const LoggedIn = ({dispatch}) => {
   let history = useHistory();
 
-  const accountOptions = [
-    {
-      path: "/profile",
-      title: "Edit Profile"
-    },
-    {
-      path: "/change_password",
-      title: "Change Password"
-    },
-  ];
-
   const onLogout = () => {
+    console.log("hello")
     dispatch(addToast({ message: "You are signed out", color: "success" }));
     dispatch(logoutUser());
     history.push("/");
   }
   
+  const accountOptions = [
+    {
+      path: "/profile",
+      title: "Edit Profile",
+    },
+    {
+      path: "/change_password",
+      title: "Change Password",
+    },
+  ];
+
   return (
     <section className="container">
       <h4 className="title">Account</h4>
@@ -32,7 +33,7 @@ const LoggedIn = ({dispatch}) => {
           <span>Logout</span>
           <Logout />
         </div>
-        <ContentMap content={accountOptions}/>
+        <ContentMap content={accountOptions} />
       </div>
     </section>
   );
