@@ -2,13 +2,12 @@ import "../../../styles/setting.scss";
 import { addToast, logoutUser } from "../../services/actions/index.js";
 import { useHistory } from "react-router-dom";
 import Logout from '../../../icons/Logout.jsx';
-import { ContentMap } from "./Container";
+import { ContentMap } from "./Container.jsx";
 
 const LoggedIn = ({dispatch}) => {
   let history = useHistory();
 
   const onLogout = () => {
-    console.log("hello")
     dispatch(addToast({ message: "You are signed out", color: "success" }));
     dispatch(logoutUser());
     history.push("/");

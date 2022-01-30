@@ -2,16 +2,10 @@ import { Route, useRouteMatch } from "react-router-dom";
 
 const Footer = () => {
   const matched = useRouteMatch([
-    "/my_cart",
-    "/my_wishlist",
-    "/my_notifications",
-    "/search",
-    "/auth",
-    "/login",
-    "/register",
+    "/product",
   ]);
   return (
-    <Route path={"/"} render={() => (!matched ? <FooterContent /> : null)} />
+    <Route path={"/"} render={() => (matched ? <FooterContent /> : <></>)} />
   );
 };
 

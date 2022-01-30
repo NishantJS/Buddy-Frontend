@@ -14,6 +14,7 @@ const Theme = ({dispatch}) => {
       window.location.reload(false);
     }
   };
+  
   return (
     <section className="container">
       <h4 className="title">Theme</h4>

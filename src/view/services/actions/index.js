@@ -88,7 +88,7 @@ export const fetchProduct = () => {
       dispatch(loadProduct(product.data))
     } catch (err) {
       dispatch(
-        addToast({ message: err.message || message, color: "danger" })
+        addToast({ message: err.msg || message, color: "danger" })
       );
     }
   }
@@ -110,11 +110,12 @@ export const fetchUser = () => {
       if (!jwt) throw new Error("!JWT");
 
       const user = await axios.get("http://localhost:5000/user", {
-        validateStatus: (status) => status < 400,
+        validateStatus: (status) => status < 402,
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       });
+      if (user.data.error) throw new Error(user.data.msg);
       setAuthToken(jwt);
       dispatch(addUser(user.data.msg));
     } catch (err) {
@@ -133,13 +134,14 @@ export const fetchSeller = () => {
     try {
       const jwt = localStorage.getItem("jwt_seller");
       if (!jwt) throw new Error("!JWT");
-
+      
       const seller = await axios.get("http://localhost:5000/seller", {
-        validateStatus: (status) => status < 400,
+        validateStatus: (status) => status < 402,
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       });
+      if(seller.data.error) throw new Error(seller.data.msg)
       setAuthToken(jwt);
       dispatch(addSeller(seller.data.msg));
     } catch (err) {
@@ -149,7 +151,7 @@ export const fetchSeller = () => {
         dispatch(
           addToast({
             message:
-              err.message || "Session Expired! 🔚 Please login again. 😃",
+               err.message|| "Session Expired! Please login again. 😃",
             color: "danger",
           })
         );
