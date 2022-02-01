@@ -15,6 +15,7 @@ const SubCategory = lazy(() => import("../components/SubCategory.jsx"));
 const Shop = lazy(() => import("./Shop.jsx"));
 const Profile = lazy(() => import("./Profile.jsx"));
 const Dashboard = lazy(() => import("./Dashboard.jsx"));
+const AddProduct = lazy(() => import("../components/AddProduct.jsx"));
 
 const Routes = () => {
   return (
@@ -32,6 +33,7 @@ const Routes = () => {
         <Route exact path="/auth/login" component={Auth} />
         <Route exact path="/auth/seller_register" component={() => <Auth isSeller={ true}/>} />
         <Route exact path="/auth/seller_login" component={() => <Auth isSeller={ true}/>} />
+        <Route exact path="/add_product" component={AddProduct} />
         <Route exact path="/shop/:type" component={SubCategory} />
         <Route exact path="/shop/:type/:sub" component={Shop} />
         <Route exact path="/" component={Home} />

@@ -65,8 +65,8 @@ function Nav() {
   
   const loggedInSeller = (
     <div className="links">
-      <NavLink to="/auth/login">Add Product</NavLink>
-      <NavLink to="/auth/register">Dashboard</NavLink>
+      <NavLink to="/add_product">Add Product</NavLink>
+      <NavLink to="/dashboard">Dashboard</NavLink>
     </div>
   );
   

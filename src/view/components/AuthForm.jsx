@@ -186,7 +186,7 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
         id="pass"
         placeholder=""
         value={state.pass.value}
-        autoComplete="false"
+        autoComplete="true"
         onInput={(event) => checkValid(event, 1)}
         onChange={(event) => updateValue(event, 1)}
       />
@@ -199,6 +199,7 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
             type="password"
             id="pass1"
             placeholder=""
+            autoComplete="false"
             value={state.pass1}
             {...pass1Value}
             onInput={(event) => checkValid(event, 2)}
