@@ -3,12 +3,13 @@ import {
   REMOVE_USER,
   ADD_CART,
   ADD_WISHLIST,
-  ADD_SELLER
+  ADD_SELLER,
+  REMOVE_CART
 } from "../constants";
 
 const initialState = {
   isAuthenticated: false,
-  user: {},
+  user: {cart:[],wishlist:[]},
   seller: {}
 };
 
@@ -20,6 +21,10 @@ function checkDuplicate(array,payload) {
   return false;
   })
   return check;
+}
+
+function removeItem(array, id) {
+  return array.filter(item => item._id !== id);
 }
 
 export default function auth(state = initialState, action) {
@@ -83,8 +88,21 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: false,
-        user: {},
+        user: { cart: []},
         seller: {},
+      };
+    
+    case REMOVE_CART:
+      const updatedArray = removeItem(state.user.cart, payload);
+      
+      return {
+        state: {
+          ...state,
+          user: {
+            ...state.user,
+            cart: updatedArray
+          },
+        },
       };
 
     default:

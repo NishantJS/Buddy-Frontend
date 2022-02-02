@@ -71,6 +71,16 @@
           color: #757575;
           font-size: smaller;
         }
+        
+        &>h4{
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          line-height: 1.5;
+        }
+        
         .price {
           font-family: $fira;
           display: flex;
@@ -96,7 +106,7 @@
         svg {
           width: 20px;
           height: auto;
-          fill: $darken;
+          // fill: $darken;
           stroke-width: 2px;
           stroke-dasharray: 100;
           animation: dash 1s linear;

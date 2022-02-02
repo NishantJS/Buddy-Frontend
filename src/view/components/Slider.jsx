@@ -3,11 +3,10 @@ import Cart from "../../icons/Cart";
 import Heart from "../../icons/Heart";
 import "../../styles/slider.scss";
 import {useSelector,useDispatch} from "react-redux"
-import { addCart, addWishlist } from "../services/actions";
+import { addCart, addToast, addWishlist } from "../services/actions";
 import useFetch from "../../hooks/useFetch";
 
 const Slider = () => {
-  
   const product = useSelector(state => state.product)
   const productSlider = (!product) ? <></> : Object.keys(product).map((key) => (<SlideContainer key={key} slide={{ sliderTitle: key, product: product[`${key}`] }} />))
 
@@ -20,7 +19,7 @@ const Slider = () => {
 const SlideContainer = ({ slide }) => {
   
   const { sliderTitle } = slide;
-  const { data, loading, error } = useFetch("shop/"+sliderTitle);
+  const { data, loading, error } = useFetch("shop/" + sliderTitle);
 
   return (
     <>
@@ -39,23 +38,44 @@ const SlideContainer = ({ slide }) => {
 const Slide = ({ product }) => {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     const cart = useSelector((state) => state.auth.user.cart);
+    const wishlist = useSelector((state) => state.auth.user.wishlist);
 
   const dispatch = useDispatch();
   
-  
-  cart.length>1 && console.log(cart)
   const favHandler = () => {
-    dispatch(addWishlist(product))
-  }
+    const isAlreadyInWishlist = () => {
+      return wishlist.some((item) => item._id === product._id);
+    };
 
+    if (isAlreadyInWishlist()) {
+      dispatch(
+        addToast({ message: "Product already exists in Wishlist", color: "danger" })
+      );
+    } else {
+      dispatch(addToast({ message: "Added to Wishlist" }));
+      dispatch(addWishlist(product));
+    }
+  }
+  
   const cartHandler = () => {
-    dispatch(addCart(product))
+    const isAlreadyInCart = () => {
+      return cart.some((item)=>item._id === product._id)
+    }
+
+    if (isAlreadyInCart()) {
+      dispatch(
+        addToast({ message: "Product already exists in cart", color: "danger" })
+      );
+    } else {
+      dispatch(addToast({ message: "Added to cart" }));
+      dispatch(addCart(product));
+    }
   }
 
-  const { title, thumbnail, price, size, _id } = product;
+  const { title, thumbnail, price, size } = product;
   
   return (
-    <div className="slide">
+    <div className="slide" title={title}>
       <div className="img">
         <img src={thumbnail} alt={title} />
       </div>

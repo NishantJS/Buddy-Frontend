@@ -46,18 +46,18 @@ const WishlistItem = ({ data }) => {
       <img src={thumbnail} alt={title} />
 
       <div className="info">
-        <span className="title">
-          {title} {size}
-        </span>
-
+        <span className="title">{title}</span>
+        <span className="size">{size}</span>
         <div className="price">
           <span className="offer">₹{price}</span>
 
           <del>{retail_price}</del>
         </div>
 
-        <span className="wishlist" onClick={moveToCart}>Add to Cart</span>
-      </div>       
+        <span className="wishlist" onClick={moveToCart}>
+          Add to Cart
+        </span>
+      </div>
     </div>
   );
 };

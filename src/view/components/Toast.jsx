@@ -1,16 +1,18 @@
 import {  useEffect } from "react";
-import { connect } from "react-redux";
 import "../../styles/toast.scss";
 import { removeToast } from "../services/actions";
+import { useSelector, useDispatch } from "react-redux";
 
-const Toast = ({toast ,dispatch}) => {
+const Toast = () => {
+  const toast = useSelector((state) => state.toast);
+
   return (
     <>
       <aside className="toasts">
         {toast && toast.map((item, index) => (
             <ToastItem
               key={index}
-              data={{ color: item.color, msg: item.message }} dispatch={dispatch}
+              data={{ color: item.color, msg: item.message }}
             />
             ))}
         </aside>
@@ -18,28 +20,22 @@ const Toast = ({toast ,dispatch}) => {
   );
 }
 
-const ToastItem = ({ dispatch, data: { color, msg, id } }) => {
+const ToastItem = ({ data: { color="success", msg="Success", id=0 } }) => {
+  const dispatch = useDispatch();
   useEffect(() => {
-    const timer=setTimeout(() => {
-      dispatch(removeToast(msg))
-    }, 4000);
+    const timer = setTimeout(() => {
+      dispatch(removeToast(msg));
+    }, 2000);
     return () => {
       clearTimeout(timer);
-    }
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [msg])
+    };
+  }, [msg, dispatch]);
   
   return (
     <div className={`toast ${color}`}>
-      {msg}{id}
+      {msg}
       <span className="delete"></span>
     </div>);
 };
 
-
-const mapStateToProps = (state) => ({
-  toast : state.toast,
-});
-
-export default connect(mapStateToProps)(Toast);
+export default Toast;

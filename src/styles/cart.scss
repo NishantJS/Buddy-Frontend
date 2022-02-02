@@ -18,7 +18,7 @@
     margin: 10px;
     align-items: center;
     max-width: 350px;
-
+    
     img {
       padding: 10px;
       width: 100px;
@@ -26,18 +26,32 @@
       object-fit: cover;
       overflow: hidden;
     }
-
+    
     .info{
       flex: auto;
 
+      .title{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-height: 1.5;
+        max-width: 200px;
+      }
+
+      .size{
+        font-size: smaller;
+      }
+      
       .price{
         display: flex;
         align-items: baseline;
-
+        
         .offer{
           color: $success;
         }
-
+        
         del{
           margin-left: 10px;
           font-size: 0.8rem;
@@ -65,6 +79,19 @@
     .wishlist{
       font-size: 0.8rem;
     }
-
   }}
+}
+
+
+@media only screen and (max-width: 500px) {
+  .cart{
+    .cart_list{
+      .list_item{
+        .title{
+          width: 200px;
+          max-width: 50vw !important;
+        }
+      }
+    }
+  }
 }
