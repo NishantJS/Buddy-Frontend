@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   isAuthenticated: false,
-  user: {cart:[],wishlist:[]},
+  user: { cart: [], wishlist: []},
   seller: {}
 };
 
@@ -46,6 +46,17 @@ export default function auth(state = initialState, action) {
       } else {
         return { ...state };
       }
+
+    case REMOVE_CART:
+      const updatedArray = removeItem(state.user.cart, payload);
+
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          cart: updatedArray,
+        },
+      };
 
     case ADD_WISHLIST:
       isDuplicate = checkDuplicate(state.user.wishlist, payload);
@@ -88,21 +99,8 @@ export default function auth(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: false,
-        user: { cart: []},
+        user: { cart: [] },
         seller: {},
-      };
-    
-    case REMOVE_CART:
-      const updatedArray = removeItem(state.user.cart, payload);
-      
-      return {
-        state: {
-          ...state,
-          user: {
-            ...state.user,
-            cart: updatedArray
-          },
-        },
       };
 
     default:

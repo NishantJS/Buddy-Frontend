@@ -1,12 +1,12 @@
 import { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/cart.scss";
-import { addToast, removeCart } from "../services/actions";
+import { addToast, addWishlist, removeCart } from "../services/actions";
 
 const Cart = () => {
-  const user = useSelector(state => state.auth.user);
-  // todo fix card to wishlist error
-  let toRender = !user.cart || user.cart.length < 1 ? <CartEmpty /> : <CartContent data={user.cart} />;
+  const cart = useSelector(state => state.auth.user.cart);
+  
+  let toRender =  cart && cart.length>=1? <CartContent data={cart} />: <CartEmpty /> ;
 
   return toRender;
 };
@@ -15,11 +15,11 @@ const CartEmpty = () => {
   return <>Cart Empty</>;
 };
 
-const CartContent = ({ data }) => {
+const CartContent = ({ data  }) => {
   return (
   <section className="cart">
     <div className="cart_list">
-      {data.map((item) => (
+      {data && data.map((item) => (
         <CartItem data={item} key={item["_id"]}/>))}
     </div>
     <div className="checkout">
@@ -30,7 +30,7 @@ const CartContent = ({ data }) => {
 }
 
 const CartItem = ({ data }) => {
-  const { _id,title, size,thumbnail, allowed,price:{price,retail_price}} = data;
+  const { _id="",title="", size="",thumbnail="", allowed=1,price:{price=0,retail_price=0}} = data;
   const dispatch = useDispatch();
 
   let [count, setCount] = useState(() => 1)
@@ -44,6 +44,12 @@ const CartItem = ({ data }) => {
     else { dispatch(removeCart(_id)); dispatch(addToast({message: "Product removed from Cart"}))}
   };
   
+  const addToWishlist = () => {
+    dispatch(addWishlist(data));
+    dispatch(addToast({ message: "Added to wishlist" }));
+    dispatch(removeCart(_id))
+  }
+
   return (
     <div className="list_item">
       <img src={thumbnail} alt={title} />
@@ -57,7 +63,7 @@ const CartItem = ({ data }) => {
           <del>{retail_price * count}</del>
         </div>
 
-        <span className="wishlist">Add to Wishlist</span>
+        <span className="wishlist" onClick={addToWishlist}>Add to Wishlist</span>
       </div>
 
       <div className="counter">
