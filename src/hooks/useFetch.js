@@ -14,14 +14,14 @@ export default function useFetch(path) {
     axios
       .get(`http://localhost:5000/${path}`, {
         cancelToken: token,
-        validateStatus: (status) => status < 400,
+        validateStatus: (status) => status < 500,
       })
       .then((response) => {
         setFetchData({
-          status: 200,
+          status: response.status,
           data: response.data,
           loading: false,
-          error: false,
+          error: response.data.error,
         });
       })
       .catch((err) => {

@@ -6,7 +6,12 @@ import { addToast, addWishlist, removeCart } from "../services/actions";
 const Cart = () => {
   const cart = useSelector(state => state.auth.user.cart);
   
-  let toRender =  cart && cart.length>=1? <CartContent data={cart} />: <CartEmpty /> ;
+  let toRender =
+    cart.length < 1 ? (
+      <CartEmpty />
+    ) : (
+      <CartContent data={cart} />
+    );
 
   return toRender;
 };
@@ -50,6 +55,11 @@ const CartItem = ({ data }) => {
     dispatch(removeCart(_id))
   }
 
+  const removeItem = () => {
+    dispatch(removeCart(_id));
+    dispatch(addToast({ message: "Removed from cart" })); 
+  }
+
   return (
     <div className="list_item">
       <img src={thumbnail} alt={title} />
@@ -63,7 +73,9 @@ const CartItem = ({ data }) => {
           <del>{retail_price * count}</del>
         </div>
 
-        <span className="wishlist" onClick={addToWishlist}>Add to Wishlist</span>
+        <span className="add_to" onClick={addToWishlist}>Add to Wishlist</span>
+        <span className="remove" onClick={removeItem}>Remove</span>
+
       </div>
 
       <div className="counter">

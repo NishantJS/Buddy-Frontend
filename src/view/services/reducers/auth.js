@@ -4,13 +4,14 @@ import {
   ADD_CART,
   ADD_WISHLIST,
   ADD_SELLER,
-  REMOVE_CART
+  REMOVE_CART,
+  REMOVE_WISHLIST
 } from "../constants";
 
 const initialState = {
   isAuthenticated: false,
-  user: { cart: [], wishlist: []},
-  seller: {}
+  user: { cart: [], wishlist: [],_id: false},
+  seller: {_id: false}
 };
 
 function checkDuplicate(array,payload) {
@@ -48,16 +49,23 @@ export default function auth(state = initialState, action) {
       }
 
     case REMOVE_CART:
-      const updatedArray = removeItem(state.user.cart, payload);
-
       return {
         ...state,
         user: {
           ...state.user,
-          cart: updatedArray,
+          cart: removeItem(state.user.cart, payload),
         },
       };
 
+    case REMOVE_WISHLIST:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          wishlist: removeItem(state.user.wishlist, payload),
+        },
+      };
+    
     case ADD_WISHLIST:
       isDuplicate = checkDuplicate(state.user.wishlist, payload);
 

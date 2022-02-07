@@ -6,9 +6,8 @@ const Profile = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const seller = useSelector((state) => state.auth.seller);
-  
-  const isSeller =
-    seller && Object.keys(seller).length !== 0 && seller.constructor === Object;
+
+  const isSeller = seller._id ? true : false;
   
   return (
     <section>

@@ -1,10 +1,10 @@
-// import useFetch from "../hooks/useFetch";
 import Cart from "../../icons/Cart";
 import Heart from "../../icons/Heart";
 import "../../styles/slider.scss";
 import {useSelector,useDispatch} from "react-redux"
 import { addCart, addToast, addWishlist } from "../services/actions";
 import useFetch from "../../hooks/useFetch";
+import { Link } from "react-router-dom";
 
 const Slider = () => {
   const product = useSelector(state => state.product)
@@ -24,12 +24,17 @@ const SlideContainer = ({ slide }) => {
   return (
     <>
       <section className="slider-container">
-        <h3 className="title">shop for your {sliderTitle}</h3>
-        <div className="slider">
-          {!loading && !error && data.data && data.data.map((item) => {
-            return <Slide product={item} key={item._id}/>
-          })}
-        </div>
+        {!loading && !error && data.data && data.data.length>0 &&(
+          <>
+            <h3 className="title">shop for your {sliderTitle}</h3>
+            <div className="slider">
+              {data.data.map((item) => {
+                return (
+                    <Slide product={item} key={item._id} />);
+                })}
+            </div>
+          </>
+        )}
       </section>
     </>
   );
@@ -72,13 +77,24 @@ const Slide = ({ product }) => {
     }
   }
 
+  const handleImageLoadError = (event) => {
+    event.target.src = process.env.REACT_APP_PLACEHOLDER_IMAGE;
+  };
+
   const { title, thumbnail, price, size } = product;
   
   return (
     <div className="slide" title={title}>
-      <div className="img">
-        <img src={thumbnail} alt={title} />
-      </div>
+      <Link
+        to={{
+          pathname: `/product/${product._id}?title=${product.title}&category=${product.uci}`,
+          state: product,
+        }}
+      >
+        <div className="img">
+          <img src={thumbnail} alt={title} onError={handleImageLoadError} />
+        </div>
+      </Link>
       <div className="desc">
         <h4>{title}</h4>
         <span className="size">{size}</span>

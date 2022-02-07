@@ -88,7 +88,7 @@ export const fetchProduct = () => {
       dispatch(loadProduct(product.data))
     } catch (err) {
       dispatch(
-        addToast({ message: err.msg || message, color: "danger" })
+        addToast({ message: err.message || message, color: "danger" })
       );
     }
   }
@@ -98,6 +98,7 @@ export const logoutUser = () => {
   return async dispatch => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("jwt_seller");
+    setAuthToken();
     dispatch(removeUser());
   };
 }
@@ -107,7 +108,6 @@ export const fetchUser = () => {
     if (!localStorage.getItem("jwt")) return;
     try {
       const jwt = localStorage.getItem("jwt");
-      if (!jwt) throw new Error("!JWT");
 
       const user = await axios.get("http://localhost:5000/user", {
         validateStatus: (status) => status < 402,
@@ -115,9 +115,9 @@ export const fetchUser = () => {
           Authorization: `Bearer ${jwt}`,
         },
       });
-      if (user.data.error) throw new Error(user.data.msg);
+      if (user.data.error) throw new Error(user.data.data);
       setAuthToken(jwt);
-      dispatch(addUser(user.data.msg));
+      dispatch(addUser(user.data.data));
     } catch (err) {
       if (err.message === "!JWT") {
         console.info("Create an account for exciting offers for your buddy 🙌");
@@ -133,7 +133,6 @@ export const fetchSeller = () => {
     if(!localStorage.getItem("jwt_seller")) return
     try {
       const jwt = localStorage.getItem("jwt_seller");
-      if (!jwt) throw new Error("!JWT");
       
       const seller = await axios.get("http://localhost:5000/seller", {
         validateStatus: (status) => status < 402,
@@ -141,9 +140,9 @@ export const fetchSeller = () => {
           Authorization: `Bearer ${jwt}`,
         },
       });
-      if(seller.data.error) throw new Error(seller.data.msg)
+      if(seller.data.error) throw new Error(seller.data.data)
       setAuthToken(jwt);
-      dispatch(addSeller(seller.data.msg));
+      dispatch(addSeller(seller.data.data));
     } catch (err) {
       if (err.message === "!JWT") {
         console.info("Create an account for selling your products to right buddy 🙌");
@@ -151,7 +150,7 @@ export const fetchSeller = () => {
         dispatch(
           addToast({
             message:
-               err.message|| "Session Expired! Please login again. 😃",
+            err.message|| "Session Expired! Please login again. 😃",
             color: "danger",
           })
         );

@@ -36,7 +36,7 @@ function Nav() {
     <NavLink to="/my_notifications">
       <Notification />
     </NavLink>
-    <NavLink to="my_wishlist">
+    <NavLink to="/my_wishlist">
       <Heart />
     </NavLink>
     <NavLink to="/my_cart">

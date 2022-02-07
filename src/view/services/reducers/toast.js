@@ -7,8 +7,9 @@ export default function toast(state = initialState, action) {
 
   switch (type) {
     case ADD_TOAST:
+      if(!payload.message) return state
       const match = state.some((item) => item.message === payload.message)
-      if(!match) return[payload, ...state];
+      if(!match) return [...state, payload];
       else return  state
     
     case REMOVE_TOAST:

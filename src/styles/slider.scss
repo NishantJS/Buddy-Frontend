@@ -35,7 +35,7 @@
       position: relative;
       padding: 10px;
       border: 2px solid $body_color;
-      transition: border 500ms ease-out;
+      transition: border 300ms ease-out;
 
       &:hover {
         border: 2px solid transparent;
@@ -106,10 +106,10 @@
         svg {
           width: 20px;
           height: auto;
-          // fill: $darken;
           stroke-width: 2px;
           stroke-dasharray: 100;
           animation: dash 1s linear;
+          transition: stroke 500ms;
 
           &.bag {
             position: absolute;
