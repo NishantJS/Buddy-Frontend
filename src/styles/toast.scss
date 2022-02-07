@@ -8,12 +8,17 @@ aside.toasts{
   
   div.toast{
     margin: 10px 0;
-    display: block;
     background-color: $darken;
-    width: 200px;
-    max-width: 300px;
+    width: 300px;
+    max-width: 400px;
     padding: 20px;
     border-radius: 10px 0 0 10px;
+    box-shadow: $light_shadow;
+    text-transform: lowercase;
+
+    &:first-letter{
+      text-transform: uppercase;
+    }
 
     &.success{
       border-left: 5px solid $success;
@@ -21,11 +26,6 @@ aside.toasts{
 
     &.danger{
       border-left: 5px solid $danger;  
-    }
-
-    & .delete{
-      position: absolute;
-      right: 10px;
     }
   }
 }
@@ -35,7 +35,6 @@ aside.toasts{
     div.toast{
       width: 80vw;
       max-width: 80vw;
-      border-radius: 10px;
     }
   }
 }

@@ -5,7 +5,7 @@ const Footer = () => {
     "/product",
   ]);
   return (
-    <Route path={"/"} render={() => (matched ? <FooterContent /> : <></>)} />
+    <Route path={"/"} render={() => (!matched ? <FooterContent /> : <></>)} />
   );
 };
 

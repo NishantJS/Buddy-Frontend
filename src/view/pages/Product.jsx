@@ -49,7 +49,7 @@ const ProductDetails = ({ data }) => {
     <section className="product">
       <div className="intro">
         <img src={thumbnail} alt={title} onError={handleImageLoadError}/>
-      <h1>{title}</h1>
+        <h1>{title}</h1>
         {isUser&& <div className="add_to">
           <span>
             Add to Cart <Cart />
@@ -62,6 +62,7 @@ const ProductDetails = ({ data }) => {
       </div>
       <div className="desc">
         <p>{description}</p>
+        
       </div>
     </section>
   );

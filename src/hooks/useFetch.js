@@ -12,7 +12,7 @@ export default function useFetch(path) {
   useEffect(() => {
     let {token,cancel} = axios.CancelToken.source();
     axios
-      .get(`http://localhost:5000/${path}`, {
+      .get(`${process.env.REACT_APP_ROOT_PATH}${path}`, {
         cancelToken: token,
         validateStatus: (status) => status < 500,
       })

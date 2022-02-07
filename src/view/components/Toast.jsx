@@ -7,20 +7,19 @@ const Toast = () => {
   const toast = useSelector((state) => state.toast);
 
   return (
-    <>
-      <aside className="toasts">
-        {toast && toast.map((item, index) => (
-            <ToastItem
-              key={index}
-              data={{ color: item.color, msg: item.message }}
-            />
-            ))}
-        </aside>
-    </>
+    <aside className="toasts">
+      {toast &&
+        toast.map((item, index) => (
+          <ToastItem
+            key={index}
+            data={{ color: item.color, msg: item.message }}
+          />
+        ))}
+    </aside>
   );
 }
 
-const ToastItem = ({ data: { color="success", msg="Success", id=0 } }) => {
+const ToastItem = ({ data: { color = "success", msg = "Success" } }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -30,12 +29,14 @@ const ToastItem = ({ data: { color="success", msg="Success", id=0 } }) => {
       clearTimeout(timer);
     };
   }, [msg, dispatch]);
+
+  const handleClick = () => dispatch(removeToast(msg));
   
   return (
-    <div className={`toast ${color}`}>
+    <div className={`toast ${color}`} onClick={handleClick}>
       {msg}
-      <span className="delete"></span>
-    </div>);
+    </div>
+  );
 };
 
 export default Toast;
