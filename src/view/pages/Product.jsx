@@ -48,22 +48,21 @@ const ProductDetails = ({ data }) => {
   return (
     <section className="product">
       <div className="intro">
-        <img src={thumbnail} alt={title} onError={handleImageLoadError}/>
-        <h1>{title}</h1>
-        {isUser&& <div className="add_to">
-          <span>
-            Add to Cart <Cart />
-          </span>
+        {isUser && (
+          <div className="add_to">
+            <span><Cart /></span>
+            <span><Heart /></span>
+          </div>
+        )}
 
-          <span>
-            Add to Wishlist <Heart />
-          </span>
-        </div>}
+        <img src={thumbnail} alt={title} onError={handleImageLoadError} />
+        <h1>{title}</h1>
       </div>
       <div className="desc">
         <p>{description}</p>
-        
       </div>
+
+      price: {price.price}-{ price.retail_price}-allowed: {allowed}- stock:{stock}- size: {size}- id: {_id}- uci:{uci}
     </section>
   );
 }

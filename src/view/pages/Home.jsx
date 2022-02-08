@@ -1,13 +1,10 @@
 import Category from "../components/Category";
-// import User from "../components/User";
 import Slider from "../components/Slider";
-
 
 const Home = () => {
   return (
     <>
       <Category />
-      {/* <User/> */}
       <Slider />
     </>
   );

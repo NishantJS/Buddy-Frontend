@@ -133,7 +133,7 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
     const Seller = isSeller ? "seller" : "user";
     axios({
       method: "POST",
-      url: `http://localhost:5000/${Seller}/${reqPath}`,
+      url: `${process.env.REACT_APP_ROOT_PATH}${Seller}/${reqPath}`,
       data: {
         email: state.email.value,
         pass: state.pass.value,
@@ -146,21 +146,21 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
           if (isSeller) {
             localStorage.setItem("jwt_seller", data.token);
             localStorage.removeItem("jwt");
-            dispatch(addToast({ message: data.msg, color: "success" }));
+            dispatch(addToast({ message: data.data }));
             dispatch(addSeller(data.seller));
             history.push("/dashboard");
-          }else {
+          } else {
             localStorage.setItem("jwt", data.token);
             localStorage.removeItem("jwt_seller");
-            dispatch(addToast({ message: data.msg, color: "success" }));
+            dispatch(addToast({ message: data.data }));
             dispatch(addUser(data.user));
             history.push("/");
           }
         } else {
-          dispatch(addToast({ message: data.msg, color: "danger" }));
+          dispatch(addToast({ message: data.data, color: "danger" }));
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log({ err }));
   };
 
   let pass1Value =

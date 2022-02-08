@@ -15,12 +15,30 @@
     background-color: $bg_color;
     max-width: 90vw;
     margin-right: 10px;
-    padding: 20px 10px;
+    padding: 10px;
+    box-shadow: $light-shadow;
+    border-radius: 10px;
 
     img{
       width: 100%;
       aspect-ratio: 1;
       object-fit: cover;
+    }
+    .add_to{
+      display: flex;
+      justify-content: space-between;
+
+      span{
+        width: fit-content;
+        display: flex;
+        // border: $border;
+        align-items: center;
+        margin: 10px 0;
+
+        svg{
+          width: 2rem;
+        }
+      }
     }
   }
   .desc{
@@ -36,15 +54,15 @@
     margin: 0;
     height: 100%;
 
-    .intro{
-      img{
-        // width: 100%;
+    // .intro{
+    //   img{
+    //     // width: 100%;
         
-      }
-      .desc{
-        // margin: 0;
-      }
+    //   }
+    //   .desc{
+    //     // margin: 0;
+    //   }
      
-    }
+    // }
   }
 }

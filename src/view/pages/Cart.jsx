@@ -1,16 +1,33 @@
 import { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/cart.scss";
-import { addToast, addWishlist, removeCart } from "../services/actions";
+import { addToast, addToWishlist, removeFromCart } from "../services/actions";
 
 const Cart = () => {
   const cart = useSelector(state => state.auth.user.cart);
+  const wishlist = useSelector(state => state.auth.user.wishlist);
   
+  const dispatch = useDispatch();
+
+  const isAlreadyInArr = (arr = [], _id) => {
+    return arr.some((item) => item._id === _id);
+  };
+
+  const wishlistHandler = (product) => {
+    if (!isAlreadyInArr(wishlist, product._id)) {
+      dispatch(addToWishlist(product));
+    } else {
+      dispatch(
+        addToast({ message: "Product already exists in wishlist", color: "danger" })
+      );
+    }
+  };
+
   let toRender =
     cart.length < 1 ? (
       <CartEmpty />
     ) : (
-      <CartContent data={cart} />
+        <CartContent data={cart} dispatch={dispatch} handler={wishlistHandler}/>
     );
 
   return toRender;
@@ -20,12 +37,12 @@ const CartEmpty = () => {
   return <>Cart Empty</>;
 };
 
-const CartContent = ({ data  }) => {
+const CartContent = ({ data , dispatch, handler}) => {
   return (
   <section className="cart">
     <div className="cart_list">
       {data && data.map((item) => (
-        <CartItem data={item} key={item["_id"]}/>))}
+        <CartItem product={item} key={item["_id"]} dispatch={dispatch} handler={handler}/>))}
     </div>
     <div className="checkout">
       <button>Checkout</button>
@@ -34,9 +51,16 @@ const CartContent = ({ data  }) => {
   );
 }
 
-const CartItem = ({ data }) => {
-  const { _id="",title="", size="",thumbnail="", allowed=1,price:{price=0,retail_price=0}} = data;
-  const dispatch = useDispatch();
+const CartItem = ({ product, dispatch, handler }) => {
+  const {
+    _id = "",
+    title = "",
+    size = "",
+    thumbnail = "",
+    allowed = 1,
+    price: { price = 0, retail_price = 0 },
+  } = product;
+
 
   let [count, setCount] = useState(() => 1)
   const incrementCount = () => {
@@ -46,18 +70,11 @@ const CartItem = ({ data }) => {
 
   const decrementCount = () => {
     if (count > 1) setCount((p) => p - 1);
-    else { dispatch(removeCart(_id)); dispatch(addToast({message: "Product removed from Cart"}))}
+    else dispatch(removeFromCart(_id));
   };
-  
-  const addToWishlist = () => {
-    dispatch(addWishlist(data));
-    dispatch(addToast({ message: "Added to wishlist" }));
-    dispatch(removeCart(_id))
-  }
 
   const removeItem = () => {
-    dispatch(removeCart(_id));
-    dispatch(addToast({ message: "Removed from cart" })); 
+    dispatch(removeFromCart(_id));
   }
 
   return (
@@ -73,7 +90,7 @@ const CartItem = ({ data }) => {
           <del>{retail_price * count}</del>
         </div>
 
-        <span className="add_to" onClick={addToWishlist}>Add to Wishlist</span>
+        <span className="add_to" onClick={()=>handler(product)}>Add to Wishlist</span>
         <span className="remove" onClick={removeItem}>Remove</span>
 
       </div>

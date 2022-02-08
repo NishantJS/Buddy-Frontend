@@ -1,11 +1,41 @@
 import { useSelector ,useDispatch} from "react-redux";
 import "../../styles/cart.scss";
-import { addCart, removeWishlist, addToast } from "../services/actions";
+import { addToCart, removeFromWishlist, addToast } from "../services/actions";
 
 const Wishlist = () => {
+  
+  const cart = useSelector((state) => state.auth.user.cart);
   const wishlist = useSelector((state) => state.auth.user.wishlist);
 
-  let toRender = wishlist.length < 1 ? <WishlistEmpty /> : <WishlistContent data={wishlist} />;
+  const dispatch = useDispatch();
+
+  const isAlreadyInArr = (arr = [], _id) => {
+    return arr.some((item) => item._id === _id);
+  };
+
+  const cartHandler = (product) => {
+    if (!isAlreadyInArr(cart, product._id)) {
+      dispatch(addToCart(product));
+    } else {
+      dispatch(
+        addToast({
+          message: "Product already exists in cart",
+          color: "danger",
+        })
+      );
+    }
+  };
+
+  let toRender =
+    wishlist.length < 1 ? (
+      <WishlistEmpty />
+    ) : (
+      <WishlistContent
+        data={wishlist}
+        dispatch={dispatch}
+        handler={cartHandler}
+      />
+    );
 
   return toRender;
 };
@@ -14,37 +44,35 @@ const WishlistEmpty = () => {
   return <>Wishlist Empty</>;
 };
 
-const WishlistContent = ({ data }) => {
+const WishlistContent = ({ data, dispatch, handler }) => {
   return (
     <section className="cart">
       <div className="cart_list">
-        {data && data.map((item) => (
-          <WishlistItem data={item} key={item["_id"]} />
-        ))}
+        {data &&
+          data.map((item) => (
+            <WishlistItem
+              product={item}
+              key={item["_id"]}
+              dispatch={dispatch}
+              handler={handler}
+            />
+          ))}
       </div>
     </section>
   );
 };
 
-const WishlistItem = ({ data }) => {
+const WishlistItem = ({ product, dispatch, handler }) => {
   const {
     _id = "",
     title = "",
     size = "",
     thumbnail = "",
     price: { price = 0, retail_price = 0 },
-  } = data;
-  const dispatch = useDispatch();
-
-  const addToCart = () => {
-    dispatch(addCart(data));
-    dispatch(addToast({ message: "Added to cart" }));
-    dispatch(removeWishlist(_id));
-  };
+  } = product;
 
   const removeItem = () => {
-    dispatch(removeWishlist(_id));
-    dispatch(addToast({ message: "Removed from wishlist" }));
+    dispatch(removeFromWishlist(_id));
   };
 
   return (
@@ -60,7 +88,7 @@ const WishlistItem = ({ data }) => {
           <del>{retail_price}</del>
         </div>
 
-        <span className="add_to" onClick={addToCart}>
+        <span className="add_to" onClick={()=>handler(product)}>
           Add to Cart        </span>
         <span className="remove" onClick={removeItem}>
           Remove

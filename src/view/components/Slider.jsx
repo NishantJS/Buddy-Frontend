@@ -2,7 +2,7 @@ import Cart from "../../icons/Cart";
 import Heart from "../../icons/Heart";
 import "../../styles/slider.scss";
 import {useSelector,useDispatch} from "react-redux"
-import { addCart, addToast, addWishlist } from "../services/actions";
+import { addToast, addToCart, addToWishlist } from "../services/actions";
 import useFetch from "../../hooks/useFetch";
 import { Link } from "react-router-dom";
 
@@ -41,9 +41,12 @@ const SlideContainer = ({ slide }) => {
 };
 
 const Slide = ({ product }) => {
-    const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-    const cart = useSelector((state) => state.auth.user.cart);
-    const wishlist = useSelector((state) => state.auth.user.wishlist);
+  const auth = useSelector((state) => state.auth);
+  const isAuthenticated = auth.isAuthenticated;
+  const isUser = auth.user._id;
+
+  const cart = useSelector((state) => state.auth.user.cart);
+  const wishlist = useSelector((state) => state.auth.user.wishlist);
 
   const dispatch = useDispatch();
   
@@ -52,13 +55,15 @@ const Slide = ({ product }) => {
       return wishlist.some((item) => item._id === product._id);
     };
 
-    if (isAlreadyInWishlist()) {
-      dispatch(
-        addToast({ message: "Product already exists in Wishlist", color: "danger" })
-      );
+    if (!isAlreadyInWishlist()) {
+      dispatch(addToWishlist(product));
     } else {
-      dispatch(addToast({ message: "Added to Wishlist" }));
-      dispatch(addWishlist(product));
+      dispatch(
+        addToast({
+          message: "Product already exists in Wishlist",
+          color: "danger",
+        })
+      );
     }
   }
   
@@ -67,13 +72,12 @@ const Slide = ({ product }) => {
       return cart.some((item)=>item._id === product._id)
     }
 
-    if (isAlreadyInCart()) {
+    if (!isAlreadyInCart()) {
+      dispatch(addToCart(product));
+    } else {
       dispatch(
         addToast({ message: "Product already exists in cart", color: "danger" })
       );
-    } else {
-      dispatch(addToast({ message: "Added to cart" }));
-      dispatch(addCart(product));
     }
   }
 
@@ -110,7 +114,7 @@ const Slide = ({ product }) => {
           )}% off`}</h5>
         </div>
       </div>
-      {isAuthenticated && (
+      {isAuthenticated && isUser && (
         <div className="cta">
           <Heart handler={favHandler} />
           <Cart handler={cartHandler} />

@@ -75,20 +75,108 @@ export const loadProduct = (payload = {}) => {
   }
 }
 
+export const addToCart = (cart_item) => {
+  return async (dispatch) => {
+    try {
+      const cartItem = await axios.patch(
+        `${process.env.REACT_APP_ROOT_PATH}user/cart/add`,
+        cart_item,
+        {
+          validateStatus: (status) => status < 402,
+        }
+      );
+
+      if (!cartItem) throw new Error("Something went wrong!");
+      dispatch(addToast({ message: "Cart Item Added" }));
+      dispatch(addCart(cart_item));
+    } catch (err) {
+      dispatch(addToast({ message: err.message, color: "danger" }));
+    }
+  };
+}
+
+export const removeFromCart = (_id) => {
+  return async (dispatch) => {
+    try {
+      const cartItem = await axios.patch(
+        `${process.env.REACT_APP_ROOT_PATH}user/cart/remove`,
+        { _id },
+        {
+          validateStatus: (status) => status < 402,
+        }
+      );
+
+      if (!cartItem) throw new Error("Something went wrong!");
+      dispatch(addToast({ message: "Cart Item removed" }));
+      dispatch(removeCart(_id));
+    } catch (err) {
+      dispatch(
+        addToast({ message: err.message, color: "danger" })
+      );
+    }
+  };
+};
+
+
+export const addToWishlist = (wishlist_item) => {
+  return async (dispatch) => {
+    try {
+      const wishlistItem = await axios.patch(
+        `${process.env.REACT_APP_ROOT_PATH}user/wishlist/add`,
+        wishlist_item,
+        {
+          validateStatus: (status) => status < 402,
+        }
+      );
+
+      if (!wishlistItem) throw new Error("Something went wrong!");
+      dispatch(addToast({ message: "Cart Item Added" }));
+      dispatch(addWishlist(wishlist_item));
+    } catch (err) {
+      dispatch(
+        addToast({ message: err.message, color: "danger" })
+      );
+    }
+  };
+};
+
+export const removeFromWishlist = (_id) => {
+  return async (dispatch) => {
+    try {
+      const wishlistItem = await axios.patch(
+        `${process.env.REACT_APP_ROOT_PATH}user/wishlist/remove`,
+        { _id },
+        {
+          validateStatus: (status) => status < 402,
+        }
+      );
+
+      if (!wishlistItem) throw new Error("Something went wrong!");
+      dispatch(addToast({ message: "Wishlist Item removed" }));
+      dispatch(removeWishlist(_id));
+    } catch (err) {
+      dispatch(addToast({ message: err.message, color: "danger" }));
+    }
+  };
+};
+
 export const fetchProduct = () => {
   const message = "Server Error 😔";
   return async dispatch => {
     try {
-      const product = await axios.get("http://localhost:5000/shop", {
-        validateStatus: (status) => status < 400
-      });
+      const product = await axios.get(
+        `${process.env.REACT_APP_ROOT_PATH}shop`,
+        {
+          validateStatus: (status) => status < 400,
+        }
+      );
 
       if (!product) throw new Error(message)
       
       dispatch(loadProduct(product.data))
     } catch (err) {
       dispatch(
-        addToast({ message: err.message || message, color: "danger" })
+        addToast({ message: err.message, color: "danger" })
       );
     }
   }
@@ -98,6 +186,8 @@ export const logoutUser = () => {
   return async dispatch => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("jwt_seller");
+    localStorage.removeItem("user");
+    localStorage.removeItem("seller");
     setAuthToken();
     dispatch(removeUser());
   };
@@ -105,24 +195,26 @@ export const logoutUser = () => {
 
 export const fetchUser = () => {
   return async dispatch => {
-    if (!localStorage.getItem("jwt")) return;
+    const jwt = localStorage.getItem("jwt");;
+    if (!jwt) return;
     try {
-      const jwt = localStorage.getItem("jwt");
-
-      const user = await axios.get("http://localhost:5000/user", {
+      const user = await axios.get(`${process.env.REACT_APP_ROOT_PATH}user`, {
         validateStatus: (status) => status < 402,
         headers: {
           Authorization: `Bearer ${jwt}`,
         },
       });
       if (user.data.error) throw new Error(user.data.data);
+
       setAuthToken(jwt);
+      localStorage.setItem("user", JSON.stringify(user.data.data));
       dispatch(addUser(user.data.data));
+      
     } catch (err) {
       if (err.message === "!JWT") {
         console.info("Create an account for exciting offers for your buddy 🙌");
       } else {
-        dispatch(addToast({ message: err.message||"Session Expired! 🔚 Please login again. 😃", color: "danger" }));
+        dispatch(addToast({ message: err.message, color: "danger" }));
       }
     }
   };
@@ -130,31 +222,26 @@ export const fetchUser = () => {
 
 export const fetchSeller = () => {
   return async (dispatch) => {
-    if(!localStorage.getItem("jwt_seller")) return
+    const jwt = localStorage.getItem("jwt_seller");
+    if(!jwt) return
     try {
-      const jwt = localStorage.getItem("jwt_seller");
+      const seller = await axios.get(
+        `${process.env.REACT_APP_ROOT_PATH}seller`,
+        {
+          validateStatus: (status) => status < 402,
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      if (seller.data.error) throw new Error(seller.data.data)
       
-      const seller = await axios.get("http://localhost:5000/seller", {
-        validateStatus: (status) => status < 402,
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      if(seller.data.error) throw new Error(seller.data.data)
       setAuthToken(jwt);
+      localStorage.setItem("seller", JSON.stringify(seller.data.data));
       dispatch(addSeller(seller.data.data));
+      
     } catch (err) {
-      if (err.message === "!JWT") {
-        console.info("Create an account for selling your products to right buddy 🙌");
-      } else {
-        dispatch(
-          addToast({
-            message:
-            err.message|| "Session Expired! Please login again. 😃",
-            color: "danger",
-          })
-        );
-      }
+      dispatch( addToast({ message:err.message, color: "danger"}));
     }
   };
 };

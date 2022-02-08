@@ -11,7 +11,6 @@ import { fetchUser,fetchProduct,fetchSeller } from "./view/services/actions";
 
 store.dispatch(fetchUser());
 store.dispatch(fetchSeller());
-
 store.dispatch(fetchProduct());
 
 ReactDOM.render(

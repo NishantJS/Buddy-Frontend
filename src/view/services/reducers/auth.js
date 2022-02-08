@@ -8,12 +8,15 @@ import {
   REMOVE_WISHLIST
 } from "../constants";
 
+const user = localStorage.getItem("user");
+const seller = localStorage.getItem("seller");
+
 const initialState = {
   isAuthenticated: false,
-  user: { cart: [], wishlist: [],_id: false},
-  seller: {_id: false}
+  user: user ? JSON.parse(user) : { cart: [], wishlist: [], _id: false },
+  seller: seller ? JSON.parse(seller) : { _id: false }
 };
-
+ 
 function checkDuplicate(array,payload) {
   let check=array.some((value) => {
   if (value._id === payload._id) {
