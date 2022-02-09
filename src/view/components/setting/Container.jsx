@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Container = (props) => {
@@ -13,17 +13,21 @@ const Container = (props) => {
   );
 };
 
-const ContentMap = ({content}) => {
-  return content.map(({ path, title}) => {
-    return (
-      <Link
-        to={path}
-        key={path}
-      >
+const ContentMap = ({ content }) => {
+  const [click, setClick] = useState(false);
+
+  return content.map(({ path=false, title="", description=""}) => {
+    return path ? (
+      <Link to={path} key={path}>
         <div className="box">
           <span>{title}</span>
         </div>
       </Link>
+    ) : (
+      <div className="box desc" key={title} onClick={()=>setClick(p=>!p)}>
+        <span>{title}</span>
+        {click? <span className="desc">{description}</span>:<></>}
+      </div>
     );
   });
 }

@@ -3,6 +3,7 @@ import axios from "axios";
 import {connect} from "react-redux"
 import { addUser, addToast, addSeller } from "../services/actions";
 import {useHistory} from "react-router-dom"
+import setAuthToken from "../services/factories/setAuthToken";
 
 const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
   let history =useHistory()
@@ -143,18 +144,24 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
     })
       .then(({ data }) => {
         if (!data.error) {
+          setAuthToken(data.token);
+          localStorage.removeItem("jwt_seller");
+          localStorage.removeItem("jwt");
+          localStorage.removeItem("user");
+          localStorage.removeItem("seller");
+            
           if (isSeller) {
             localStorage.setItem("jwt_seller", data.token);
-            localStorage.removeItem("jwt");
+            localStorage.setItem("seller", JSON.stringify(data.seller));
             dispatch(addToast({ message: data.data }));
             dispatch(addSeller(data.seller));
             history.push("/dashboard");
           } else {
             localStorage.setItem("jwt", data.token);
-            localStorage.removeItem("jwt_seller");
+            localStorage.setItem("user", JSON.stringify(data.user));
             dispatch(addToast({ message: data.data }));
             dispatch(addUser(data.user));
-            history.push("/");
+            history.push("/")
           }
         } else {
           dispatch(addToast({ message: data.data, color: "danger" }));

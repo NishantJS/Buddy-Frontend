@@ -78,17 +78,28 @@ export const loadProduct = (payload = {}) => {
 export const addToCart = (cart_item) => {
   return async (dispatch) => {
     try {
+      const body = {
+        _id: cart_item._id,
+        price: cart_item.price,
+        title: cart_item.title,
+        thumbnail: cart_item.thumbnail,
+        allowed: cart_item.allowed,
+        size: cart_item.size
+      };
+
       const cartItem = await axios.patch(
         `${process.env.REACT_APP_ROOT_PATH}user/cart/add`,
-        cart_item,
+        body,
         {
           validateStatus: (status) => status < 402,
         }
       );
 
       if (!cartItem) throw new Error("Something went wrong!");
-      dispatch(addToast({ message: "Cart Item Added" }));
-      dispatch(addCart(cart_item));
+      if (cartItem.data.error) throw new Error(cartItem.data.data);
+      
+      dispatch(addToast({ message: cartItem.data.data}));
+      dispatch(addCart(body));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));
     }
@@ -107,7 +118,9 @@ export const removeFromCart = (_id) => {
       );
 
       if (!cartItem) throw new Error("Something went wrong!");
-      dispatch(addToast({ message: "Cart Item removed" }));
+      if (cartItem.data.error) throw new Error(cartItem.data.data);
+      
+      dispatch(addToast({ message: cartItem.data.data }));
       dispatch(removeCart(_id));
     } catch (err) {
       dispatch(
@@ -121,17 +134,27 @@ export const removeFromCart = (_id) => {
 export const addToWishlist = (wishlist_item) => {
   return async (dispatch) => {
     try {
+      const body = {
+        _id: wishlist_item._id,
+        price: wishlist_item.price,
+        title: wishlist_item.title,
+        thumbnail: wishlist_item.thumbnail,  
+        allowed: wishlist_item.allowed,
+        size: wishlist_item.size,
+      };
+
       const wishlistItem = await axios.patch(
         `${process.env.REACT_APP_ROOT_PATH}user/wishlist/add`,
-        wishlist_item,
+        body,
         {
-          validateStatus: (status) => status < 402,
+          validateStatus: (status) => status < 511,
         }
       );
 
       if (!wishlistItem) throw new Error("Something went wrong!");
-      dispatch(addToast({ message: "Cart Item Added" }));
-      dispatch(addWishlist(wishlist_item));
+      if(wishlistItem.data.error) throw new Error(wishlistItem.data.data);
+      dispatch(addToast({ message: wishlistItem.data.data }));
+      dispatch(addWishlist(body));
     } catch (err) {
       dispatch(
         addToast({ message: err.message, color: "danger" })
@@ -149,10 +172,11 @@ export const removeFromWishlist = (_id) => {
         {
           validateStatus: (status) => status < 402,
         }
-      );
-
+        );
+        
       if (!wishlistItem) throw new Error("Something went wrong!");
-      dispatch(addToast({ message: "Wishlist Item removed" }));
+      if (wishlistItem.data.error) throw new Error(wishlistItem.data.data);
+      dispatch(addToast({ message: wishlistItem.data.data }));
       dispatch(removeWishlist(_id));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));

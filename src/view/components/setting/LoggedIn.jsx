@@ -1,7 +1,6 @@
 import "../../../styles/setting.scss";
 import { addToast, logoutUser } from "../../services/actions/index.js";
 import { useHistory } from "react-router-dom";
-import Logout from '../../../icons/Logout.jsx';
 import { ContentMap } from "./Container.jsx";
 
 const LoggedIn = ({dispatch}) => {
@@ -28,11 +27,10 @@ const LoggedIn = ({dispatch}) => {
     <section className="container">
       <h4 className="title">Account</h4>
       <div className="box-container">
-        <div className="box" onClick={onLogout}>
-          <span>Logout</span>
-          <Logout />
-        </div>
         <ContentMap content={accountOptions} />
+        <div className="box danger" onClick={onLogout}>
+          <span>Logout</span>
+        </div>
       </div>
     </section>
   );

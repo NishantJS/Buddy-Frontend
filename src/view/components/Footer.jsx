@@ -1,11 +1,8 @@
-import { Route, useRouteMatch } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 const Footer = () => {
-  const matched = useRouteMatch([
-    "/product",
-  ]);
   return (
-    <Route path={"/"} render={() => (!matched ? <FooterContent /> : <></>)} />
+    <Route exact path={"/"} component={FooterContent} />
   );
 };
 
