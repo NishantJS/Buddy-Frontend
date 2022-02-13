@@ -98,12 +98,12 @@ export default function auth(state = initialState, action) {
     case ADD_SELLER:
       return {
         ...state,
-        user: {},
         isAuthenticated:
           payload &&
           Object.keys(payload).length !== 0 &&
           payload.constructor === Object,
         seller: payload,
+        user: {},
       };
 
     case REMOVE_USER:

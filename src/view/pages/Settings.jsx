@@ -1,9 +1,10 @@
 import "../../styles/setting.scss";
 import { useSelector } from "react-redux";
-import LoggedIn from "../components/setting/LoggedIn";
+import LoggedIn from "../components/setting/LoggedIn.jsx";
 import Theme from "../components/setting/Theme.jsx";
 import { connect } from "react-redux";
-import Container from "../components/setting/Container";
+import Container from "../components/setting/Container.jsx";
+
 
 const Settings = ({dispatch}) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -12,7 +13,13 @@ const Settings = ({dispatch}) => {
   
   return (
     <section className="settings">
-      {isAuthenticated ? <LoggedIn dispatch={dispatch}/> : <></>}
+      {isAuthenticated ? (
+        <>
+          <LoggedIn dispatch={dispatch} />{" "}
+        </>
+      ) : (
+        <></>
+      )}
 
       <Theme dispatch={dispatch} />
 
@@ -31,7 +38,7 @@ const Settings = ({dispatch}) => {
           <GetUserMenu />
         </>
       )}
-      <Others/>
+      <Others />
     </section>
   );
 };
@@ -69,8 +76,6 @@ const GetUserMenu = () => {
 };
 
 const GetUserControls = () => {
-  const user = useSelector((state) => state.auth.user);
-  
   const userContent = [
     {
       path: "/my_cart",
@@ -83,10 +88,6 @@ const GetUserControls = () => {
     {
       path: "/my_notifications",
       title: "Notifications",
-    },
-    {
-      title: "Logged in using",
-      description: user.email
     }
   ];
 

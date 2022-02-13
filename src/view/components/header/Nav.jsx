@@ -26,6 +26,7 @@ function Nav() {
         "/my_notifications",
         "/auth",
         "/settings",
+        "/product/:id"
       ]}
       component={CompactNav}
     />
@@ -33,16 +34,19 @@ function Nav() {
 
   const loggedIn = (
     <div className="links">
-    <NavLink to="/my_notifications">
-      <Notification />
-    </NavLink>
-    <NavLink to="/my_wishlist">
-      <Heart />
-    </NavLink>
-    <NavLink to="/my_cart">
-      <Cart />
-    </NavLink>
-  </div>
+      <NavLink to="/my_notifications" activeClassName="link_active">
+        <Notification />
+        <span>Notifications</span>
+      </NavLink>
+      <NavLink to="/my_wishlist" activeClassName="link_active">
+        <Heart />
+        <span>Wishlist</span>
+      </NavLink>
+      <NavLink to="/my_cart" activeClassName="link_active">
+        <Cart />
+        <span>Cart</span>
+      </NavLink>
+    </div>
   );
 
   const loggedOut = (

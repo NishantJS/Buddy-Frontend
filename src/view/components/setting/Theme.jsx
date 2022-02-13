@@ -31,7 +31,7 @@ const Theme = ({ dispatch }) => {
   };
   
   return (
-    <section className="container">
+    <article className="container">
       <h4 className="title">Theme</h4>
       <div className="box-container">
         {themes.map((theme) => (
@@ -40,7 +40,7 @@ const Theme = ({ dispatch }) => {
           </div>
         ))}
       </div>
-    </section>
+    </article>
   );
 };
 

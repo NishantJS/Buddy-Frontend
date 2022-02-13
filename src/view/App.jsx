@@ -16,7 +16,7 @@ const App = () => {
           <Nav />
         </header>
         <main>
-          <Routes />
+          <Routes/>
           <Toast />
         </main>
         <Footer />

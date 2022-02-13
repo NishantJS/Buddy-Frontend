@@ -3,7 +3,7 @@ import Heart from "../../icons/Heart";
 import "../../styles/slider.scss";
 import {useSelector,useDispatch} from "react-redux"
 import { addToast, addToCart, addToWishlist } from "../services/actions";
-import useFetch from "../../hooks/useFetch";
+import useFetch from "../../hooks/useFetch.js";
 import { Link } from "react-router-dom";
 
 const Slider = () => {

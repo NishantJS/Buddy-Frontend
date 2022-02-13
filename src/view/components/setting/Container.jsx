@@ -4,33 +4,48 @@ import { Link } from 'react-router-dom';
 const Container = (props) => {
   const { heading, content } = props;
  return (
-    <section className="container">
+    <article className="container">
       <h4 className="title">{heading}</h4>
       <div className="box-container">
         <ContentMap content={content} />
       </div>
-    </section>
+    </article>
   );
 };
 
 const ContentMap = ({ content }) => {
-  const [click, setClick] = useState(false);
-
   return content.map(({ path=false, title="", description=""}) => {
     return path ? (
-      <Link to={path} key={path}>
-        <div className="box">
-          <span>{title}</span>
-        </div>
-      </Link>
+      <BoxLink path={path} title={title} key={title} />
     ) : (
-      <div className="box desc" key={title} onClick={()=>setClick(p=>!p)}>
-        <span>{title}</span>
-        {click? <span className="desc">{description}</span>:<></>}
-      </div>
+      <BoxDiv title={title} description={description} key={title} />
     );
   });
 }
 
 export default Container;
 export { ContentMap };
+
+const BoxDiv = ({ title, description }) => {
+  const [click, setClick] = useState(false);
+
+  return (
+    <div
+      className="box desc"
+      onClick={() => setClick((p) => !p)}
+    >
+      <span>{title}</span>
+      {click && <span className="desc">{description}</span>}
+    </div>
+  );
+}
+
+const BoxLink = ({path, title}) => {
+  return (
+    <Link to={path}>
+      <div className="box">
+        <span>{title}</span>
+      </div>
+    </Link>
+  );
+}

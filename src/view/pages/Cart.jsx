@@ -2,6 +2,7 @@ import { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/cart.scss";
 import { addToast, addToWishlist, removeFromCart } from "../services/actions";
+import NotFound from "../pages/NotFound.jsx";
 
 const Cart = () => {
   const cart = useSelector(state => state.auth.user.cart);
@@ -25,16 +26,12 @@ const Cart = () => {
 
   let toRender =
     cart.length < 1 ? (
-      <CartEmpty />
+      <NotFound message="Looks like your cart is empty. Try adding some products"/>
     ) : (
         <CartContent data={cart} dispatch={dispatch} handler={wishlistHandler}/>
     );
 
   return toRender;
-};
-
-const CartEmpty = () => {
-  return <>Cart Empty</>;
 };
 
 const CartContent = ({ data , dispatch, handler}) => {

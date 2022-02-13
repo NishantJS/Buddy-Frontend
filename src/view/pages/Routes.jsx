@@ -1,5 +1,6 @@
 import { Switch, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
+import { useSelector } from "react-redux";
 import Loading from "../components/Loading";
 import SellerProtectedRoute from "./SellerProtected.Routes.jsx";
 import UserProtectedRoute from "./UserProtected.Routes";
@@ -20,6 +21,9 @@ const Dashboard = lazy(() => import("./Dashboard.jsx"));
 const AddProduct = lazy(() => import("../components/AddProduct.jsx"));
 
 const Routes = () => {
+  const seller = useSelector((state) => state.auth.seller);
+  const isSeller = seller._id ? true : false;
+  
   return (
     <Suspense fallback={<Loading />}>
       <Switch>
@@ -54,7 +58,7 @@ const Routes = () => {
         />
         <Route exact path="/shop/:type" component={SubCategory} />
         <Route exact path="/shop/:type/:sub" component={Shop} />
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={isSeller?Dashboard:Home} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>

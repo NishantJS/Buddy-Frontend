@@ -11,21 +11,38 @@ nav {
   z-index: 10;
   overflow-y: hidden;
 
+  .logo{
+    height: 100%;
+  }
+  
   .links,
   .logo {
     display: flex;
     flex: 1;
-    height: 100%;
-    color: $font_color;
     align-items: center;
-
+    
     a {
       display: flex;
       margin: 0 10px;
       height: 100%;
       align-items: center;
+
+      span{
+        display: inline;
+      }
     }
   }
+  
+  .links{
+    a{
+      flex-direction: column;
+    }
+  }
+  
+  .links>a.link_active{
+    animation: show 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  }
+  
 
   .logo {
     .ham {
@@ -70,5 +87,17 @@ nav {
         display: none;
       }
     }
+  }
+}
+
+@media only screen and(max-width: 380px) {
+  nav>.links>a>span{
+    display: none;
+  }
+}
+
+@keyframes show {
+  50%{  
+    transform: scaleY(0.4);
   }
 }

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, Switch, Route, useLocation } from "react-router-dom";
 import "../../styles/auth.scss";
-import Authenticate from "../components/Authenticate";
-import Message from "../components/Message";
-import AuthForm from "../components/AuthForm";
+import Authenticate from "../components/Authenticate.jsx";
+import Quote from "../components/Quote.jsx";
+import AuthForm from "../components/AuthForm.jsx";
 
-const Auth = ({isSeller = false}) => {
+const Auth = ({ isSeller = false }) => {
   const location = useLocation();
   
   const [onLogin, setOnLogin] = useState(
@@ -16,6 +16,7 @@ const Auth = ({isSeller = false}) => {
       ? true
       : false
   );
+
   const toLogin = (
     <>
       Already Have An Account? <span>Login From Here</span>
@@ -44,7 +45,7 @@ const Auth = ({isSeller = false}) => {
     <section className="auth">
       <div className="container">
         <div className="render">
-          <Message />
+          <Quote/>
           <Switch>
             <Route
               path={isSeller ? "/auth/seller_register" : "/auth/register"}
@@ -72,7 +73,7 @@ const Auth = ({isSeller = false}) => {
 
 export default Auth;
 
-const Template = ({ method, isSeller }) => {
+const Template = ({ method, isSeller = false }) => {
   const [isEmail, setEmail] = useState(false);
   const updateIsEmail = () => {
     setEmail((p) => !p);

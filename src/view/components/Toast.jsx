@@ -8,13 +8,12 @@ const Toast = () => {
 
   return (
     <aside className="toasts">
-      {toast &&
-        toast.map((item, index) => (
+      {toast && toast.map((item, index) => (
           <ToastItem
             key={index}
             data={{ color: item.color, msg: item.message }}
           />
-        ))}
+      ))}
     </aside>
   );
 }

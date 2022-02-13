@@ -1,11 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-import {connect} from "react-redux"
+import {useDispatch} from "react-redux"
 import { addUser, addToast, addSeller } from "../services/actions";
 import {useHistory} from "react-router-dom"
-import setAuthToken from "../services/factories/setAuthToken";
+import setAuthToken from "../services/factories/setAuthToken.js";
 
-const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
+const AuthForm = ({ handler, method, isSeller = false}) => {
+  const dispatch = useDispatch();
   let history =useHistory()
   const stateDefaults = {
     email: {
@@ -132,42 +133,42 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
 
     const reqPath = method === "signup" ? "register" : "login";
     const Seller = isSeller ? "seller" : "user";
-    axios({
-      method: "POST",
-      url: `${process.env.REACT_APP_ROOT_PATH}${Seller}/${reqPath}`,
-      data: {
-        email: state.email.value,
-        pass: state.pass.value,
-      },
-      responseType: "json",
-      validateStatus: (status) => status < 500,
-    })
-      .then(({ data }) => {
-        if (!data.error) {
-          setAuthToken(data.token);
-          localStorage.removeItem("jwt_seller");
-          localStorage.removeItem("jwt");
-          localStorage.removeItem("user");
+
+    const path = `${process.env.REACT_APP_ROOT_PATH}${Seller}/${reqPath}`;
+    const validateStatus = { validateStatus: (status) => status < 511 };
+    
+    const bodyData = {
+      email: state.email.value,
+      pass: state.pass.value,
+    }
+
+    try {
+      const { data } = await axios.post(path, bodyData, validateStatus);
+      
+      if (!data) throw new Error("Something Went Wrong!");
+      if (data.error) dispatch(addToast({ message: data.data, color: "danger" }));
+      else {
+        setAuthToken(data.token);
+
+        if (!isSeller) {
+          dispatch(addToast({ message: data.data }));
+          dispatch(addUser(data.user));
           localStorage.removeItem("seller");
-            
-          if (isSeller) {
-            localStorage.setItem("jwt_seller", data.token);
-            localStorage.setItem("seller", JSON.stringify(data.seller));
-            dispatch(addToast({ message: data.data }));
-            dispatch(addSeller(data.seller));
-            history.push("/dashboard");
-          } else {
-            localStorage.setItem("jwt", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            dispatch(addToast({ message: data.data }));
-            dispatch(addUser(data.user));
-            history.push("/")
-          }
+          localStorage.removeItem("jwt_seller");
+          localStorage.setItem("jwt", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+          history.replace("/");
         } else {
-          dispatch(addToast({ message: data.data, color: "danger" }));
+          dispatch(addToast({ message: data.data }));
+          dispatch(addSeller(data.seller));
+          localStorage.removeItem("user");
+          localStorage.removeItem("jwt");
+          localStorage.setItem("jwt_seller", data.token);
+          localStorage.setItem("seller", JSON.stringify(data.seller));
+          history.replace("/dashboard");
         }
-      })
-      .catch((err) => console.log({ err }));
+      }
+    } catch (err) { dispatch(addToast({ message: err?.message, color: "danger" })); };
   };
 
   let pass1Value =
@@ -207,7 +208,6 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
             id="pass1"
             placeholder=""
             autoComplete="false"
-            value={state.pass1}
             {...pass1Value}
             onInput={(event) => checkValid(event, 2)}
             onChange={(event) => updateValue(event, 2)}
@@ -234,4 +234,4 @@ const AuthForm = ({ handler, method, dispatch, isSeller = false}) => {
   );
 };
 
-export default connect()(AuthForm);
+export default AuthForm;

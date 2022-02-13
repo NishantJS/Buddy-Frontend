@@ -18,7 +18,6 @@ const Product = ({ location, match }) => {
 };
 
 const FetchProductDetails = ({ product_id, category }) => {
-  console.log("In fetch")
   const { data, loading, error } = useFetch(
     `shop/${product_id}/?category=${category}`
   );
@@ -26,7 +25,7 @@ const FetchProductDetails = ({ product_id, category }) => {
   const toRender = loading ? (
     <Loading />
   ) : error || !data ? (
-    <NotFound />
+      <NotFound/>
   ) : (
     <ProductDetails data={data.data} />
   );

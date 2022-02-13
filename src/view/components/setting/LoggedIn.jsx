@@ -24,7 +24,7 @@ const LoggedIn = ({dispatch}) => {
   ];
 
   return (
-    <section className="container">
+    <article className="container">
       <h4 className="title">Account</h4>
       <div className="box-container">
         <ContentMap content={accountOptions} />
@@ -32,7 +32,7 @@ const LoggedIn = ({dispatch}) => {
           <span>Logout</span>
         </div>
       </div>
-    </section>
+    </article>
   );
 }
 

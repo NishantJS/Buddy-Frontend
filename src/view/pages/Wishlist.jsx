@@ -1,6 +1,7 @@
 import { useSelector ,useDispatch} from "react-redux";
 import "../../styles/cart.scss";
 import { addToCart, removeFromWishlist, addToast } from "../services/actions";
+import NotFound from "../pages/NotFound.jsx";
 
 const Wishlist = () => {
   
@@ -28,7 +29,7 @@ const Wishlist = () => {
 
   let toRender =
     wishlist.length < 1 ? (
-      <WishlistEmpty />
+      <NotFound message="Looks like your wishlist is empty. Try adding some products"/>
     ) : (
       <WishlistContent
         data={wishlist}
@@ -38,10 +39,6 @@ const Wishlist = () => {
     );
 
   return toRender;
-};
-
-const WishlistEmpty = () => {
-  return <>Wishlist Empty</>;
 };
 
 const WishlistContent = ({ data, dispatch, handler }) => {

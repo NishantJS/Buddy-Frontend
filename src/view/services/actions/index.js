@@ -60,7 +60,6 @@ export const removeUser = () => {
   };
 };
 
-
 export const addSeller = (seller) => {
   return {
     type: ADD_SELLER,
@@ -219,7 +218,7 @@ export const logoutUser = () => {
 
 export const fetchUser = () => {
   return async dispatch => {
-    const jwt = localStorage.getItem("jwt");;
+    const jwt = localStorage.getItem("jwt");
     if (!jwt) return;
     try {
       const user = await axios.get(`${process.env.REACT_APP_ROOT_PATH}user`, {
@@ -235,11 +234,7 @@ export const fetchUser = () => {
       dispatch(addUser(user.data.data));
       
     } catch (err) {
-      if (err.message === "!JWT") {
-        console.info("Create an account for exciting offers for your buddy 🙌");
-      } else {
-        dispatch(addToast({ message: err.message, color: "danger" }));
-      }
+      dispatch(addToast({ message: err.message, color: "danger" }));
     }
   };
 };
