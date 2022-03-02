@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
 
-const Back = () => {
+const Back = ({isNavigation = true, handler=()=>{}}) => {
   const history = useHistory();
 
   return (
@@ -14,7 +14,7 @@ const Back = () => {
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
-      onClick={() => history.goBack()}
+      onClick={() => isNavigation ? history.goBack(): handler()}
       className="back"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />

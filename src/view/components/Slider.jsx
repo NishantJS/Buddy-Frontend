@@ -1,14 +1,16 @@
-import Cart from "../../icons/Cart";
-import Heart from "../../icons/Heart";
+import Cart from "../../icons/Cart.jsx";
+import Heart from "../../icons/Heart.jsx";
+import Back from "../../icons/Back.jsx";
 import "../../styles/slider.scss";
 import {useSelector,useDispatch} from "react-redux"
 import { addToast, addToCart, addToWishlist } from "../services/actions";
-import useFetch from "../../hooks/useFetch.js";
 import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
 
 const Slider = () => {
   const product = useSelector(state => state.product)
-  const productSlider = (!product) ? <></> : Object.keys(product).map((key) => (<SlideContainer key={key} slide={{ sliderTitle: key, product: product[`${key}`] }} />))
+  const productSlider = (!product) ? <></> : Object.keys(product)
+    .map((key) => (<SlideContainer key={key} slide={{ sliderTitle: key, product: product[`${key}`] }} />))
 
   return (<>
     {productSlider}
@@ -18,24 +20,58 @@ const Slider = () => {
 
 const SlideContainer = ({ slide }) => {
   
-  const { sliderTitle } = slide;
-  const { data, loading, error } = useFetch("shop/" + sliderTitle);
+  const { sliderTitle, product } = slide;
+  const [sliderRef, setSliderRef] = useState(null);
+
+  const scroll = ({ isLeft = true }) => {
+    if (!sliderRef) return;
+    let element = sliderRef;
+
+    let element_width = 180;
+    let visible_elements = Math.floor(element.offsetWidth / element_width);
+    let padding = visible_elements * 20;
+    let visible_content_width = visible_elements * element_width;
+    let moveBy = isLeft
+      ? element.scrollLeft + padding + visible_content_width
+      : element.scrollLeft - padding - visible_content_width;
+
+    element.scrollTo({
+      top: 0,
+      left: moveBy,
+      behavior: "smooth",
+    });
+  }
 
   return (
     <>
-      <section className="slider-container">
-        {!loading && !error && data.data && data.data.length>0 &&(
+      {!product?.error && product?.data?.length > 1 && (
+        <section className="slider-container">
           <>
             <h3 className="title">shop for your {sliderTitle}</h3>
-            <div className="slider">
-              {data.data.map((item) => {
-                return (
-                    <Slide product={item} key={item._id} />);
-                })}
+            <div
+              className="slider"
+              ref={(sliderRef) => setSliderRef(sliderRef)}
+            >
+              {product.data.map((item) => {
+                return <Slide product={item} key={item._id} />;
+              })}
+              {sliderRef && window.screen.width - 40 < sliderRef?.scrollWidth && (
+                <>
+                  <button
+                    className="scroll_btn left"
+                    onClick={() => scroll({ isLeft: false })}
+                  >
+                    <Back isNavigation={false} />
+                  </button>
+                  <button className="scroll_btn right" onClick={scroll}>
+                    <Back isNavigation={false} />
+                  </button>
+                </>
+              )}
             </div>
           </>
-        )}
-      </section>
+        </section>
+      )}
     </>
   );
 };

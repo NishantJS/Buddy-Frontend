@@ -8,10 +8,40 @@
   background-color: $bg_color;
   margin: 10px 0;
   box-shadow: $light_shadow;
+  position: relative;
 
   .title {
     padding: 5px 10px;
     text-transform: capitalize;
+  }
+
+  .scroll_btn{
+    display: none;
+  }
+
+  &:hover{
+    .scroll_btn{
+    display: block;
+    position: absolute;
+    bottom: 45%;
+    padding: 5px;
+    border: 0;
+    background-color: rgba(0,0,0,0.35);
+    color: $font_color;
+    
+    &.left{
+      border-radius: 0 50% 50% 0;
+      left: 0;
+    }
+    
+    &.right{
+      border-radius: 50% 0 0 50%;
+      right: 0;
+      svg{
+        transform: rotateZ(180deg);
+      }
+    }
+  }
   }
 
   .slider {
@@ -30,7 +60,9 @@
       margin: 0 10px;
       display: flex;
       flex-direction: column;
-      width: 200px;
+      width: 180px;
+      max-width: 180px;
+      min-width: 180px;
       height: max-content;
       position: relative;
       padding: 10px;
@@ -137,5 +169,18 @@
 @keyframes dash {
   to {
     stroke-dashoffset: 200;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .slider-container{
+    &:hover{
+      &>.slider  {
+        overflow-x: auto;
+        &:hover{
+          scrollbar-width: thin;
+        }
+      }
+    }
   }
 }

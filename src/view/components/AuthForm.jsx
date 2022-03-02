@@ -135,13 +135,14 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
     const Seller = isSeller ? "seller" : "user";
 
     const path = `${process.env.REACT_APP_ROOT_PATH}${Seller}/${reqPath}`;
-    const validateStatus = { validateStatus: (status) => status < 511 };
     
     const bodyData = {
       email: state.email.value,
       pass: state.pass.value,
     }
 
+    const validateStatus = { validateStatus: (status) => status < 511};
+    
     try {
       const { data } = await axios.post(path, bodyData, validateStatus);
       
@@ -182,9 +183,12 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
         type="email"
         id="email"
         placeholder=""
+        autoComplete="email"
         value={state.email.value}
+        inputMode="email"
         onInput={(event) => checkValid(event, 0)}
         onChange={(event) => updateValue(event, 0)}
+        enterKeyHint="next"
       />
       <label htmlFor="email">Email</label>
       <span className="error">{state.email.errors}</span>
@@ -194,9 +198,10 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
         id="pass"
         placeholder=""
         value={state.pass.value}
-        autoComplete="true"
+        autoComplete={method === "signup"?"new-password":"current-password"}
         onInput={(event) => checkValid(event, 1)}
         onChange={(event) => updateValue(event, 1)}
+        enterKeyHint={method === "signup"?"next": "done"}
       />
       <label htmlFor="pass">Password</label>
       <span className="error">{state.pass.errors}</span>
@@ -207,10 +212,11 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
             type="password"
             id="pass1"
             placeholder=""
-            autoComplete="false"
+            autoComplete="new-password"
             {...pass1Value}
             onInput={(event) => checkValid(event, 2)}
             onChange={(event) => updateValue(event, 2)}
+            enterKeyHint="done"
           />
           <label htmlFor="pass1">Confirm Password</label>
           <span className="error">{state.pass1.errors}</span>
