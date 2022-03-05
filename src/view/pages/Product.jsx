@@ -25,7 +25,7 @@ const FetchProductDetails = ({ product_id, category }) => {
   const toRender = loading ? (
     <Loading />
   ) : error || !data ? (
-      <NotFound/>
+      <NotFound />
   ) : (
     <ProductDetails data={data.data} />
   );

@@ -1,33 +1,31 @@
 import { useState } from "react";
 import axios from "axios";
 import {useDispatch} from "react-redux"
-import { addUser, addToast, addSeller } from "../services/actions";
+import { addUser, addToast, addSeller, deleteLocale } from "../services/actions";
 import {useHistory} from "react-router-dom"
 import setAuthToken from "../services/factories/setAuthToken.js";
 
 const AuthForm = ({ handler, method, isSeller = false}) => {
   const dispatch = useDispatch();
-  let history =useHistory()
-  const stateDefaults = {
-    email: {
-      value: "",
-      isValid: false,
-      errors: "",
-    },
-    pass: {
-      value: "",
-      isValid: false,
-      errors: "",
-    },
-    pass1: {
-      value: "",
-      isValid: false,
-      errors: "",
-    },
+  let history = useHistory();
+
+  const obj = {
+    value: "",
+    isValid: false,
+    errors: "",
   };
+  const stateDefaults = { email: obj, pass: obj, pass1: obj };
   
   const [state, setState] = useState(() => stateDefaults);
   
+  const updateValid = (field, isValid = true, errors = "wrong input") => {
+    if (!field) return;
+    
+    let update = !isValid ? { isValid: false, errors } : { isValid, errors: ""};
+    
+    setState((prev) => ({ ...prev, [field]: { ...prev[field], ...update } }));
+  };
+
   const updateValue = (event, input) => {
     let value = event.target.value;
 
@@ -46,124 +44,77 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
     }
   };
 
-  const checkValid = (event, index) => {
+  const checkValid = (event, field) => {
     const emailRegx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    switch (index) {
-      case 0:
+    switch (field) {
+      case "email":
         let testEmail = emailRegx.test(
           event.target.form[0].value.toLowerCase()
         );
-
-        if (testEmail) {
-          setState((prev) => ({
-            ...prev,
-            email: { ...prev.email, isValid: true, errors: "" },
-          }));
-        } else {
-          setState((prev) => ({
-            ...prev,
-            email: {
-              ...prev.email,
-              isValid: false,
-              errors: "Email is invalid",
-            },
-          }));
-        }
-
-        break;
-      case 1:
-        let testPass = event.target.form[1].value.length <= 7;
-
-        if (!testPass) {
-          if (method === "login") {
-            setState((prev) => ({
-              ...prev,
-              pass1: { ...prev.pass1, isValid: true },
-              pass: { ...prev.pass, isValid: true, errors: "" },
-            }));
-          } else {
-            setState((prev) => ({
-              ...prev,
-              pass: { ...prev.pass, isValid: true, errors: "" },
-            }));
-          }
-            
-        } else {
-          setState((prev) => ({
-            ...prev,
-            pass: {
-              ...prev.pass,
-              isValid: false,
-              errors: "Password should contain Minimum eight characters",
-            },
-          }));
-        }
-        checkValid(2);
-        break;
+        if (testEmail) updateValid(field);
+        else updateValid(field, false, "Email is invalid");
+      break;
+      
+      case "pass":
+        let test = event.target.form[1].value.length <= 7;
+        if (!test) updateValid(field);
+        else
+          updateValid( field, false, "Password should contain Minimum eight characters");
+        method !== "login" && checkValid(event, 2);
+      break;
+      
       case 2:
-        if (method === "signup") {  
-        let testPass1 =
-            event.target.form[1].value === event.target.form[2].value;
-
-          if (testPass1) {
-            setState((prev) => ({
-              ...prev,
-              pass1: { ...prev.pass1, isValid: true, errors: "" },
-            }));
-          } else {
-            setState((prev) => ({
-              ...prev,
-              pass1: {
-                ...prev.pass1,
-                isValid: false,
-                errors: "Passwords are not matching",
-              },
-            }));
-          }
-        }
+        let testPass1 = event.target.form[1].value !== event.target.form[2].value;
+          if (!testPass1) updateValid("pass1");
+          else updateValid("pass1", false, "Passwords are not matching!");
         break;
       default:
         break;
     }
   };
 
+  
+  const isValidtoSubmit = () => {
+    console.log(state.email.isValid && state.pass.isValid);
+    let loginValid = state.email.isValid && state.pass.isValid;
+    let signupValid = loginValid && state.pass1.isValid;
+    return !(method !== "login" ? signupValid : loginValid);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!isValidtoSubmit) return;
+    
     const reqPath = method === "signup" ? "register" : "login";
     const Seller = isSeller ? "seller" : "user";
 
     const path = `${process.env.REACT_APP_ROOT_PATH}${Seller}/${reqPath}`;
-    
     const bodyData = {
       email: state.email.value,
       pass: state.pass.value,
     }
-
     const validateStatus = { validateStatus: (status) => status < 511};
     
     try {
       const { data } = await axios.post(path, bodyData, validateStatus);
       
-      if (!data) throw new Error("Something Went Wrong!");
+      if (!data) throw new Error("Connection to server failed! PLease try again or later.");
       if (data.error) dispatch(addToast({ message: data.data, color: "danger" }));
       else {
         setAuthToken(data.token);
+        deleteLocale();
 
         if (!isSeller) {
           dispatch(addToast({ message: data.data }));
           dispatch(addUser(data.user));
-          localStorage.removeItem("seller");
-          localStorage.removeItem("jwt_seller");
           localStorage.setItem("jwt", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
           history.replace("/");
         } else {
           dispatch(addToast({ message: data.data }));
           dispatch(addSeller(data.seller));
-          localStorage.removeItem("user");
-          localStorage.removeItem("jwt");
           localStorage.setItem("jwt_seller", data.token);
           localStorage.setItem("seller", JSON.stringify(data.seller));
           history.replace("/dashboard");
@@ -173,20 +124,20 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
   };
 
   let pass1Value =
-    method === "signup"
+    method !== "login"
       ? { value: state.pass1.value }
       : { value: state.pass.value };
-  
+
   return (
     <form className="auth_form" onSubmit={handleSubmit} noValidate>
       <input
         type="email"
         id="email"
-        placeholder=""
+        placeholder=" "
         autoComplete="email"
         value={state.email.value}
         inputMode="email"
-        onInput={(event) => checkValid(event, 0)}
+        onInput={(event) => checkValid(event, "email")}
         onChange={(event) => updateValue(event, 0)}
         enterKeyHint="next"
       />
@@ -196,28 +147,29 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
       <input
         type="password"
         id="pass"
-        placeholder=""
+        placeholder=" "
         value={state.pass.value}
         autoComplete={method === "signup"?"new-password":"current-password"}
-        onInput={(event) => checkValid(event, 1)}
+        onInput={(event) => checkValid(event, "pass")}
         onChange={(event) => updateValue(event, 1)}
         enterKeyHint={method === "signup"?"next": "done"}
       />
       <label htmlFor="pass">Password</label>
       <span className="error">{state.pass.errors}</span>
 
-      {method === "signup" ? (
+      {method !== "login" ? (
         <>
           <input
             type="password"
             id="pass1"
-            placeholder=""
+            placeholder=" "
             autoComplete="new-password"
             {...pass1Value}
             onInput={(event) => checkValid(event, 2)}
             onChange={(event) => updateValue(event, 2)}
             enterKeyHint="done"
           />
+          
           <label htmlFor="pass1">Confirm Password</label>
           <span className="error">{state.pass1.errors}</span>
         </>
@@ -228,11 +180,7 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
       <input
         type="submit"
         value={method.charAt(0).toUpperCase() + method.slice(1)}
-        disabled={
-          state.email.isValid && state.pass.isValid && state.pass1.isValid
-            ? false
-            : true
-        }
+        disabled={isValidtoSubmit()}
       />
 
       <p onClick={handler}>Click here for Quick {method}</p>

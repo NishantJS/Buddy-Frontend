@@ -207,14 +207,18 @@ export const fetchProduct = () => {
 
 export const logoutUser = () => {
   return async dispatch => {
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("jwt_seller");
-    localStorage.removeItem("user");
-    localStorage.removeItem("seller");
+    deleteLocale();
     setAuthToken();
     dispatch(removeUser());
   };
 }
+
+export const deleteLocale = () => {
+  localStorage.removeItem("jwt");
+  localStorage.removeItem("jwt_seller");
+  localStorage.removeItem("user");
+  localStorage.removeItem("seller");
+};
 
 export const fetchUser = () => {
   return async dispatch => {
@@ -257,7 +261,7 @@ export const fetchSeller = () => {
       
       setAuthToken(jwt);
       localStorage.setItem("seller", JSON.stringify(seller.data.data));
-      dispatch(addSeller(seller.data.data));
+      dispatch( addSeller(seller.data.data));
       
     } catch (err) {
       dispatch( addToast({ message:err.message, color: "danger"}));

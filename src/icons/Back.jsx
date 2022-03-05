@@ -2,7 +2,7 @@ import { useHistory } from "react-router-dom";
 
 const Back = ({isNavigation = true, handler=()=>{}}) => {
   const history = useHistory();
-
+  
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,8 +14,8 @@ const Back = ({isNavigation = true, handler=()=>{}}) => {
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
-      onClick={() => isNavigation ? history.goBack(): handler()}
-      className="back"
+      onClick={() => isNavigation ? history.location.state ? history.goBack() : history.push("/") : handler()}
+      className={`back ${isNavigation?"nav_icon":""}`}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <line x1="5" y1="12" x2="19" y2="12" />

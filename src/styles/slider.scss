@@ -19,31 +19,6 @@
     display: none;
   }
 
-  &:hover{
-    .scroll_btn{
-    display: block;
-    position: absolute;
-    bottom: 45%;
-    padding: 5px;
-    border: 0;
-    background-color: rgba(0,0,0,0.35);
-    color: $font_color;
-    
-    &.left{
-      border-radius: 0 50% 50% 0;
-      left: 0;
-    }
-    
-    &.right{
-      border-radius: 50% 0 0 50%;
-      right: 0;
-      svg{
-        transform: rotateZ(180deg);
-      }
-    }
-  }
-  }
-
   .slider {
     display: flex;
     margin: 10px 0;
@@ -175,6 +150,30 @@
 @media only screen and (min-width: 600px) {
   .slider-container{
     &:hover{
+      .scroll_btn{
+      display: block;
+      position: absolute;
+      bottom: 45%;
+      padding: 5px;
+      border: 0;
+      background-color: rgba(0,0,0,0.35);
+      color: $font_color;
+    
+      &.left{
+        border-radius: 0 50% 50% 0;
+        left: 0;
+      }
+      
+      &.right{
+        border-radius: 50% 0 0 50%;
+        right: 0;
+        
+        svg{
+          transform: rotateZ(180deg) translateY(-20%);
+        }
+      }
+    }
+  
       &>.slider  {
         overflow-x: auto;
         &:hover{

@@ -2,10 +2,6 @@ import "../../styles/not_found.scss";
 import Icon404 from "../../icons/Icon404.jsx";
 
 const NotFound = ({ message = false }) => {
-  // const dispatch = useDispatch();
-
-  // if (error) dispatch(addToast({ message : error}))
-  
   return (
     <section className="notfound">
       <div className="image">

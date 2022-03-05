@@ -18,7 +18,7 @@ const CategoryItem = ({title,thumbnail}) => {
   let [isActive, setActive] = useState(false);
   return (
     <Fragment key={title}>
-      <div className="category" onClick={() => setActive((p) => !p)}>
+      <div className="category" onClick={() => setActive((p) => !p)} aria-label={`open ${title} category`} aria-checked={isActive} role="checkbox">
         {thumbnail}
         <h5>{title}</h5>
       </div>

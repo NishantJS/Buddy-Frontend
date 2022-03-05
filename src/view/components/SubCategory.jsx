@@ -1,8 +1,8 @@
-import Food from "../../icons/Food"
-import Grooming from "../../icons/Grooming"
-import Health from "../../icons/Health"
-import Toys from "../../icons/Toys"
-import Treats from "../../icons/Treats"
+import Food from "../../icons/Food.jsx"
+import Grooming from "../../icons/Grooming.jsx";
+import Health from "../../icons/Health.jsx";
+import Toys from "../../icons/Toys.jsx";
+import Treats from "../../icons/Treats.jsx";
 import "../../styles/sub_category.scss"
 import {Link } from "react-router-dom";
 const SubCategory = ({ location, match, history }) => {

@@ -1,10 +1,10 @@
 import { Link, Switch, Route, NavLink, useLocation } from "react-router-dom";
 import {useSelector} from "react-redux";
-import Notification from "../../../icons/Notification";
-import Heart from "../../../icons/Heart";
-import Cart from "../../../icons/Cart";
-import CompactNav from "./CompactNav";
-import Logo from "./Logo";
+import Notification from "../../../icons/Notification.jsx";
+import Heart from "../../../icons/Heart.jsx";
+import Cart from "../../../icons/Cart.jsx";
+import CompactNav from "./CompactNav.jsx";
+import Logo from "./Logo.jsx";
 ////style
 import "../../../styles/nav.scss";
 
@@ -12,10 +12,7 @@ function Nav() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
   const location = useLocation();
   const seller = useSelector((state) => state.auth.seller);
-  const isSeller = seller &&
-    Object.keys(seller).length !== 0 &&
-    seller.constructor === Object;
-  
+  const isSeller = seller._id?true:false;
 
   const compact =(
     <Route
@@ -82,7 +79,7 @@ function Nav() {
         {compact}
         <Route>
           <div className="logo">
-            <Link to="/settings">
+            <Link to="/settings" className="nav_icon">
               <div className="ham">
                 <span></span>
                 <span></span>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Title = () => {
+const ProductMeta = () => {
   const [state, setState] = useState({ value: "", error: "" });
 
   // const validate = (value) => {
@@ -23,4 +23,4 @@ const Title = () => {
   )
 }
 
-export default Title
+export default ProductMeta;
