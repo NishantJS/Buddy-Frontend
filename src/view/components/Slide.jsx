@@ -62,20 +62,20 @@ const Slide = ({ product }) => {
         }}
       >
         <div className="img">
-          <img src={thumbnail} alt={title} onError={handleImageLoadError} />
+          <img src={thumbnail[0]} alt={title} onError={handleImageLoadError} />
         </div>
         <div className="desc">
           <h4>{title}</h4>
           <span className="size">{size}</span>
           <div className="price">
             <span>
-              <h4>{`₹ ${price.price}`}</h4>
+              <h4>{`₹ ${price[0].price}`}</h4>
               <h6>
-                <del>{price.retail_price}</del>
+                <del>{price[0].retail_price}</del>
               </h6>
             </span>
             <h5>{`${Math.round(
-              Math.abs((price.price / price.retail_price) * 100 - 100)
+              Math.abs((price[0].price / price[0].retail_price) * 100 - 100)
             )}% off`}</h5>
           </div>
         </div>

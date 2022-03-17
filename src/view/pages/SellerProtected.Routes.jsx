@@ -1,17 +1,15 @@
-import React from "react";
-import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 
-function SellerProtectedRoute({ component: Component, ...restOfProps }) {
-  const seller = useSelector((state) => state.auth.seller);
-  const isSeller = seller._id ? true : false;
+function SellerProtectedRoute({ component: Component, isSeller = false, isAuthenticated = false,...restOfProps }) {
 
+  let prop = restOfProps?.sellerId ? { sellerId: restOfProps.sellerId } : {};
+  
   return (
     <Route
       {...restOfProps}
       render={(props) =>
-        isSeller ? (
-          <Component {...props} />
+        isAuthenticated && isSeller ? (
+          <Component {...props} {...prop}/>
         ) : (
           <Redirect to="/auth/seller_login"/>
         )

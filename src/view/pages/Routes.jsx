@@ -22,6 +22,7 @@ const AddProduct = lazy(() => import("../components/AddProduct.jsx"));
 
 const Routes = () => {
   const seller = useSelector((state) => state.auth.seller);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const isSeller = seller._id ? true : false;
   
   return (
@@ -29,20 +30,43 @@ const Routes = () => {
       <Switch>
         <Route exact path="/settings" component={Settings} />
         <Route exact path="/profile" component={Profile} />
-        <SellerProtectedRoute exact path="/dashboard" component={Dashboard} />
+        <SellerProtectedRoute
+          exact
+          path="/dashboard"
+          component={Dashboard}
+          isAuthenticated={isAuthenticated}
+          isSeller={isSeller}
+        />
         <SellerProtectedRoute
           exact
           path="/add_product"
           component={AddProduct}
+          isAuthenticated={isAuthenticated}
+          isSeller={isSeller}
+          sellerId={seller._id}
         />
         <Route exact path="/product/:id" component={Product} />
-        <UserProtectedRoute exact path="/my_wishlist" component={Wishlist} />
+        <UserProtectedRoute
+          exact
+          path="/my_wishlist"
+          component={Wishlist}
+          isAuthenticated={isAuthenticated}
+          isUser={!isSeller}
+        />
         <UserProtectedRoute
           exact
           path="/my_notifications"
           component={Notification}
+          isAuthenticated={isAuthenticated}
+          isUser={!isSeller}
         />
-        <UserProtectedRoute exact path="/my_cart" component={Cart} />
+        <UserProtectedRoute
+          exact
+          path="/my_cart"
+          component={Cart}
+          isAuthenticated={isAuthenticated}
+          isUser={!isSeller}
+        />
         <Route exact path="/categories" component={CategoryPage} />
         <Route exact path="/auth/register" component={Auth} />
         <Route exact path="/auth/login" component={Auth} />
@@ -58,7 +82,11 @@ const Routes = () => {
         />
         <Route exact path="/shop/:type" component={SubCategory} />
         <Route exact path="/shop/:type/:sub" component={Shop} />
-        <Route exact path="/" component={isSeller?Dashboard:Home} />
+        <Route
+          exact
+          path="/"
+          component={isAuthenticated && isSeller ? Dashboard : Home}
+        />
         <Route component={NotFound} />
       </Switch>
     </Suspense>

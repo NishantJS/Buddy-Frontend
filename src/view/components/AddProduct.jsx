@@ -1,31 +1,68 @@
-import { useState } from "react";
-import Form from "./productForm/Form.jsx";
-import ProductMeta from "./productForm/ProductMeta.jsx";
-import ProductDesc from "./productForm/ProductDesc.jsx";
-import ProductDetails from "./productForm/ProductDetails.jsx";
-import CurrentStep from "./productForm/CurrentStep.jsx";
-import NextSubmit from "./productForm/NextSubmit.jsx";
-import "../../styles/stepper.scss";
+import { useForm } from "react-hook-form";
+import { general, images } from "../../data/addProduct.seller.js"
+// import "../../styles/stepper.scss";
 
-const AddProduct = () => {
-  
-  const [isValid, setValid] = useState({meta: false, desc: false, details: false, step: 2});
+const AddProduct = ({ sellerId }) => {
+   const {
+     register,
+     handleSubmit,
+     formState: { errors },
+   } = useForm();
 
-  // const updateValide = (field, isValid = true) => {
-  //   setValid(((p) => p[field]= true );
-  // }
+  const onSubmit = data => console.log(data);
+  const uploadImage = (data)=>{
 
-  const steps = ["Meta","Description","Details"];
+    const formData = new FormData();
+    formData.append([data.target.name], data.target.files[0]);
 
+    fetch(`${process.env.REACT_APP_ROOT_PATH}upload/${sellerId}/d`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+  }
   return (
-    <Form>
-      <CurrentStep step={isValid.step} totalSteps={3} steps={steps} />
-      <ProductMeta />
-      <ProductDesc />
-      <ProductDetails />
-      <NextSubmit step={isValid.step} totalSteps={3} />
-    </Form>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {/* {general.map((element) => {
+        let { name, type } = element;
+        return (
+          <div key={name}>
+            <label>{name}</label>
+            <input type={type} {...register(name, element)} />
+            {errors[name]?.message}
+          </div>
+        );
+      })} */}
+
+      {images.map(({name, type, accept, required=false}) => {
+        return (
+          <div key={name}>
+            <label>{name}</label>
+            <input
+              type={type}
+              accept={accept}
+              {...register(name, { required })}
+              onChange={uploadImage}
+            />
+            {errors[name]?.message}
+          </div>
+        );
+      })}
+      <input type="submit" />
+    </form>
   );
 }
 
-export default AddProduct
+export default AddProduct;
+
+
+// const Input = ({label, type, }) => {
+
+// }

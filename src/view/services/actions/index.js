@@ -235,9 +235,12 @@ export const fetchUser = () => {
 
       setAuthToken(jwt);
       localStorage.setItem("user", JSON.stringify(user.data.data));
+      
       dispatch(addUser(user.data.data));
       
     } catch (err) {
+      dispatch(deleteLocale());
+      dispatch(removeUser());
       dispatch(addToast({ message: err.message, color: "danger" }));
     }
   };
@@ -261,10 +264,12 @@ export const fetchSeller = () => {
       
       setAuthToken(jwt);
       localStorage.setItem("seller", JSON.stringify(seller.data.data));
-      dispatch( addSeller(seller.data.data));
+      dispatch(addSeller(seller.data.data));
       
     } catch (err) {
-      dispatch( addToast({ message:err.message, color: "danger"}));
+      dispatch(deleteLocale());
+      dispatch(removeUser());
+      dispatch(addToast({ message:err?.message, color: "danger"}));
     }
   };
 };

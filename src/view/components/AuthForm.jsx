@@ -12,7 +12,7 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
   const obj = {
     value: "",
     isValid: false,
-    errors: "",
+    errors: "Please fill this field",
   };
   const stateDefaults = { email: obj, pass: obj, pass1: obj };
   
@@ -27,21 +27,7 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
   };
 
   const updateValue = (event, input) => {
-    let value = event.target.value;
-
-    switch (input) {
-      case 0:
-        setState((prev) => ({ ...prev, email: { ...prev.email, value } }));
-        break;
-      case 1:
-        setState((prev) => ({ ...prev, pass: { ...prev.pass, value } }));
-        break;
-      case 2:
-        setState((prev) => ({ ...prev, pass1: { ...prev.pass1, value } }));
-        break;
-      default:
-        break;
-    }
+    setState((prev) => ({ ...prev, [input]: { ...prev[input], value : event.target.value } }));
   };
 
   const checkValid = (event, field) => {
@@ -73,10 +59,8 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
         break;
     }
   };
-
   
   const isValidtoSubmit = () => {
-    console.log(state.email.isValid && state.pass.isValid);
     let loginValid = state.email.isValid && state.pass.isValid;
     let signupValid = loginValid && state.pass1.isValid;
     return !(method !== "login" ? signupValid : loginValid);
@@ -95,10 +79,10 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
       email: state.email.value,
       pass: state.pass.value,
     }
-    const validateStatus = { validateStatus: (status) => status < 511};
+    const options = { validateStatus: (status) => status < 511};
     
     try {
-      const { data } = await axios.post(path, bodyData, validateStatus);
+      const { data } = await axios.post(path, bodyData, options);
       
       if (!data) throw new Error("Connection to server failed! PLease try again or later.");
       if (data.error) dispatch(addToast({ message: data.data, color: "danger" }));
@@ -138,7 +122,7 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
         value={state.email.value}
         inputMode="email"
         onInput={(event) => checkValid(event, "email")}
-        onChange={(event) => updateValue(event, 0)}
+        onChange={(event) => updateValue(event, "email")}
         enterKeyHint="next"
       />
       <label htmlFor="email">Email</label>
@@ -149,10 +133,10 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
         id="pass"
         placeholder=" "
         value={state.pass.value}
-        autoComplete={method === "signup"?"new-password":"current-password"}
+        autoComplete={method === "signup" ? "new-password" : "current-password"}
         onInput={(event) => checkValid(event, "pass")}
-        onChange={(event) => updateValue(event, 1)}
-        enterKeyHint={method === "signup"?"next": "done"}
+        onChange={(event) => updateValue(event, "pass")}
+        enterKeyHint={method === "signup" ? "next" : "done"}
       />
       <label htmlFor="pass">Password</label>
       <span className="error">{state.pass.errors}</span>
@@ -166,10 +150,10 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
             autoComplete="new-password"
             {...pass1Value}
             onInput={(event) => checkValid(event, 2)}
-            onChange={(event) => updateValue(event, 2)}
+            onChange={(event) => updateValue(event, "pass1")}
             enterKeyHint="done"
           />
-          
+
           <label htmlFor="pass1">Confirm Password</label>
           <span className="error">{state.pass1.errors}</span>
         </>
