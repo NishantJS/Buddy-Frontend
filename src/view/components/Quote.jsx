@@ -21,6 +21,7 @@ const Quote = () => {
         if (!data) throw new Error("Something went wrong fetching server data!");
         updateQuote(data.data.data);
       } catch (err) {
+        console.error(err?.message)
         cancel();
       }
     }

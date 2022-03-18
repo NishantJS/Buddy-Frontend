@@ -51,7 +51,7 @@ const Slide = ({ product }) => {
     event.target.src = process.env.REACT_APP_PLACEHOLDER_IMAGE;
   };
 
-  const { title, thumbnail, price, size } = product;
+  const { title, images, price, size } = product;
 
   return (
     <div className="slide" title={title}>
@@ -62,7 +62,7 @@ const Slide = ({ product }) => {
         }}
       >
         <div className="img">
-          <img src={thumbnail[0]} alt={title} onError={handleImageLoadError} />
+          <img src={images[0]} alt={title} onError={handleImageLoadError} />
         </div>
         <div className="desc">
           <h4>{title}</h4>

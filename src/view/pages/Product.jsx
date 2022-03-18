@@ -33,7 +33,8 @@ const FetchProductDetails = ({ product_id, category }) => {
 }
 
 const ProductDetails = ({ data }) => {
-  const { price, _id, title, description, thumbnail, allowed, stock, size, uci } = data;
+  const { price, _id, title, description, images, allowed, stock, size, uci } = data;
+  console.log(data)
 
   const user = useSelector((state) => state.auth.user);
 
@@ -49,19 +50,38 @@ const ProductDetails = ({ data }) => {
       <div className="intro">
         {isUser && (
           <div className="add_to">
-            <span><Cart /></span>
-            <span><Heart /></span>
+            <span>
+              <Cart />
+            </span>
+            <span>
+              <Heart />
+            </span>
           </div>
         )}
 
-        <img src={thumbnail} alt={title} onError={handleImageLoadError} />
+        <img src={images[0]} alt={title} onError={handleImageLoadError} />
         <h1>{title}</h1>
       </div>
       <div className="desc">
-        <p>{description}</p>
+        <span>{description?.main}</span>
+        {description?.feeding_guide && (
+          <table border={1} style={{"borderCollapse": "collapse"}}>
+            <thead>
+              <tr><th colSpan={2}>Feeding guide</th></tr>
+            </thead>
+            <tbody>
+            {Object.keys(description.feeding_guide).map((ele,index) => (
+              <tr key={ele+index}>
+                <th>{ele}</th>
+                <td>{description.feeding_guide[ele]}</td>
+              </tr>
+            ))}
+            </tbody>
+          </table>
+        )}
       </div>
-
-      price: {price.price}-{ price.retail_price}-allowed: {allowed}- stock:{stock}- size: {size}- id: {_id}- uci:{uci}
+      price: {price.price}-{price.retail_price}-allowed: {allowed}- stock:
+      {stock}- size: {size}- id: {_id}- uci:{uci}
     </section>
   );
 }
