@@ -51,8 +51,9 @@ const Slide = ({ product }) => {
     event.target.src = process.env.REACT_APP_PLACEHOLDER_IMAGE;
   };
 
-  const { title, images, price, size } = product;
+  const { title, images, price=[] } = product;
 
+  console.log(price)
   return (
     <div className="slide" title={title}>
       <Link
@@ -66,7 +67,7 @@ const Slide = ({ product }) => {
         </div>
         <div className="desc">
           <h4>{title}</h4>
-          <span className="size">{size}</span>
+          <span className="size">{price[0]?.size}</span>
           <div className="price">
             <span>
               <h4>{`₹ ${price[0].price}`}</h4>

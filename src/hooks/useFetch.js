@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {CancelToken, get as Get} from "axios";
+import { CancelToken, get as Get} from "axios";
 
 export default function useFetch(path="") {
   let [fetchData, setFetchData] = useState({
@@ -20,7 +20,7 @@ export default function useFetch(path="") {
     const URL = `${process.env.REACT_APP_ROOT_PATH}${path}`;
       
     const fetchPath = async ({ URL, options }) => {
-      try { 
+      try {
         const data = await Get(URL, options);
         setFetchData({
           status: data.status,
