@@ -138,8 +138,7 @@ export const addToWishlist = (wishlist_item) => {
         price: wishlist_item.price,
         title: wishlist_item.title,
         thumbnail: wishlist_item.thumbnail,  
-        allowed: wishlist_item.allowed,
-        size: wishlist_item.size,
+        allowed: wishlist_item.allowed
       };
 
       const wishlistItem = await axios.patch(

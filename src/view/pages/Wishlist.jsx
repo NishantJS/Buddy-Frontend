@@ -4,7 +4,6 @@ import { addToCart, removeFromWishlist, addToast } from "../services/actions";
 import NotFound from "../pages/NotFound.jsx";
 
 const Wishlist = () => {
-  
   const cart = useSelector((state) => state.auth.user.cart);
   const wishlist = useSelector((state) => state.auth.user.wishlist);
 
@@ -65,7 +64,7 @@ const WishlistItem = ({ product, dispatch, handler }) => {
     title = "",
     size = "",
     thumbnail = "",
-    price: { price = 0, retail_price = 0 },
+    price,
   } = product;
 
   const removeItem = () => {
@@ -82,7 +81,7 @@ const WishlistItem = ({ product, dispatch, handler }) => {
         <div className="price">
           <span className="offer">₹{price}</span>
 
-          <del>{retail_price}</del>
+          {/* <del>{retail_price}</del> */}
         </div>
 
         <span className="add_to" onClick={()=>handler(product)}>

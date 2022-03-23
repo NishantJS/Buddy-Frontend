@@ -6,6 +6,8 @@ import Heart from "../../icons/Heart.jsx";
 import "../../styles/product.scss";
 import { useSelector } from "react-redux";
 import { useState } from "react";
+import Description from "../components/product/Description.jsx";
+import Sizes from "../components/product/Sizes.jsx";
 
 const Product = ({ location, match }) => {
   const { search, state=false } = location;
@@ -34,11 +36,12 @@ const FetchProductDetails = ({ product_id, category }) => {
 }
 
 const ProductDetails = ({ data }) => {
-  const { price=[], _id, title, description, images, allowed, stock, uci } = data;
+  // const { price=[], _id, title, description, images, allowed, stock, uci } = data;
+  const { price=[],  title="", description={}, images=[] } = data;
 
-  const user = useSelector((state) => state.auth.user);
+  // const user = useSelector((state) => state.auth.user);
 
-  const isUser = user._id ? true : false;
+  // const isUser = user._id ? true : false;
   
   const [selectedSize, setSelectedSize] = useState(0);
 
@@ -57,45 +60,8 @@ const ProductDetails = ({ data }) => {
         <img src={images[0]} alt={title} onError={handleImageLoadError} />
         <h1>{title}</h1>
       </div>
-      <div className="size">
-        {price.map((element, index) => {
-          return (
-            element?.price && (
-              <div
-                className={`box${selectedSize === index ? " selected" : ""}`}
-                onClick={() => updateSelected(index)}
-                key={index + element?.price}
-              >
-                <span className="name">{element.size || index + 1}</span>
-                <span className="price">₹ {element.price}</span>
-              </div>
-            )
-          );
-        })}
-      </div>
-      <div className="desc">
-        <span>{description?.main}</span>
-        {description?.feeding_guide && (
-          <table border={1} style={{ borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th colSpan={2}>Feeding guide</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(description.feeding_guide).map((ele, index) => (
-                <tr key={ele + index}>
-                  <th>{ele}</th>
-                  <td>{description.feeding_guide[ele]}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-        price: {price[selectedSize].price}-{price[selectedSize].retail_price}
-        -allowed: {allowed}- stock:
-        {stock}- id: {_id}- uci:{uci}
-      </div>
+      <Sizes price={price} updateSelected={updateSelected} selectedSize={selectedSize}/>
+      <Description description={description}/>
     </section>
   );
 }

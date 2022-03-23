@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: space-evenly;
   margin-top: 20px;
-  
+
   .intro{
     background-color: $bg_color;
     padding: 10px;
@@ -37,14 +37,17 @@
       align-items: center;
       margin: 0 20px;
       flex-direction: column;
-
+      background-color: transparent;
+      transition: background-color 300ms,border 300ms;
+      cursor: pointer;
+      
       .name{
         text-transform: capitalize;
       }
-
+      
       &.selected{
+        background-color: $bg_color;
         border-color: $success;
-        transition: border 500ms;
       }
     }
   }

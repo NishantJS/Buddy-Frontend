@@ -13,6 +13,7 @@ const Slide = ({ product }) => {
   const wishlist = useSelector((state) => state.auth.user.wishlist);
 
   const dispatch = useDispatch();
+  console.log(product)
 
   const toastMessage = (message = "", color = "danger") => {
     dispatch(
@@ -53,7 +54,6 @@ const Slide = ({ product }) => {
 
   const { title, images, price=[] } = product;
 
-  console.log(price)
   return (
     <div className="slide" title={title}>
       <Link
