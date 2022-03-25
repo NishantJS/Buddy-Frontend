@@ -1,13 +1,13 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/cart.scss";
 import { addToast, addToWishlist, removeFromCart } from "../services/actions";
 import NotFound from "../pages/NotFound.jsx";
 
 const Cart = () => {
-  const cart = useSelector(state => state.auth.user.cart);
-  const wishlist = useSelector(state => state.auth.user.wishlist);
-  
+  const cart = useSelector((state) => state.auth.user.cart);
+  const wishlist = useSelector((state) => state.auth.user.wishlist);
+
   const dispatch = useDispatch();
 
   const isAlreadyInArr = (arr = [], _id) => {
@@ -16,54 +16,76 @@ const Cart = () => {
 
   const wishlistHandler = (product) => {
     if (!isAlreadyInArr(wishlist, product._id)) {
-      dispatch(addToWishlist(product));
+      dispatch(
+        addToWishlist({
+          ...product,
+          sizes: product?.sizes[0],
+          thumbnail: product?.images[0],
+        })
+      );
     } else {
       dispatch(
-        addToast({ message: "Product already exists in wishlist", color: "danger" })
+        addToast({
+          message: "Product already exists in wishlist",
+          color: "danger",
+        })
       );
     }
   };
 
   let toRender =
     cart.length < 1 ? (
-      <NotFound message="Looks like your cart is empty. Try adding some products"/>
+      <NotFound message="Looks like your cart is empty. Try adding some products" />
     ) : (
-        <CartContent data={cart} dispatch={dispatch} handler={wishlistHandler}/>
+      <CartContent data={cart} dispatch={dispatch} handler={wishlistHandler} />
     );
 
   return toRender;
 };
 
-const CartContent = ({ data , dispatch, handler}) => {
+const CartContent = ({ data, dispatch, handler }) => {
   return (
-  <section className="cart">
-    <div className="cart_list">
-      {data && data.map((item) => (
-        <CartItem product={item} key={item["_id"]} dispatch={dispatch} handler={handler}/>))}
-    </div>
-    <div className="checkout">
-      <button>Checkout</button>
-    </div>
-  </section>
+    <section className="cart">
+      <div className="cart_list">
+        {data &&
+          data.map((item) => (
+            <CartItem
+              product={item}
+              key={item["_id"]}
+              dispatch={dispatch}
+              handler={handler}
+            />
+          ))}
+      </div>
+      <div className="checkout">
+        <button>Checkout</button>
+      </div>
+    </section>
   );
-}
+};
 
 const CartItem = ({ product, dispatch, handler }) => {
   const {
     _id = "",
     title = "",
-    size = "",
-    thumbnail = "",
     allowed = 1,
-    price: { price = 0, retail_price = 0 },
+    thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
+    sizes: { price = 0, retail_price = 0, size = "Normal" },
   } = product;
 
-
-  let [count, setCount] = useState(() => 1)
+  let [count, setCount] = useState(() => 1);
   const incrementCount = () => {
-    if (count < allowed) { setCount((p) => p + 1); }
-    else{dispatch(addToast({message: `Only ${allowed} items per purchase are available for this product`, color: "danger"}))};  
-  }
+    if (count < allowed) {
+      setCount((p) => p + 1);
+    } else {
+      dispatch(
+        addToast({
+          message: `Only ${allowed} items per purchase are available for this product`,
+          color: "danger",
+        })
+      );
+    }
+  };
 
   const decrementCount = () => {
     if (count > 1) setCount((p) => p - 1);
@@ -72,7 +94,7 @@ const CartItem = ({ product, dispatch, handler }) => {
 
   const removeItem = () => {
     dispatch(removeFromCart(_id));
-  }
+  };
 
   return (
     <div className="list_item">
@@ -87,9 +109,12 @@ const CartItem = ({ product, dispatch, handler }) => {
           <del>{retail_price * count}</del>
         </div>
 
-        <span className="add_to" onClick={()=>handler(product)}>Add to Wishlist</span>
-        <span className="remove" onClick={removeItem}>Remove</span>
-
+        <span className="add_to" onClick={() => handler(product)}>
+          Add to Wishlist
+        </span>
+        <span className="remove" onClick={removeItem}>
+          Remove
+        </span>
       </div>
 
       <div className="counter">
@@ -99,6 +124,6 @@ const CartItem = ({ product, dispatch, handler }) => {
       </div>
     </div>
   );
-}
+};
 
 export default Cart;

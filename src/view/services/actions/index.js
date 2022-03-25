@@ -9,7 +9,7 @@ import {
   LOAD_PRODUCT,
   REMOVE_WISHLIST,
   ADD_WISHLIST,
-  ADD_SELLER
+  ADD_SELLER,
 } from "../constants/";
 import axios from "axios";
 
@@ -50,9 +50,9 @@ export const removeToast = (id) => {
 export const addUser = (user) => {
   return {
     type: ADD_USER,
-    payload: user
-  }
-}
+    payload: user,
+  };
+};
 
 export const removeUser = () => {
   return {
@@ -70,20 +70,19 @@ export const addSeller = (seller) => {
 export const loadProduct = (payload = {}) => {
   return {
     type: LOAD_PRODUCT,
-    payload
-  }
-}
+    payload,
+  };
+};
 
 export const addToCart = (cart_item) => {
   return async (dispatch) => {
     try {
       const body = {
         _id: cart_item._id,
-        price: cart_item.price,
+        sizes: cart_item?.sizes,
         title: cart_item.title,
-        thumbnail: cart_item.thumbnail,
-        allowed: cart_item.allowed,
-        size: cart_item.size
+        thumbnail: cart_item?.images[0],
+        allowed: cart_item?.allowed,
       };
 
       const cartItem = await axios.patch(
@@ -96,14 +95,14 @@ export const addToCart = (cart_item) => {
 
       if (!cartItem) throw new Error("Something went wrong!");
       if (cartItem.data.error) throw new Error(cartItem.data.data);
-      
-      dispatch(addToast({ message: cartItem.data.data}));
+
+      dispatch(addToast({ message: cartItem.data.data }));
       dispatch(addCart(body));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));
     }
   };
-}
+};
 
 export const removeFromCart = (_id) => {
   return async (dispatch) => {
@@ -118,27 +117,24 @@ export const removeFromCart = (_id) => {
 
       if (!cartItem) throw new Error("Something went wrong!");
       if (cartItem.data.error) throw new Error(cartItem.data.data);
-      
+
       dispatch(addToast({ message: cartItem.data.data }));
       dispatch(removeCart(_id));
     } catch (err) {
-      dispatch(
-        addToast({ message: err.message, color: "danger" })
-      );
+      dispatch(addToast({ message: err.message, color: "danger" }));
     }
   };
 };
-
 
 export const addToWishlist = (wishlist_item) => {
   return async (dispatch) => {
     try {
       const body = {
         _id: wishlist_item._id,
-        price: wishlist_item.price,
+        sizes: wishlist_item?.sizes,
         title: wishlist_item.title,
-        thumbnail: wishlist_item.thumbnail,  
-        allowed: wishlist_item.allowed
+        thumbnail: wishlist_item?.images[0],
+        allowed: wishlist_item?.allowed,
       };
 
       const wishlistItem = await axios.patch(
@@ -150,13 +146,11 @@ export const addToWishlist = (wishlist_item) => {
       );
 
       if (!wishlistItem) throw new Error("Something went wrong!");
-      if(wishlistItem.data.error) throw new Error(wishlistItem.data.data);
+      if (wishlistItem.data.error) throw new Error(wishlistItem.data.data);
       dispatch(addToast({ message: wishlistItem.data.data }));
       dispatch(addWishlist(body));
     } catch (err) {
-      dispatch(
-        addToast({ message: err.message, color: "danger" })
-      );
+      dispatch(addToast({ message: err.message, color: "danger" }));
     }
   };
 };
@@ -170,8 +164,8 @@ export const removeFromWishlist = (_id) => {
         {
           validateStatus: (status) => status < 402,
         }
-        );
-        
+      );
+
       if (!wishlistItem) throw new Error("Something went wrong!");
       if (wishlistItem.data.error) throw new Error(wishlistItem.data.data);
       dispatch(addToast({ message: wishlistItem.data.data }));
@@ -184,7 +178,7 @@ export const removeFromWishlist = (_id) => {
 
 export const fetchProduct = () => {
   const message = "Server Error 😔";
-  return async dispatch => {
+  return async (dispatch) => {
     try {
       const product = await axios.get(
         `${process.env.REACT_APP_ROOT_PATH}shop`,
@@ -193,24 +187,22 @@ export const fetchProduct = () => {
         }
       );
 
-      if (!product) throw new Error(message)
-      
-      dispatch(loadProduct(product.data))
+      if (!product) throw new Error(message);
+
+      dispatch(loadProduct(product.data));
     } catch (err) {
-      dispatch(
-        addToast({ message: err.message, color: "danger" })
-      );
+      dispatch(addToast({ message: err.message, color: "danger" }));
     }
-  }
-}
+  };
+};
 
 export const logoutUser = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     deleteLocale();
     setAuthToken();
     dispatch(removeUser());
   };
-}
+};
 
 export const deleteLocale = () => {
   localStorage.removeItem("jwt");
@@ -220,7 +212,7 @@ export const deleteLocale = () => {
 };
 
 export const fetchUser = () => {
-  return async dispatch => {
+  return async (dispatch) => {
     const jwt = localStorage.getItem("jwt");
     if (!jwt) return;
     try {
@@ -234,9 +226,8 @@ export const fetchUser = () => {
 
       setAuthToken(jwt);
       localStorage.setItem("user", JSON.stringify(user.data.data));
-      
+
       dispatch(addUser(user.data.data));
-      
     } catch (err) {
       dispatch(deleteLocale());
       dispatch(removeUser());
@@ -248,7 +239,7 @@ export const fetchUser = () => {
 export const fetchSeller = () => {
   return async (dispatch) => {
     const jwt = localStorage.getItem("jwt_seller");
-    if(!jwt) return
+    if (!jwt) return;
     try {
       const seller = await axios.get(
         `${process.env.REACT_APP_ROOT_PATH}seller`,
@@ -259,16 +250,15 @@ export const fetchSeller = () => {
           },
         }
       );
-      if (seller.data.error) throw new Error(seller.data.data)
-      
+      if (seller.data.error) throw new Error(seller.data.data);
+
       setAuthToken(jwt);
       localStorage.setItem("seller", JSON.stringify(seller.data.data));
       dispatch(addSeller(seller.data.data));
-      
     } catch (err) {
       dispatch(deleteLocale());
       dispatch(removeUser());
-      dispatch(addToast({ message:err?.message, color: "danger"}));
+      dispatch(addToast({ message: err?.message, color: "danger" }));
     }
   };
 };

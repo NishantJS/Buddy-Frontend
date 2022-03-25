@@ -1,4 +1,4 @@
-import { useSelector ,useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "../../styles/cart.scss";
 import { addToCart, removeFromWishlist, addToast } from "../services/actions";
 import NotFound from "../pages/NotFound.jsx";
@@ -15,7 +15,7 @@ const Wishlist = () => {
 
   const cartHandler = (product) => {
     if (!isAlreadyInArr(cart, product._id)) {
-      dispatch(addToCart(product));
+      dispatch(addToCart({ ...product, sizes: product.sizes[0] }));
     } else {
       dispatch(
         addToast({
@@ -28,7 +28,7 @@ const Wishlist = () => {
 
   let toRender =
     wishlist.length < 1 ? (
-      <NotFound message="Looks like your wishlist is empty. Try adding some products"/>
+      <NotFound message="Looks like your wishlist is empty. Try adding some products" />
     ) : (
       <WishlistContent
         data={wishlist}
@@ -62,9 +62,8 @@ const WishlistItem = ({ product, dispatch, handler }) => {
   const {
     _id = "",
     title = "",
-    size = "",
-    thumbnail = "",
-    price,
+    thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
+    sizes: { price = 0, retail_price = 0, size = "Normal" },
   } = product;
 
   const removeItem = () => {
@@ -80,12 +79,12 @@ const WishlistItem = ({ product, dispatch, handler }) => {
         <span className="size">{size}</span>
         <div className="price">
           <span className="offer">₹{price}</span>
-
-          {/* <del>{retail_price}</del> */}
+          <del>{retail_price}</del>
         </div>
 
-        <span className="add_to" onClick={()=>handler(product)}>
-          Add to Cart        </span>
+        <span className="add_to" onClick={() => handler(product)}>
+          Add to Cart
+        </span>
         <span className="remove" onClick={removeItem}>
           Remove
         </span>

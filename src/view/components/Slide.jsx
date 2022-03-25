@@ -1,7 +1,11 @@
 import Cart from "../../icons/Cart.jsx";
 import Heart from "../../icons/Heart.jsx";
-import {useSelector,useDispatch} from "react-redux"
-import { addToast, addToCart, addToWishlist } from "../services/actions/index.js";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  addToast,
+  addToCart,
+  addToWishlist,
+} from "../services/actions/index.js";
 import { Link } from "react-router-dom";
 
 const Slide = ({ product }) => {
@@ -13,7 +17,6 @@ const Slide = ({ product }) => {
   const wishlist = useSelector((state) => state.auth.user.wishlist);
 
   const dispatch = useDispatch();
-  console.log(product)
 
   const toastMessage = (message = "", color = "danger") => {
     dispatch(
@@ -30,7 +33,7 @@ const Slide = ({ product }) => {
     };
 
     if (!isAlreadyInWishlist()) {
-      dispatch(addToWishlist(product));
+      dispatch(addToWishlist({ ...product, sizes: product?.sizes[0] }));
     } else {
       toastMessage("Product already exists in Wishlist");
     }
@@ -42,7 +45,7 @@ const Slide = ({ product }) => {
     };
 
     if (!isAlreadyInCart()) {
-      dispatch(addToCart(product));
+      dispatch(addToCart({ ...product, sizes: product?.sizes[0] }));
     } else {
       toastMessage("Product already exists in cart");
     }
@@ -52,7 +55,7 @@ const Slide = ({ product }) => {
     event.target.src = process.env.REACT_APP_PLACEHOLDER_IMAGE;
   };
 
-  const { title, images, price=[] } = product;
+  const { title = "", images = [], sizes = [] } = product;
 
   return (
     <div className="slide" title={title}>
@@ -66,17 +69,17 @@ const Slide = ({ product }) => {
           <img src={images[0]} alt={title} onError={handleImageLoadError} />
         </div>
         <div className="desc">
+          <span className="size">{sizes[0]?.size || "Normal"}</span>
           <h4>{title}</h4>
-          <span className="size">{price[0]?.size}</span>
           <div className="price">
             <span>
-              <h4>{`₹ ${price[0].price}`}</h4>
+              <h4>{`₹ ${sizes[0]?.price}`}</h4>
               <h6>
-                <del>{price[0].retail_price}</del>
+                <del>{sizes[0]?.retail_price}</del>
               </h6>
             </span>
             <h5>{`${Math.round(
-              Math.abs((price[0].price / price[0].retail_price) * 100 - 100)
+              Math.abs((sizes[0]?.price / sizes[0]?.retail_price) * 100 - 100)
             )}% off`}</h5>
           </div>
         </div>

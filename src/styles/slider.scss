@@ -15,7 +15,7 @@
     text-transform: capitalize;
   }
 
-  .scroll_btn{
+  .scroll_btn {
     display: none;
   }
 
@@ -74,12 +74,14 @@
       }
 
       .desc {
-        span.size{
+        span.size {
           color: #757575;
           font-size: smaller;
+          font-style: italic;
+          text-transform: capitalize;
         }
-        
-        &>h4{
+
+        & > h4 {
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
@@ -87,7 +89,7 @@
           -webkit-line-clamp: 2;
           line-height: 1.5;
         }
-        
+
         .price {
           font-family: $fira;
           display: flex;
@@ -98,7 +100,7 @@
             font-weight: lighter;
             margin: 0 5px;
           }
-          h5{
+          h5 {
             color: $success;
           }
         }
@@ -148,35 +150,35 @@
 }
 
 @media only screen and (min-width: 600px) {
-  .slider-container{
-    &:hover{
-      .scroll_btn{
-      display: block;
-      position: absolute;
-      bottom: 45%;
-      padding: 5px;
-      border: 0;
-      background-color: rgba(0,0,0,0.35);
-      color: $font_color;
-    
-      &.left{
-        border-radius: 0 50% 50% 0;
-        left: 0;
-      }
-      
-      &.right{
-        border-radius: 50% 0 0 50%;
-        right: 0;
-        
-        svg{
-          transform: rotateZ(180deg) translateY(-20%);
+  .slider-container {
+    &:hover {
+      .scroll_btn {
+        display: block;
+        position: absolute;
+        bottom: 45%;
+        padding: 5px;
+        border: 0;
+        background-color: rgba(0, 0, 0, 0.35);
+        color: $font_color;
+
+        &.left {
+          border-radius: 0 50% 50% 0;
+          left: 0;
+        }
+
+        &.right {
+          border-radius: 50% 0 0 50%;
+          right: 0;
+
+          svg {
+            transform: rotateZ(180deg) translateY(-20%);
+          }
         }
       }
-    }
-  
-      &>.slider  {
+
+      & > .slider {
         overflow-x: auto;
-        &:hover{
+        &:hover {
           scrollbar-width: thin;
         }
       }

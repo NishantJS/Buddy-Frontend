@@ -27,7 +27,7 @@ const SlideContainer = ({ slide }) => {
 
   return (
     <>
-      {!product?.error && product?.data?.length > 1 && (
+      {!product?.error && product?.data?.length >= 1 && (
         <section className="slider-container">
           <>
             <h3 className="title">shop for your {sliderTitle}</h3>
