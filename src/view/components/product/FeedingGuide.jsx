@@ -1,4 +1,4 @@
-const FeedingGuide = ({ feeding_guide = {}}) => {
+const FeedingGuide = ({ feeding_guide = {} }) => {
   return (
     <table>
       <thead>
@@ -7,9 +7,9 @@ const FeedingGuide = ({ feeding_guide = {}}) => {
         </tr>
       </thead>
       <tbody>
-        {Object.keys(feeding_guide).map((element,index) => {
+        {Object.keys(feeding_guide).map((element, index) => {
           return (
-            <tr key={element+index}>
+            <tr key={element + index}>
               <td>{element}</td>
               <td>{feeding_guide[element]}</td>
             </tr>
@@ -18,6 +18,6 @@ const FeedingGuide = ({ feeding_guide = {}}) => {
       </tbody>
     </table>
   );
-}
+};
 
-export default FeedingGuide
+export default FeedingGuide;

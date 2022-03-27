@@ -1,17 +1,17 @@
-import "../../../styles/setting.scss";
 import { addToast, logoutUser } from "../../services/actions/index.js";
 import { useHistory } from "react-router-dom";
 import { ContentMap } from "./Container.jsx";
+import "../../../styles/setting.scss";
 
-const LoggedIn = ({dispatch}) => {
+const LoggedIn = ({ dispatch }) => {
   let history = useHistory();
 
   const onLogout = () => {
     dispatch(addToast({ message: "You are signed out", color: "success" }));
     dispatch(logoutUser());
     history.push("/");
-  }
-  
+  };
+
   const accountOptions = [
     {
       path: "/profile",
@@ -34,6 +34,6 @@ const LoggedIn = ({dispatch}) => {
       </div>
     </article>
   );
-}
+};
 
 export default LoggedIn;

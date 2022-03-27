@@ -8,7 +8,7 @@ import {
 } from "../services/actions/index.js";
 import { Link } from "react-router-dom";
 
-const Slide = ({ product }) => {
+const Slide = ({ product, variant }) => {
   const auth = useSelector((state) => state.auth);
   const isAuthenticated = auth.isAuthenticated;
   const isUser = auth.user._id;
@@ -33,7 +33,7 @@ const Slide = ({ product }) => {
     };
 
     if (!isAlreadyInWishlist()) {
-      dispatch(addToWishlist({ ...product, sizes: product?.sizes[0] }));
+      dispatch(addToWishlist({ ...product, sizes: product?.currentSize }));
     } else {
       toastMessage("Product already exists in Wishlist");
     }
@@ -45,7 +45,7 @@ const Slide = ({ product }) => {
     };
 
     if (!isAlreadyInCart()) {
-      dispatch(addToCart({ ...product, sizes: product?.sizes[0] }));
+      dispatch(addToCart({ ...product, sizes: product?.currentSize }));
     } else {
       toastMessage("Product already exists in cart");
     }
@@ -55,31 +55,35 @@ const Slide = ({ product }) => {
     event.target.src = process.env.REACT_APP_PLACEHOLDER_IMAGE;
   };
 
-  const { title = "", images = [], sizes = [] } = product;
+  const { title = "", images = [], currentSize = {} } = product;
 
   return (
     <div className="slide" title={title}>
       <Link
         to={{
-          pathname: `/product/${product._id}?title=${product.title}&category=${product.uci}`,
-          state: product,
+          pathname: `/product/${product._id}?title=${product.title}&category=${
+            product.uci
+          }&variant=${variant || 0}`,
+          state: { ...product, variant },
         }}
       >
         <div className="img">
           <img src={images[0]} alt={title} onError={handleImageLoadError} />
         </div>
         <div className="desc">
-          <span className="size">{sizes[0]?.size || "Normal"}</span>
+          <span className="size">{currentSize.size || "Normal"}</span>
           <h4>{title}</h4>
           <div className="price">
             <span>
-              <h4>{`₹ ${sizes[0]?.price}`}</h4>
+              <h4>{`₹ ${currentSize.price}`}</h4>
               <h6>
-                <del>{sizes[0]?.retail_price}</del>
+                <del>{currentSize.retail_price}</del>
               </h6>
             </span>
             <h5>{`${Math.round(
-              Math.abs((sizes[0]?.price / sizes[0]?.retail_price) * 100 - 100)
+              Math.abs(
+                (currentSize?.price / currentSize?.retail_price) * 100 - 100
+              )
             )}% off`}</h5>
           </div>
         </div>

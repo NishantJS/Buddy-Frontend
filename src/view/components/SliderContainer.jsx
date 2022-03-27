@@ -6,7 +6,7 @@ const SlideContainer = ({ slide }) => {
   const { sliderTitle, product } = slide;
   const [sliderRef, setSliderRef] = useState(null);
 
-  const scroll = ({ isLeft = true }) => {
+  const scroll = (isLeft = true) => {
     if (!sliderRef) return;
     let element = sliderRef;
 
@@ -14,10 +14,10 @@ const SlideContainer = ({ slide }) => {
     let visible_elements = Math.floor(element.offsetWidth / element_width);
     let padding = visible_elements * 20;
     let visible_content_width = visible_elements * element_width;
+
     let moveBy = isLeft
       ? element.scrollLeft + padding + visible_content_width
       : element.scrollLeft - padding - visible_content_width;
-
     element.scrollTo({
       top: 0,
       left: moveBy,
@@ -28,7 +28,10 @@ const SlideContainer = ({ slide }) => {
   return (
     <>
       {!product?.error && product?.data?.length >= 1 && (
-        <section className="slider-container">
+        <section
+          className="slider-container"
+          onWheel={(event) => scroll(event.deltaY > 0)}
+        >
           <>
             <h3 className="title">shop for your {sliderTitle}</h3>
             <div
@@ -36,13 +39,20 @@ const SlideContainer = ({ slide }) => {
               ref={(sliderRef) => setSliderRef(sliderRef)}
             >
               {product.data.map((item) => {
-                return <Slide product={item} key={item._id} />;
+                return item?.sizes.map((sizes, index) => (
+                  <Slide
+                    product={{ ...item, currentSize: sizes }}
+                    key={item._id + index}
+                    variant={index}
+                  />
+                ));
+                // return <></>;
               })}
               {sliderRef && window.screen.width - 40 < sliderRef?.scrollWidth && (
                 <>
                   <button
                     className="scroll_btn left"
-                    onClick={() => scroll({ isLeft: false })}
+                    onClick={() => scroll(false)}
                   >
                     <Back isNavigation={false} />
                   </button>

@@ -81,7 +81,7 @@ export const addToCart = (cart_item) => {
         _id: cart_item._id,
         sizes: cart_item?.sizes,
         title: cart_item.title,
-        thumbnail: cart_item?.images[0],
+        thumbnail: cart_item?.thumbnail || cart_item?.images[0],
         allowed: cart_item?.allowed,
       };
 
@@ -133,7 +133,7 @@ export const addToWishlist = (wishlist_item) => {
         _id: wishlist_item._id,
         sizes: wishlist_item?.sizes,
         title: wishlist_item.title,
-        thumbnail: wishlist_item?.images[0],
+        thumbnail: wishlist_item?.thumbnail || wishlist_item?.images[0],
         allowed: wishlist_item?.allowed,
       };
 

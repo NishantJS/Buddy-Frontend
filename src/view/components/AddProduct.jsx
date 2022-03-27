@@ -1,17 +1,16 @@
 import { useForm } from "react-hook-form";
-import { general, images } from "../../data/addProduct.seller.js"
+import { general, images } from "../../data/addProduct.seller.js";
 // import "../../styles/stepper.scss";
 
 const AddProduct = ({ sellerId }) => {
-   const {
-     register,
-     handleSubmit,
-     formState: { errors },
-   } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const onSubmit = data => console.log(data);
-  const uploadImage = (data)=>{
-
+  const onSubmit = (data) => console.log(data);
+  const uploadImage = (data) => {
     const formData = new FormData();
     formData.append([data.target.name], data.target.files[0]);
 
@@ -26,8 +25,7 @@ const AddProduct = ({ sellerId }) => {
       .catch((error) => {
         console.error(error);
       });
-
-  }
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* {general.map((element) => {
@@ -41,7 +39,7 @@ const AddProduct = ({ sellerId }) => {
         );
       })} */}
 
-      {images.map(({name, type, accept, required=false}) => {
+      {images.map(({ name, type, accept, required = false }) => {
         return (
           <div key={name}>
             <label>{name}</label>
@@ -58,10 +56,9 @@ const AddProduct = ({ sellerId }) => {
       <input type="submit" />
     </form>
   );
-}
+};
 
 export default AddProduct;
-
 
 // const Input = ({label, type, }) => {
 

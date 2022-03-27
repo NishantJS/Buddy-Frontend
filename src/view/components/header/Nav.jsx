@@ -1,5 +1,5 @@
 import { Link, Switch, Route, NavLink, useLocation } from "react-router-dom";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import Notification from "../../../icons/Notification.jsx";
 import Heart from "../../../icons/Heart.jsx";
 import Cart from "../../../icons/Cart.jsx";
@@ -9,12 +9,12 @@ import Logo from "./Logo.jsx";
 import "../../../styles/nav.scss";
 
 function Nav() {
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
   const location = useLocation();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const seller = useSelector((state) => state.auth.seller);
-  const isSeller = seller._id?true:false;
+  const isSeller = seller._id ? true : false;
 
-  const compact =(
+  const compact = (
     <Route
       exact
       path={[
@@ -23,7 +23,7 @@ function Nav() {
         "/my_notifications",
         "/auth",
         "/settings",
-        "/product/:id"
+        "/product/:id",
       ]}
       component={CompactNav}
     />
@@ -63,15 +63,18 @@ function Nav() {
     </div>
   );
 
-  
   const loggedInSeller = (
     <div className="links">
       <NavLink to="/add_product">Add Product</NavLink>
       <NavLink to="/dashboard">Dashboard</NavLink>
     </div>
   );
-  
-  const navToRender = isAuthenticated ? (isSeller? loggedInSeller: loggedIn): loggedOut;
+
+  const navToRender = isAuthenticated
+    ? isSeller
+      ? loggedInSeller
+      : loggedIn
+    : loggedOut;
 
   return (
     <nav>
@@ -79,13 +82,13 @@ function Nav() {
         {compact}
         <Route>
           <div className="logo">
-            <Link to="/settings" className="nav_icon">
+            <Link to="/settings" className="nav_icon" aria-label="settings">
               <div className="ham">
                 <span></span>
                 <span></span>
               </div>
             </Link>
-            <Link to="/">
+            <Link to="/" aria-label="back to homepage">
               <Logo />
             </Link>
           </div>

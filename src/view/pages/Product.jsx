@@ -8,28 +8,25 @@ import "../../styles/product.scss";
 import { useState } from "react";
 import Description from "../components/product/Description.jsx";
 import Sizes from "../components/product/Sizes.jsx";
+import Images from "../components/product/Images.jsx";
 
 const Product = ({ location, match }) => {
   const { search, state = false } = location;
-  const product_id = match.params.id;
-
-  const searchParams = new URLSearchParams(search);
-  const category = searchParams.get("category");
-  const variant = Number.parseInt(searchParams.get("variant")) || 0;
 
   const toRender = !state ? (
-    <FetchProductDetails
-      product_id={product_id}
-      category={category}
-      variant={variant}
-    />
+    <FetchProductDetails search={search} match={match} />
   ) : (
-    <ProductDetails data={state} variant={variant} />
+    <ProductDetails data={state} variant={state?.variant || 0} />
   );
   return toRender;
 };
 
-const FetchProductDetails = ({ product_id, category, variant }) => {
+const FetchProductDetails = ({ search, match }) => {
+  const product_id = match.params.id;
+  const searchParams = new URLSearchParams(search);
+  const category = searchParams.get("category");
+  const variant = Number.parseInt(searchParams.get("variant")) || 0;
+
   const { data, loading, error } = useFetch(
     `shop/${product_id}/?category=${category}`
   );
@@ -45,7 +42,6 @@ const FetchProductDetails = ({ product_id, category, variant }) => {
 };
 
 const ProductDetails = ({ data, variant = 0 }) => {
-  // const { price=[], _id, title, description, images, allowed, stock, uci } = data;
   const { sizes = [], title = "", description = {}, images = [] } = data;
 
   // const user = useSelector((state) => state.auth.user);
@@ -55,20 +51,13 @@ const ProductDetails = ({ data, variant = 0 }) => {
     variant < sizes.length ? variant : 0
   );
 
-  const handleImageLoadError = (event) => {
-    event.target.src = process.env.REACT_APP_PLACEHOLDER_IMAGE;
-  };
-
   const updateSelected = (index) => {
     setSelectedSize((p) => index);
   };
 
   return (
     <section className="product">
-      <div className="intro">
-        <img src={images[0]} alt={title} onError={handleImageLoadError} />
-        <h1>{title}</h1>
-      </div>
+      <Images images={images} title={title} />
       <Sizes
         sizes={sizes}
         updateSelected={updateSelected}

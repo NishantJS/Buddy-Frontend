@@ -1,11 +1,16 @@
 import { useState } from "react";
 import axios from "axios";
-import {useDispatch} from "react-redux"
-import { addUser, addToast, addSeller, deleteLocale } from "../services/actions";
-import {useHistory} from "react-router-dom"
+import { useDispatch } from "react-redux";
+import {
+  addUser,
+  addToast,
+  addSeller,
+  deleteLocale,
+} from "../services/actions";
+import { useHistory } from "react-router-dom";
 import setAuthToken from "../services/factories/setAuthToken.js";
 
-const AuthForm = ({ handler, method, isSeller = false}) => {
+const AuthForm = ({ handler, method, isSeller = false }) => {
   const dispatch = useDispatch();
   let history = useHistory();
 
@@ -15,23 +20,29 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
     errors: "Please fill this field",
   };
   const stateDefaults = { email: obj, pass: obj, pass1: obj };
-  
+
   const [state, setState] = useState(() => stateDefaults);
-  
+
   const updateValid = (field, isValid = true, errors = "wrong input") => {
     if (!field) return;
-    
-    let update = !isValid ? { isValid: false, errors } : { isValid, errors: ""};
-    
+
+    let update = !isValid
+      ? { isValid: false, errors }
+      : { isValid, errors: "" };
+
     setState((prev) => ({ ...prev, [field]: { ...prev[field], ...update } }));
   };
 
   const updateValue = (event, input) => {
-    setState((prev) => ({ ...prev, [input]: { ...prev[input], value : event.target.value } }));
+    setState((prev) => ({
+      ...prev,
+      [input]: { ...prev[input], value: event.target.value },
+    }));
   };
 
   const checkValid = (event, field) => {
-    const emailRegx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegx =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     switch (field) {
       case "email":
@@ -40,26 +51,31 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
         );
         if (testEmail) updateValid(field);
         else updateValid(field, false, "Email is invalid");
-      break;
-      
+        break;
+
       case "pass":
         let test = event.target.form[1].value.length <= 7;
         if (!test) updateValid(field);
         else
-          updateValid( field, false, "Password should contain Minimum eight characters");
+          updateValid(
+            field,
+            false,
+            "Password should contain Minimum eight characters"
+          );
         method !== "login" && checkValid(event, 2);
-      break;
-      
+        break;
+
       case 2:
-        let testPass1 = event.target.form[1].value !== event.target.form[2].value;
-          if (!testPass1) updateValid("pass1");
-          else updateValid("pass1", false, "Passwords are not matching!");
+        let testPass1 =
+          event.target.form[1].value !== event.target.form[2].value;
+        if (!testPass1) updateValid("pass1");
+        else updateValid("pass1", false, "Passwords are not matching!");
         break;
       default:
         break;
     }
   };
-  
+
   const isValidtoSubmit = () => {
     let loginValid = state.email.isValid && state.pass.isValid;
     let signupValid = loginValid && state.pass1.isValid;
@@ -70,7 +86,7 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
     e.preventDefault();
 
     if (!isValidtoSubmit) return;
-    
+
     const reqPath = method === "signup" ? "register" : "login";
     const Seller = isSeller ? "seller" : "user";
 
@@ -78,14 +94,18 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
     const bodyData = {
       email: state.email.value,
       pass: state.pass.value,
-    }
-    const options = { validateStatus: (status) => status < 511};
-    
+    };
+    const options = { validateStatus: (status) => status < 511 };
+
     try {
       const { data } = await axios.post(path, bodyData, options);
-      
-      if (!data) throw new Error("Connection to server failed! PLease try again or later.");
-      if (data.error) dispatch(addToast({ message: data.data, color: "danger" }));
+
+      if (!data)
+        throw new Error(
+          "Connection to server failed! Please try again or later."
+        );
+      if (data.error)
+        dispatch(addToast({ message: data.data, color: "danger" }));
       else {
         setAuthToken(data.token);
         deleteLocale();
@@ -104,7 +124,9 @@ const AuthForm = ({ handler, method, isSeller = false}) => {
           history.replace("/dashboard");
         }
       }
-    } catch (err) { dispatch(addToast({ message: err?.message, color: "danger" })); };
+    } catch (err) {
+      dispatch(addToast({ message: err?.message, color: "danger" }));
+    }
   };
 
   let pass1Value =

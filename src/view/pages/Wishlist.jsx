@@ -14,8 +14,9 @@ const Wishlist = () => {
   };
 
   const cartHandler = (product) => {
+    console.log(product);
     if (!isAlreadyInArr(cart, product._id)) {
-      dispatch(addToCart({ ...product, sizes: product.sizes[0] }));
+      dispatch(addToCart(product));
     } else {
       dispatch(
         addToast({

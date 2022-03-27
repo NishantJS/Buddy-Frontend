@@ -1,7 +1,7 @@
-import { lazy } from "react";
+import { lazy, memo } from "react";
 
 const Description = ({ description }) => {
-  const { feeding_guide = false, main = "", ...remaining } = description;
+  const { feeding_guide = false, main = "" } = description;
 
   const FeedingGuide = feeding_guide ? (
     lazy(() => import("./FeedingGuide.jsx"))
@@ -16,4 +16,4 @@ const Description = ({ description }) => {
   );
 };
 
-export default Description;
+export default memo(Description);
