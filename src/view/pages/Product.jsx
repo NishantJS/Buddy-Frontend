@@ -58,13 +58,20 @@ const ProductDetails = ({ data, variant = 0 }) => {
   return (
     <section className="product">
       <Images images={images} title={title} />
-      <Sizes
-        sizes={sizes}
-        updateSelected={updateSelected}
-        selectedSize={selectedSize}
-      />
-      <Description description={description} />
+      <Details>
+        <Sizes
+          sizes={sizes}
+          updateSelected={updateSelected}
+          selectedSize={selectedSize}
+        />
+        <Description description={description} />
+      </Details>
     </section>
   );
 };
+
 export default Product;
+
+const Details = ({ children }) => {
+  return <div className="details">{children}</div>;
+};

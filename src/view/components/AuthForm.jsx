@@ -91,14 +91,14 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
     const Seller = isSeller ? "seller" : "user";
 
     const path = `${process.env.REACT_APP_ROOT_PATH}${Seller}/${reqPath}`;
-    const bodyData = {
-      email: state.email.value,
-      pass: state.pass.value,
+    const auth = {
+      username: state.email.value,
+      password: state.pass.value,
     };
     const options = { validateStatus: (status) => status < 511 };
 
     try {
-      const { data } = await axios.post(path, bodyData, options);
+      const { data } = await axios.post(path, {}, { ...options, auth });
 
       if (!data)
         throw new Error(

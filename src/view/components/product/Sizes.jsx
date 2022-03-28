@@ -12,6 +12,8 @@ const Sizes = ({ sizes = [], selectedSize = 0, updateSelected }) => {
                 `Buy ${element?.size || "this size"} at just ${element?.price}`
               }
               key={index + element?.price}
+              role="checkbox"
+              aria-checked={selectedSize === index}
             >
               <span className="name">
                 {element?.size || `size ${index + 1}`}

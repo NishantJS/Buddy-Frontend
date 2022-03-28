@@ -205,10 +205,12 @@ export const logoutUser = () => {
 };
 
 export const deleteLocale = () => {
-  localStorage.removeItem("jwt");
-  localStorage.removeItem("jwt_seller");
-  localStorage.removeItem("user");
-  localStorage.removeItem("seller");
+  return async () => {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("jwt_seller");
+    localStorage.removeItem("user");
+    localStorage.removeItem("seller");
+  };
 };
 
 export const fetchUser = () => {
@@ -222,6 +224,7 @@ export const fetchUser = () => {
           Authorization: `Bearer ${jwt}`,
         },
       });
+      console.log(user);
       if (user.data.error) throw new Error(user.data.data);
 
       setAuthToken(jwt);
@@ -231,7 +234,7 @@ export const fetchUser = () => {
     } catch (err) {
       dispatch(deleteLocale());
       dispatch(removeUser());
-      dispatch(addToast({ message: err.message, color: "danger" }));
+      dispatch(addToast({ message: err?.message, color: "danger" }));
     }
   };
 };

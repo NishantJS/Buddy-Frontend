@@ -55,15 +55,16 @@ const Slide = ({ product, variant }) => {
     event.target.src = process.env.REACT_APP_PLACEHOLDER_IMAGE;
   };
 
-  const { title = "", images = [], currentSize = {} } = product;
+  const { title = "", images = [], currentSize = {}, _id, uci = 0 } = product;
+  const urlTitle = title.split(" ").join("_");
 
   return (
     <div className="slide" title={title}>
       <Link
         to={{
-          pathname: `/product/${product._id}?title=${product.title}&category=${
-            product.uci
-          }&variant=${variant || 0}`,
+          pathname: `/product/${_id}?title=${urlTitle}&category=${uci}&variant=${
+            variant || 0
+          }`,
           state: { ...product, variant },
         }}
       >
