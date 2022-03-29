@@ -6,6 +6,7 @@ import {
   addToast,
   addSeller,
   deleteLocale,
+  addAccount,
 } from "../services/actions";
 import { useHistory } from "react-router-dom";
 import setAuthToken from "../services/factories/setAuthToken.js";
@@ -107,22 +108,15 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
       if (data.error)
         dispatch(addToast({ message: data.data, color: "danger" }));
       else {
-        setAuthToken(data.token);
-        deleteLocale();
-
-        if (!isSeller) {
-          dispatch(addToast({ message: data.data }));
-          dispatch(addUser(data.user));
-          localStorage.setItem("jwt", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          history.replace("/");
-        } else {
-          dispatch(addToast({ message: data.data }));
-          dispatch(addSeller(data.seller));
-          localStorage.setItem("jwt_seller", data.token);
-          localStorage.setItem("seller", JSON.stringify(data.seller));
-          history.replace("/dashboard");
-        }
+        dispatch(
+          addAccount({
+            isSeller,
+            user: data.user,
+            seller: data.seller,
+            message: data.data,
+          })
+        );
+        history.replace(!isSeller ? "/" : "/dashboard");
       }
     } catch (err) {
       dispatch(addToast({ message: err?.message, color: "danger" }));

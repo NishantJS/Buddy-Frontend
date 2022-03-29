@@ -78,7 +78,7 @@ export const addToCart = (cart_item) => {
   return async (dispatch) => {
     try {
       const body = {
-        _id: cart_item._id,
+        _id: cart_item?._id,
         sizes: cart_item?.sizes,
         title: cart_item.title,
         thumbnail: cart_item?.thumbnail || cart_item?.images[0],
@@ -86,10 +86,10 @@ export const addToCart = (cart_item) => {
       };
 
       const cartItem = await axios.patch(
-        `${process.env.REACT_APP_ROOT_PATH}user/cart/add`,
+        `${process.env.REACT_APP_ROOT_PATH}user/cart`,
         body,
         {
-          validateStatus: (status) => status < 402,
+          validateStatus: (status) => status < 513,
         }
       );
 
@@ -104,14 +104,13 @@ export const addToCart = (cart_item) => {
   };
 };
 
-export const removeFromCart = (_id) => {
+export const removeFromCart = (id) => {
   return async (dispatch) => {
     try {
-      const cartItem = await axios.patch(
-        `${process.env.REACT_APP_ROOT_PATH}user/cart/remove`,
-        { _id },
+      const cartItem = await axios.delete(
+        `${process.env.REACT_APP_ROOT_PATH}user/cart/${id}`,
         {
-          validateStatus: (status) => status < 402,
+          validateStatus: (status) => status < 513,
         }
       );
 
@@ -119,7 +118,7 @@ export const removeFromCart = (_id) => {
       if (cartItem.data.error) throw new Error(cartItem.data.data);
 
       dispatch(addToast({ message: cartItem.data.data }));
-      dispatch(removeCart(_id));
+      dispatch(removeCart(id));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));
     }
@@ -138,15 +137,16 @@ export const addToWishlist = (wishlist_item) => {
       };
 
       const wishlistItem = await axios.patch(
-        `${process.env.REACT_APP_ROOT_PATH}user/wishlist/add`,
+        `${process.env.REACT_APP_ROOT_PATH}user/wishlist`,
         body,
         {
-          validateStatus: (status) => status < 511,
+          validateStatus: (status) => status < 513,
         }
       );
 
       if (!wishlistItem) throw new Error("Something went wrong!");
       if (wishlistItem.data.error) throw new Error(wishlistItem.data.data);
+
       dispatch(addToast({ message: wishlistItem.data.data }));
       dispatch(addWishlist(body));
     } catch (err) {
@@ -155,21 +155,20 @@ export const addToWishlist = (wishlist_item) => {
   };
 };
 
-export const removeFromWishlist = (_id) => {
+export const removeFromWishlist = (id) => {
   return async (dispatch) => {
     try {
-      const wishlistItem = await axios.patch(
-        `${process.env.REACT_APP_ROOT_PATH}user/wishlist/remove`,
-        { _id },
+      const wishlistItem = await axios.delete(
+        `${process.env.REACT_APP_ROOT_PATH}user/wishlist/${id}`,
         {
-          validateStatus: (status) => status < 402,
+          validateStatus: (status) => status < 513,
         }
       );
 
       if (!wishlistItem) throw new Error("Something went wrong!");
       if (wishlistItem.data.error) throw new Error(wishlistItem.data.data);
       dispatch(addToast({ message: wishlistItem.data.data }));
-      dispatch(removeWishlist(_id));
+      dispatch(removeWishlist(id));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));
     }
@@ -198,16 +197,25 @@ export const fetchProduct = () => {
 
 export const logoutUser = () => {
   return async (dispatch) => {
-    deleteLocale();
-    setAuthToken();
-    dispatch(removeUser());
+    try {
+      const data = await axios.delete(
+        `${process.env.REACT_APP_ROOT_PATH}session`,
+        {
+          validateStatus: (status) => status < 512,
+        }
+      );
+      if (data.data.error) throw new Error(data.data.data);
+      deleteLocale();
+      setAuthToken();
+      dispatch(removeUser());
+    } catch (error) {
+      dispatch(addToast({ message: error?.message }));
+    }
   };
 };
 
 export const deleteLocale = () => {
   return async () => {
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("jwt_seller");
     localStorage.removeItem("user");
     localStorage.removeItem("seller");
   };
@@ -215,53 +223,46 @@ export const deleteLocale = () => {
 
 export const fetchUser = () => {
   return async (dispatch) => {
-    const jwt = localStorage.getItem("jwt");
-    if (!jwt) return;
     try {
-      const user = await axios.get(`${process.env.REACT_APP_ROOT_PATH}user`, {
-        validateStatus: (status) => status < 402,
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
-      console.log(user);
-      if (user.data.error) throw new Error(user.data.data);
+      const reqData = await axios.get(
+        `${process.env.REACT_APP_ROOT_PATH}session`,
+        {
+          validateStatus: (status) => status < 512,
+        }
+      );
+      const { data, error, seller, user } = reqData.data;
 
-      setAuthToken(jwt);
-      localStorage.setItem("user", JSON.stringify(user.data.data));
-
-      dispatch(addUser(user.data.data));
+      if (!error && !data && !seller && !user) {
+        dispatch(logoutUser());
+        return;
+      }
+      if (error && data) throw new Error(data);
+      setAuthToken(true);
+      if (user) dispatch(addUser(user));
+      if (seller) dispatch(addSeller(seller));
     } catch (err) {
-      dispatch(deleteLocale());
-      dispatch(removeUser());
+      dispatch(logoutUser());
       dispatch(addToast({ message: err?.message, color: "danger" }));
     }
   };
 };
 
-export const fetchSeller = () => {
+export const addAccount = ({ isSeller = false, user, seller, message }) => {
   return async (dispatch) => {
-    const jwt = localStorage.getItem("jwt_seller");
-    if (!jwt) return;
     try {
-      const seller = await axios.get(
-        `${process.env.REACT_APP_ROOT_PATH}seller`,
-        {
-          validateStatus: (status) => status < 402,
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
-      );
-      if (seller.data.error) throw new Error(seller.data.data);
-
-      setAuthToken(jwt);
-      localStorage.setItem("seller", JSON.stringify(seller.data.data));
-      dispatch(addSeller(seller.data.data));
-    } catch (err) {
+      setAuthToken(true);
       dispatch(deleteLocale());
-      dispatch(removeUser());
-      dispatch(addToast({ message: err?.message, color: "danger" }));
+      if (isSeller) {
+        dispatch(addSeller(seller));
+        localStorage.setItem("user", JSON.stringify(seller));
+        dispatch(addToast({ message }));
+      } else {
+        dispatch(addUser(user));
+        localStorage.setItem("user", JSON.stringify(user));
+        dispatch(addToast({ message }));
+      }
+    } catch (error) {
+      dispatch(addToast({ message: error?.message }));
     }
   };
 };

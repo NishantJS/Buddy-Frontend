@@ -5,7 +5,7 @@ import {
   ADD_WISHLIST,
   ADD_SELLER,
   REMOVE_CART,
-  REMOVE_WISHLIST
+  REMOVE_WISHLIST,
 } from "../constants";
 
 const user = localStorage.getItem("user") ?? false;
@@ -14,22 +14,22 @@ const seller = localStorage.getItem("seller") ?? false;
 const initialState = {
   isAuthenticated: user || seller ? true : false,
   user: user ? JSON.parse(user) : { cart: [], wishlist: [], _id: false },
-  seller: seller ? JSON.parse(seller) : { _id: false }
+  seller: seller ? JSON.parse(seller) : { _id: false },
 };
- 
-function checkDuplicate(array,payload) {
+
+function checkDuplicate(array, payload) {
   return array.some((value) => {
-    return (value._id === payload._id) ? true : false;
+    return value._id === payload._id ? true : false;
   });
 }
 
 function removeItem(array, id) {
-  return array.filter(item => item._id !== id);
+  return array.filter((item) => item._id !== id);
 }
 
 export default function auth(state = initialState, action) {
   const { payload, type } = action;
-  
+
   let isDuplicate;
   switch (type) {
     case ADD_CART:
@@ -64,7 +64,7 @@ export default function auth(state = initialState, action) {
           wishlist: removeItem(state.user.wishlist, payload),
         },
       };
-    
+
     case ADD_WISHLIST:
       isDuplicate = checkDuplicate(state.user.wishlist, payload);
 
@@ -88,7 +88,7 @@ export default function auth(state = initialState, action) {
           Object.keys(payload).length !== 0 &&
           payload.constructor === Object,
         user: payload,
-        seller: {},
+        seller: { _id: false },
       };
 
     case ADD_SELLER:
@@ -99,15 +99,15 @@ export default function auth(state = initialState, action) {
           Object.keys(payload).length !== 0 &&
           payload.constructor === Object,
         seller: payload,
-        user: {},
+        user: { cart: [], wishlist: [], _id: false },
       };
 
     case REMOVE_USER:
       return {
         ...state,
         isAuthenticated: false,
-        user: { _id: false,cart: [] },
-        seller: {_id: false},
+        user: { _id: false, cart: [] },
+        seller: { _id: false },
       };
 
     default:
