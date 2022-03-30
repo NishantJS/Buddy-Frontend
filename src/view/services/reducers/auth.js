@@ -19,12 +19,14 @@ const initialState = {
 
 function checkDuplicate(array, payload) {
   return array.some((value) => {
-    return value._id === payload._id ? true : false;
+    return value._id === payload._id && value.variant === payload.variant;
   });
 }
 
-function removeItem(array, id) {
-  return array.filter((item) => item._id !== id);
+function removeItem(array, payload) {
+  return array.filter(
+    (item) => !(item._id === payload.id && item.variant === payload.variant)
+  );
 }
 
 export default function auth(state = initialState, action) {

@@ -9,12 +9,12 @@ const Wishlist = () => {
 
   const dispatch = useDispatch();
 
-  const isAlreadyInArr = (arr = [], _id) => {
-    return arr.some((item) => item._id === _id);
+  const isAlreadyInArr = (arr = [], _id, variant) => {
+    return arr.some((item) => item._id === _id && item.variant === variant);
   };
 
   const cartHandler = (product) => {
-    if (!isAlreadyInArr(cart, product._id)) {
+    if (!isAlreadyInArr(cart, product._id, product.variant)) {
       dispatch(addToCart(product));
     } else {
       dispatch(
@@ -48,7 +48,7 @@ const WishlistContent = ({ data, dispatch, handler }) => {
           data.map((item) => (
             <WishlistItem
               product={item}
-              key={item["_id"]}
+              key={item["_id"] + item["variant"]}
               dispatch={dispatch}
               handler={handler}
             />
@@ -64,10 +64,11 @@ const WishlistItem = ({ product, dispatch, handler }) => {
     title = "",
     thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
     sizes: { price = 0, retail_price = 0, size = "Normal" },
+    variant = 0,
   } = product;
 
   const removeItem = () => {
-    dispatch(removeFromWishlist(_id));
+    dispatch(removeFromWishlist(_id, variant));
   };
 
   return (

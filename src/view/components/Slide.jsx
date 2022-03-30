@@ -29,11 +29,15 @@ const Slide = ({ product, variant }) => {
 
   const favHandler = () => {
     const isAlreadyInWishlist = () => {
-      return wishlist.some((item) => item._id === product._id);
+      return wishlist.some(
+        (item) => item._id === product._id && item.variant === variant
+      );
     };
 
     if (!isAlreadyInWishlist()) {
-      dispatch(addToWishlist({ ...product, sizes: product?.currentSize }));
+      dispatch(
+        addToWishlist({ ...product, sizes: product?.currentSize, variant })
+      );
     } else {
       toastMessage("Product already exists in Wishlist");
     }
@@ -41,11 +45,13 @@ const Slide = ({ product, variant }) => {
 
   const cartHandler = () => {
     const isAlreadyInCart = () => {
-      return cart.some((item) => item._id === product._id);
+      return cart.some(
+        (item) => item._id === product._id && item.variant === variant
+      );
     };
 
     if (!isAlreadyInCart()) {
-      dispatch(addToCart({ ...product, sizes: product?.currentSize }));
+      dispatch(addToCart({ ...product, sizes: product?.currentSize, variant }));
     } else {
       toastMessage("Product already exists in cart");
     }
@@ -76,7 +82,11 @@ const Slide = ({ product, variant }) => {
           <h4>{title}</h4>
           <div className="price">
             <span>
-              <h4>{`₹ ${currentSize.price}`}</h4>
+              <h4>{`${new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+                maximumFractionDigits: 0,
+              }).format(currentSize.price)}`}</h4>
               <h6>
                 <del>{currentSize.retail_price}</del>
               </h6>

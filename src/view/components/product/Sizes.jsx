@@ -18,7 +18,13 @@ const Sizes = ({ sizes = [], selectedSize = 0, updateSelected }) => {
               <span className="name">
                 {element?.size || `size ${index + 1}`}
               </span>
-              <span className="price">₹ {element?.price}</span>
+              <span className="price">
+                {new Intl.NumberFormat("en", {
+                  style: "currency",
+                  currency: "INR",
+                  maximumFractionDigits: 2,
+                }).format(element?.price)}
+              </span>
             </div>
           )
         );

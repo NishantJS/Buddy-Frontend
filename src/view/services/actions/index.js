@@ -18,9 +18,9 @@ export const addCart = (cart_item) => ({
   payload: cart_item,
 });
 
-export const removeCart = (id) => ({
+export const removeCart = (id, variant = 0) => ({
   type: REMOVE_CART,
-  payload: id,
+  payload: { id, variant },
 });
 
 export const addWishlist = (item) => ({
@@ -28,9 +28,9 @@ export const addWishlist = (item) => ({
   payload: item,
 });
 
-export const removeWishlist = (id) => ({
+export const removeWishlist = (id, variant = 0) => ({
   type: REMOVE_WISHLIST,
-  payload: id,
+  payload: { id, variant },
 });
 
 export const addToast = (options = {}) => {
@@ -83,6 +83,7 @@ export const addToCart = (cart_item) => {
         title: cart_item.title,
         thumbnail: cart_item?.thumbnail || cart_item?.images[0],
         allowed: cart_item?.allowed,
+        variant: cart_item?.variant || 0,
       };
 
       const cartItem = await axios.patch(
@@ -104,12 +105,16 @@ export const addToCart = (cart_item) => {
   };
 };
 
-export const removeFromCart = (id) => {
+export const removeFromCart = (id, variant = 0) => {
   return async (dispatch) => {
     try {
       const cartItem = await axios.delete(
-        `${process.env.REACT_APP_ROOT_PATH}user/cart/${id}`,
+        `${process.env.REACT_APP_ROOT_PATH}user/cart/`,
         {
+          params: {
+            id,
+            variant,
+          },
           validateStatus: (status) => status < 513,
         }
       );
@@ -118,7 +123,7 @@ export const removeFromCart = (id) => {
       if (cartItem.data.error) throw new Error(cartItem.data.data);
 
       dispatch(addToast({ message: cartItem.data.data }));
-      dispatch(removeCart(id));
+      dispatch(removeCart(id, variant));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));
     }
@@ -134,6 +139,7 @@ export const addToWishlist = (wishlist_item) => {
         title: wishlist_item.title,
         thumbnail: wishlist_item?.thumbnail || wishlist_item?.images[0],
         allowed: wishlist_item?.allowed,
+        variant: wishlist_item?.variant || 0,
       };
 
       const wishlistItem = await axios.patch(
@@ -155,12 +161,16 @@ export const addToWishlist = (wishlist_item) => {
   };
 };
 
-export const removeFromWishlist = (id) => {
+export const removeFromWishlist = (id, variant = 0) => {
   return async (dispatch) => {
     try {
       const wishlistItem = await axios.delete(
-        `${process.env.REACT_APP_ROOT_PATH}user/wishlist/${id}`,
+        `${process.env.REACT_APP_ROOT_PATH}user/wishlist/`,
         {
+          params: {
+            id,
+            variant,
+          },
           validateStatus: (status) => status < 513,
         }
       );
@@ -168,7 +178,7 @@ export const removeFromWishlist = (id) => {
       if (!wishlistItem) throw new Error("Something went wrong!");
       if (wishlistItem.data.error) throw new Error(wishlistItem.data.data);
       dispatch(addToast({ message: wishlistItem.data.data }));
-      dispatch(removeWishlist(id));
+      dispatch(removeWishlist(id, variant));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));
     }
@@ -195,19 +205,23 @@ export const fetchProduct = () => {
   };
 };
 
-export const logoutUser = () => {
+export const logoutUser = ({ message = false, isDelete = false }) => {
   return async (dispatch) => {
     try {
-      const data = await axios.delete(
-        `${process.env.REACT_APP_ROOT_PATH}session`,
-        {
-          validateStatus: (status) => status < 512,
-        }
-      );
-      if (data.data.error) throw new Error(data.data.data);
       deleteLocale();
       setAuthToken();
       dispatch(removeUser());
+      if (isDelete) {
+        const {
+          data: { data, error },
+        } = await axios.delete(`${process.env.REACT_APP_ROOT_PATH}session`, {
+          validateStatus: (status) => status < 512,
+        });
+
+        if (error) throw new Error("Error removing session");
+        dispatch(addToast({ message: data }));
+      }
+      message && dispatch(addToast({ message, color: "danger" }));
     } catch (error) {
       dispatch(addToast({ message: error?.message }));
     }
@@ -231,15 +245,10 @@ export const fetchUser = () => {
         }
       );
       const { data, error, seller, user } = reqData.data;
-
-      if (!error && !data && !seller && !user) {
-        dispatch(logoutUser());
-        return;
-      }
-      if (error && data) throw new Error(data);
-      setAuthToken(true);
+      if (error) logoutUser({ data });
       if (user) dispatch(addUser(user));
-      if (seller) dispatch(addSeller(seller));
+      else if (seller) dispatch(addSeller(seller));
+      else dispatch(logoutUser({ message: data }));
     } catch (err) {
       dispatch(logoutUser());
       dispatch(addToast({ message: err?.message, color: "danger" }));

@@ -49,6 +49,7 @@
       font-size: max(1vw, 20px);
     }
   }
+
   .details {
     flex: 1;
     .desc {
@@ -70,6 +71,7 @@
         flex-direction: column;
         background-color: transparent;
         cursor: pointer;
+        padding: 0 10px;
 
         .name {
           text-transform: capitalize;

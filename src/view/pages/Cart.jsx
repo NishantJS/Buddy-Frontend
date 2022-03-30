@@ -10,12 +10,12 @@ const Cart = () => {
 
   const dispatch = useDispatch();
 
-  const isAlreadyInArr = (arr = [], _id) => {
-    return arr.some((item) => item._id === _id);
+  const isAlreadyInArr = (arr = [], _id, variant) => {
+    return arr.some((item) => item._id === _id && item.variant === variant);
   };
 
   const wishlistHandler = (product) => {
-    if (!isAlreadyInArr(wishlist, product._id)) {
+    if (!isAlreadyInArr(wishlist, product._id, product.variant)) {
       dispatch(addToWishlist(product));
     } else {
       dispatch(
@@ -45,7 +45,7 @@ const CartContent = ({ data, dispatch, handler }) => {
           data.map((item) => (
             <CartItem
               product={item}
-              key={item["_id"]}
+              key={item["_id"] + item["variant"]}
               dispatch={dispatch}
               handler={handler}
             />
@@ -65,6 +65,7 @@ const CartItem = ({ product, dispatch, handler }) => {
     allowed = 1,
     thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
     sizes: { price = 0, retail_price = 0, size = "Normal" },
+    variant = 0,
   } = product;
 
   let [count, setCount] = useState(() => 1);
@@ -83,11 +84,11 @@ const CartItem = ({ product, dispatch, handler }) => {
 
   const decrementCount = () => {
     if (count > 1) setCount((p) => p - 1);
-    else dispatch(removeFromCart(_id));
+    else dispatch(removeFromCart(_id, variant));
   };
 
   const removeItem = () => {
-    dispatch(removeFromCart(_id));
+    dispatch(removeFromCart(_id, variant));
   };
 
   return (
