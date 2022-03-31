@@ -79,7 +79,13 @@ const WishlistItem = ({ product, dispatch, handler }) => {
         <span className="title">{title}</span>
         <span className="size">{size}</span>
         <div className="price">
-          <span className="offer">₹{price}</span>
+          <span className="offer">
+            {new Intl.NumberFormat("en", {
+              style: "currency",
+              currency: "INR",
+              maximumFractionDigits: 2,
+            }).format(price)}
+          </span>
           <del>{retail_price}</del>
         </div>
 

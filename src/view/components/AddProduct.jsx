@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { general, images } from "../../data/addProduct.seller.js";
+import { images } from "../../data/addProduct.seller.js";
 // import "../../styles/stepper.scss";
 
 const AddProduct = ({ sellerId }) => {

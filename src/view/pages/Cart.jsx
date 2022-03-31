@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { addToast, addToWishlist } from "../services/actions";
+import Loading from "./../components/Loading.jsx";
 import "../../styles/cart.scss";
-import { addToast, addToWishlist, removeFromCart } from "../services/actions";
-import NotFound from "../pages/NotFound.jsx";
+import SubTotal from "../components/SubTotal";
+const CartItem = lazy(() => import("./../components/CartItem.jsx"));
+const NotFound = lazy(() => import("./NotFound.jsx"));
 
 const Cart = () => {
   const cart = useSelector((state) => state.auth.user.cart);
@@ -27,97 +30,59 @@ const Cart = () => {
     }
   };
 
-  let toRender =
+  let Render =
     cart.length < 1 ? (
       <NotFound message="Looks like your cart is empty. Try adding some products" />
     ) : (
       <CartContent data={cart} dispatch={dispatch} handler={wishlistHandler} />
     );
 
-  return toRender;
+  return <Suspense fallback={<Loading />}>{Render}</Suspense>;
 };
 
 const CartContent = ({ data, dispatch, handler }) => {
+  const [counts, setCounts] = useState(() => data.map(() => 1));
+  const [total, setTotal] = useState(() =>
+    data
+      .map(({ sizes = {} }) => sizes?.price)
+      .reduce((prev, current) => prev + current)
+  );
+
+  const updateCounts = (child_count, index) => {
+    setCounts((prev) => {
+      let arr = prev;
+      arr[index] = child_count;
+      return [...arr];
+    });
+    setTotal(() => calculateAmount("price"));
+  };
+
+  const calculateAmount = () => {
+    return data
+      ?.map(({ sizes = {} }, index) => sizes?.price * counts[index])
+      ?.reduce((prev, current) => prev + current);
+  };
+
   return (
     <section className="cart">
       <div className="cart_list">
         {data &&
-          data.map((item) => (
+          data.map((item, index) => (
             <CartItem
               product={item}
               key={item["_id"] + item["variant"]}
               dispatch={dispatch}
               handler={handler}
+              index={index}
+              count={counts[index]}
+              updateCount={updateCounts}
             />
           ))}
       </div>
       <div className="checkout">
-        <button>Checkout</button>
+        <SubTotal amount={total} items={counts?.length} />
       </div>
     </section>
-  );
-};
-
-const CartItem = ({ product, dispatch, handler }) => {
-  const {
-    _id = "",
-    title = "",
-    allowed = 1,
-    thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
-    sizes: { price = 0, retail_price = 0, size = "Normal" },
-    variant = 0,
-  } = product;
-
-  let [count, setCount] = useState(() => 1);
-  const incrementCount = () => {
-    if (count < allowed) {
-      setCount((p) => p + 1);
-    } else {
-      dispatch(
-        addToast({
-          message: `Only ${allowed} items per purchase are available for this product`,
-          color: "danger",
-        })
-      );
-    }
-  };
-
-  const decrementCount = () => {
-    if (count > 1) setCount((p) => p - 1);
-    else dispatch(removeFromCart(_id, variant));
-  };
-
-  const removeItem = () => {
-    dispatch(removeFromCart(_id, variant));
-  };
-
-  return (
-    <div className="list_item">
-      <img src={thumbnail} alt={title} />
-
-      <div className="info">
-        <span className="title">{title}</span>
-        <span className="size">{size}</span>
-        <div className="price">
-          <span className="offer">₹{price * count}</span>
-
-          <del>{retail_price * count}</del>
-        </div>
-
-        <span className="add_to" onClick={() => handler(product)}>
-          Add to Wishlist
-        </span>
-        <span className="remove" onClick={removeItem}>
-          Remove
-        </span>
-      </div>
-
-      <div className="counter">
-        <button onClick={incrementCount}>+</button>
-        {count}
-        <button onClick={decrementCount}>-</button>
-      </div>
-    </div>
   );
 };
 

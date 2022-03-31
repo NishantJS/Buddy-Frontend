@@ -1,15 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import {
-  addUser,
-  addToast,
-  addSeller,
-  deleteLocale,
-  addAccount,
-} from "../services/actions";
+import { addToast, addAccount } from "../services/actions";
 import { useHistory } from "react-router-dom";
-import setAuthToken from "../services/factories/setAuthToken.js";
 
 const AuthForm = ({ handler, method, isSeller = false }) => {
   const dispatch = useDispatch();

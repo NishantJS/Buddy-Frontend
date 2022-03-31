@@ -4,12 +4,9 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  // align-items: center;
-  margin-top: 20px;
+  // margin-top: 20px;
 
   .intro {
-    // width: min(400px, calc(100vw - 20px));
-    // max-width: 100%;
     background-color: $bg_color;
     box-shadow: $light-shadow;
     overflow: hidden;
@@ -53,21 +50,22 @@
   .details {
     flex: 1;
     .desc {
-      // width: min(500px, 90vw);
       height: 100%;
       word-wrap: break-word;
     }
+
     .size {
       display: flex;
       margin: 10px 0;
       flex-wrap: wrap;
+      justify-content: center;
 
       .box {
         min-width: 80px;
         border: 2px solid $font_color;
         display: flex;
         align-items: center;
-        margin: 10px 20px;
+        margin: 10px;
         flex-direction: column;
         background-color: transparent;
         cursor: pointer;

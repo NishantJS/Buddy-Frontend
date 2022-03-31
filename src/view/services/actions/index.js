@@ -192,12 +192,11 @@ export const fetchProduct = () => {
       const product = await axios.get(
         `${process.env.REACT_APP_ROOT_PATH}shop`,
         {
-          validateStatus: (status) => status < 400,
+          validateStatus: (status) => status < 513,
         }
       );
 
       if (!product) throw new Error(message);
-
       dispatch(loadProduct(product.data));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));
@@ -221,7 +220,7 @@ export const logoutUser = ({ message = false, isDelete = false }) => {
         if (error) throw new Error("Error removing session");
         dispatch(addToast({ message: data }));
       }
-      message && dispatch(addToast({ message, color: "danger" }));
+      if (message) dispatch(addToast({ message, color: "danger" }));
     } catch (error) {
       dispatch(addToast({ message: error?.message }));
     }
@@ -245,7 +244,22 @@ export const fetchUser = () => {
         }
       );
       const { data, error, seller, user } = reqData.data;
-      if (error) logoutUser({ data });
+
+      if (
+        typeof reqData?.data === "string" &&
+        reqData?.data?.includes("Could not proxy request")
+      ) {
+        dispatch(
+          addToast({
+            message: "You are offline! Please try again 📴",
+            color: "danger",
+          })
+        );
+        return;
+      }
+
+      if (error) throw new Error(data);
+      logoutUser({ data });
       if (user) dispatch(addUser(user));
       else if (seller) dispatch(addSeller(seller));
       else dispatch(logoutUser({ message: data }));

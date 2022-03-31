@@ -37,7 +37,7 @@ const ToastItem = ({ data: { color = "success", msg = "Success" } }) => {
 
   return (
     <div className={`toast ${color}`} onClick={handleClick} ref={hide}>
-      {msg}
+      {typeof msg === "string" && msg}
     </div>
   );
 };
