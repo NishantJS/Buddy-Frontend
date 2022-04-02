@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CancelToken, get } from "axios";
 
 export default function useFetch(path = "") {
-  let [fetchData, setFetchData] = useState({
+  const [fetchData, setFetchData] = useState({
     status: 102,
     data: null,
     loading: true,
@@ -14,14 +14,15 @@ export default function useFetch(path = "") {
 
     const options = {
       cancelToken: token,
-      validateStatus: (status) => status < 511,
+      validateStatus: (status) => status < 513,
     };
 
-    const URL = `${process.env.REACT_APP_ROOT_PATH}${path}`;
-
-    const fetchPath = async ({ URL, options }) => {
+    const fetchPath = async ({ path, options }) => {
       try {
-        const data = await get(URL, options);
+        const data = await get(
+          `${process.env.REACT_APP_PROXY_URL}${path}`,
+          options
+        );
         setFetchData({
           status: data.status,
           data: data.data,
@@ -38,7 +39,7 @@ export default function useFetch(path = "") {
       }
     };
 
-    fetchPath({ URL, options });
+    fetchPath({ path, options });
 
     return () => {
       cancel();

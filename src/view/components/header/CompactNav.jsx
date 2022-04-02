@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { memo } from "react";
 import Back from "../../../icons/Back.jsx";
 import Logo from "./Logo.jsx";
 
@@ -13,4 +14,4 @@ const CompactNav = () => {
   );
 };
 
-export default CompactNav;
+export default memo(CompactNav);

@@ -1,7 +1,7 @@
-import Google from "../../icons/Google";
-import Facebook from "../../icons/Facebook";
-import Twitter from "../../icons/Twitter";
-import Email from "../../icons/Email";
+import Google from "../../../icons/Google.jsx";
+import Facebook from "../../../icons/Facebook.jsx";
+import Twitter from "../../../icons/Twitter.jsx";
+import Email from "../../../icons/Email.jsx";
 
 const authData = [
   {

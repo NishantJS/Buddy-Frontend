@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ReactComponent as LogoSvg } from "../../../icons/logo.svg";
 
 const Logo = () => {
@@ -9,4 +10,4 @@ const Logo = () => {
   );
 };
 
-export default Logo;
+export default memo(Logo);

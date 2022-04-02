@@ -87,7 +87,7 @@ export const addToCart = (cart_item) => {
       };
 
       const cartItem = await axios.patch(
-        `${process.env.REACT_APP_ROOT_PATH}user/cart`,
+        `${process.env.REACT_APP_PROXY_URL}user/cart`,
         body,
         {
           validateStatus: (status) => status < 513,
@@ -109,7 +109,7 @@ export const removeFromCart = (id, variant = 0) => {
   return async (dispatch) => {
     try {
       const cartItem = await axios.delete(
-        `${process.env.REACT_APP_ROOT_PATH}user/cart/`,
+        `${process.env.REACT_APP_PROXY_URL}user/cart/`,
         {
           params: {
             id,
@@ -143,7 +143,7 @@ export const addToWishlist = (wishlist_item) => {
       };
 
       const wishlistItem = await axios.patch(
-        `${process.env.REACT_APP_ROOT_PATH}user/wishlist`,
+        `${process.env.REACT_APP_PROXY_URL}user/wishlist`,
         body,
         {
           validateStatus: (status) => status < 513,
@@ -165,7 +165,7 @@ export const removeFromWishlist = (id, variant = 0) => {
   return async (dispatch) => {
     try {
       const wishlistItem = await axios.delete(
-        `${process.env.REACT_APP_ROOT_PATH}user/wishlist/`,
+        `${process.env.REACT_APP_PROXY_URL}user/wishlist/`,
         {
           params: {
             id,
@@ -190,7 +190,7 @@ export const fetchProduct = () => {
   return async (dispatch) => {
     try {
       const product = await axios.get(
-        `${process.env.REACT_APP_ROOT_PATH}shop`,
+        `${process.env.REACT_APP_PROXY_URL}shop`,
         {
           validateStatus: (status) => status < 513,
         }
@@ -207,13 +207,13 @@ export const fetchProduct = () => {
 export const logoutUser = ({ message = false, isDelete = false }) => {
   return async (dispatch) => {
     try {
-      deleteLocale();
       setAuthToken();
+      dispatch(deleteLocale());
       dispatch(removeUser());
       if (isDelete) {
         const {
           data: { data, error },
-        } = await axios.delete(`${process.env.REACT_APP_ROOT_PATH}session`, {
+        } = await axios.delete(`${process.env.REACT_APP_PROXY_URL}session`, {
           validateStatus: (status) => status < 512,
         });
 
@@ -238,7 +238,7 @@ export const fetchUser = () => {
   return async (dispatch) => {
     try {
       const reqData = await axios.get(
-        `${process.env.REACT_APP_ROOT_PATH}session`,
+        `${process.env.REACT_APP_PROXY_URL}session`,
         {
           validateStatus: (status) => status < 512,
         }
@@ -258,11 +258,17 @@ export const fetchUser = () => {
         return;
       }
 
+      // dispatch(deleteLocale());
       if (error) throw new Error(data);
-      logoutUser({ data });
-      if (user) dispatch(addUser(user));
-      else if (seller) dispatch(addSeller(seller));
-      else dispatch(logoutUser({ message: data }));
+      if (user) {
+        localStorage.removeItem("seller");
+        localStorage.setItem("user", JSON.stringify(user));
+        dispatch(addUser(user));
+      } else if (seller) {
+        localStorage.removeItem("user");
+        localStorage.setItem("seller", JSON.stringify(seller));
+        dispatch(addSeller(seller));
+      } else dispatch(logoutUser({ message: data }));
     } catch (err) {
       dispatch(logoutUser());
       dispatch(addToast({ message: err?.message, color: "danger" }));

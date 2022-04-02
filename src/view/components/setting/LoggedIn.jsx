@@ -1,14 +1,14 @@
 import { logoutUser } from "../../services/actions/index.js";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ContentMap } from "./Container.jsx";
 import "../../../styles/setting.scss";
 
 const LoggedIn = ({ dispatch }) => {
-  let history = useHistory();
+  let navigate = useNavigate();
 
   const onLogout = () => {
     dispatch(logoutUser({ isDelete: true }));
-    history.push("/");
+    navigate("/");
   };
 
   const accountOptions = [

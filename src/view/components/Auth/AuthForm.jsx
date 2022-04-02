@@ -1,12 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { addToast, addAccount } from "../services/actions";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { addToast, addAccount } from "../../services/actions/index.js";
 
 const AuthForm = ({ handler, method, isSeller = false }) => {
   const dispatch = useDispatch();
-  let history = useHistory();
+  let navigate = useNavigate();
 
   const obj = {
     value: "",
@@ -84,7 +84,7 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
     const reqPath = method === "signup" ? "register" : "login";
     const Seller = isSeller ? "seller" : "user";
 
-    const path = `${process.env.REACT_APP_ROOT_PATH}${Seller}/${reqPath}`;
+    const path = `${Seller}/${reqPath}`;
     const auth = {
       username: state.email.value,
       password: state.pass.value,
@@ -92,7 +92,11 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
     const options = { validateStatus: (status) => status < 511 };
 
     try {
-      const { data } = await axios.post(path, {}, { ...options, auth });
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_PROXY_URL}${path}`,
+        {},
+        { ...options, auth }
+      );
 
       if (!data)
         throw new Error(
@@ -109,7 +113,7 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
             message: data.data,
           })
         );
-        history.replace(!isSeller ? "/" : "/dashboard");
+        navigate(!isSeller ? "/" : "/dashboard", { replace: true });
       }
     } catch (err) {
       dispatch(addToast({ message: err?.message, color: "danger" }));

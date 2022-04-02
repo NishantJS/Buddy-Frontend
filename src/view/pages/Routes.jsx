@@ -1,9 +1,10 @@
-import { Switch, Route } from "react-router-dom";
+import { Routes as Switch, Route } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { useSelector } from "react-redux";
 import Loading from "../components/Loading";
 import SellerProtectedRoute from "./SellerProtected.Routes.jsx";
 import UserProtectedRoute from "./UserProtected.Routes";
+
 ////components
 const Wishlist = lazy(() => import("./Wishlist.jsx"));
 const Settings = lazy(() => import("./Settings.jsx"));
@@ -19,75 +20,98 @@ const Shop = lazy(() => import("./Shop.jsx"));
 const Profile = lazy(() => import("./Profile.jsx"));
 const Dashboard = lazy(() => import("./Dashboard.jsx"));
 const AddProduct = lazy(() => import("../components/AddProduct.jsx"));
+const AuthTemplate = lazy(() => import("../components/Auth/AuthTemplate.jsx"));
 
 const Routes = () => {
   const seller = useSelector((state) => state.auth.seller);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const isSeller = seller._id ? true : false;
-  
+
+  const AuthTemplateGenerator = ({ paths = [] }) => {
+    return paths.map((path) => (
+      <Route
+        path={path}
+        key={path}
+        element={
+          <AuthTemplate
+            method={
+              path === "login" || path === "seller_login" ? "login" : "signup"
+            }
+            isSeller={isSeller}
+          />
+        }
+      />
+    ));
+  };
   return (
     <Suspense fallback={<Loading />}>
       <Switch>
-        <Route exact path="/settings" component={Settings} />
-        <Route exact path="/profile" component={Profile} />
-        <SellerProtectedRoute
-          exact
-          path="/dashboard"
-          component={Dashboard}
-          isAuthenticated={isAuthenticated}
-          isSeller={isSeller}
-        />
-        <SellerProtectedRoute
-          exact
-          path="/add_product"
-          component={AddProduct}
-          isAuthenticated={isAuthenticated}
-          isSeller={isSeller}
-          sellerId={seller._id}
-        />
-        <Route exact path="/product/:id" component={Product} />
-        <UserProtectedRoute
-          exact
-          path="/my_wishlist"
-          component={Wishlist}
-          isAuthenticated={isAuthenticated}
-          isUser={!isSeller}
-        />
-        <UserProtectedRoute
-          exact
-          path="/my_notifications"
-          component={Notification}
-          isAuthenticated={isAuthenticated}
-          isUser={!isSeller}
-        />
-        <UserProtectedRoute
-          exact
-          path="/my_cart"
-          component={Cart}
-          isAuthenticated={isAuthenticated}
-          isUser={!isSeller}
-        />
-        <Route exact path="/categories" component={CategoryPage} />
-        <Route exact path="/auth/register" component={Auth} />
-        <Route exact path="/auth/login" component={Auth} />
         <Route
-          exact
-          path="/auth/seller_register"
-          component={() => <Auth isSeller={true} />}
-        />
-        <Route
-          exact
-          path="/auth/seller_login"
-          component={() => <Auth isSeller={true} />}
-        />
-        <Route exact path="/shop/:type" component={SubCategory} />
-        <Route exact path="/shop/:type/:sub" component={Shop} />
-        <Route
-          exact
           path="/"
-          component={isAuthenticated && isSeller ? Dashboard : Home}
+          element={isAuthenticated && isSeller ? <Dashboard /> : <Home />}
         />
-        <Route component={NotFound} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/product/:id" element={<Product />} />
+        <Route
+          path="/my_wishlist"
+          element={
+            <UserProtectedRoute
+              isAuthenticated={isAuthenticated}
+              isUser={!isSeller}
+              component={<Wishlist />}
+            />
+          }
+        />
+        <Route
+          path="/my_notifications"
+          element={
+            <UserProtectedRoute
+              isAuthenticated={isAuthenticated}
+              isUser={!isSeller}
+              component={<Notification />}
+            />
+          }
+        />
+        <Route
+          path="/my_cart"
+          element={
+            <UserProtectedRoute
+              isAuthenticated={isAuthenticated}
+              isUser={!isSeller}
+              component={<Cart />}
+            />
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <SellerProtectedRoute
+              isAuthenticated={isAuthenticated}
+              isSeller={isSeller}
+              component={<Dashboard />}
+            />
+          }
+        />
+        <Route
+          path="/add_product"
+          element={
+            <SellerProtectedRoute
+              isAuthenticated={isAuthenticated}
+              isSeller={isSeller}
+              component={<AddProduct sellerId={seller._id} />}
+            />
+          }
+        />
+        <Route path="/categories" element={<CategoryPage />} />
+        <Route path="auth" element={<Auth />}>
+          {AuthTemplateGenerator({
+            paths: ["register", "login", "seller_login", "seller_register"],
+          })}
+        </Route>
+        <Route path="/shop_for/:type" element={<SubCategory />} />
+        <Route path="/shop_for/:type/:sub" element={<Shop />} />
+        <Route path="*" element={<NotFound />} />
       </Switch>
     </Suspense>
   );

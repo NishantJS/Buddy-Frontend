@@ -67,12 +67,10 @@ const Slide = ({ product, variant }) => {
   return (
     <div className="slide" title={title}>
       <Link
-        to={{
-          pathname: `/product/${_id}?title=${urlTitle}&category=${uci}&variant=${
-            variant || 0
-          }`,
-          state: { ...product, variant },
-        }}
+        to={`/product/${_id}?title=${urlTitle}&category=${uci}&variant=${
+          variant || 0
+        }`}
+        state={{ ...product, variant }}
       >
         <div className="img">
           <img src={images[0]} alt={title} onError={handleImageLoadError} />

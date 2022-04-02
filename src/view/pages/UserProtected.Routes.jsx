@@ -1,19 +1,12 @@
-import { Redirect, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-function UserProtectedRoute({ component: Component, isUser = false, isAuthenticated = false, ...restOfProps }) {
-  
-  return (
-    <Route
-      {...restOfProps}
-      render={(props) =>
-        isAuthenticated && isUser ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/auth/login" />
-        )
-      }
-    />
-  );
-}
+const UserProtectedRoute = ({
+  isUser = false,
+  isAuthenticated = false,
+  component = <Navigate to="/auth/login" />,
+}) => {
+  if (isAuthenticated && isUser) return component;
+  return <Navigate to="/auth/login" />;
+};
 
 export default UserProtectedRoute;

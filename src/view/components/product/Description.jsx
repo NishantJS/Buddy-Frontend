@@ -1,13 +1,9 @@
 import { lazy, memo } from "react";
+const FeedingGuide = lazy(() => import("./FeedingGuide.jsx"));
 
 const Description = ({ description }) => {
   const { feeding_guide = false, main = "" } = description;
 
-  const FeedingGuide = feeding_guide ? (
-    lazy(() => import("./FeedingGuide.jsx"))
-  ) : (
-    <></>
-  );
   return (
     <div className="desc">
       {main}

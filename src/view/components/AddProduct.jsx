@@ -14,7 +14,7 @@ const AddProduct = ({ sellerId }) => {
     const formData = new FormData();
     formData.append([data.target.name], data.target.files[0]);
 
-    fetch(`${process.env.REACT_APP_ROOT_PATH}upload/${sellerId}/d`, {
+    fetch(`upload/${sellerId}/d`, {
       method: "POST",
       body: formData,
     })
