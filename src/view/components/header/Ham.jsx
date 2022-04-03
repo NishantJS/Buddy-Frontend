@@ -6,7 +6,7 @@ const Ham = () => {
   return (
     <div className="logo">
       <Link to="/settings" className="nav_icon" aria-label="settings">
-        <div className="ham">
+        <div className="ham" role={"navigation"}>
           <span></span>
           <span></span>
         </div>

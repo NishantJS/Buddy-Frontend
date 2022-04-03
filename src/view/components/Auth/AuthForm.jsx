@@ -3,6 +3,8 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addToast, addAccount } from "../../services/actions/index.js";
+import InputEmail from "./InputEmail.jsx";
+import InputPass from "./InputPass.jsx";
 
 const AuthForm = ({ handler, method, isSeller = false }) => {
   const dispatch = useDispatch();
@@ -56,10 +58,10 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
             false,
             "Password should contain Minimum eight characters"
           );
-        method !== "login" && checkValid(event, 2);
+        method !== "login" && checkValid(event, "pass1");
         break;
 
-      case 2:
+      case "pass1":
         let testPass1 =
           event.target.form[1].value !== event.target.form[2].value;
         if (!testPass1) updateValid("pass1");
@@ -120,58 +122,27 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
     }
   };
 
-  let pass1Value =
-    method !== "login"
-      ? { value: state.pass1.value }
-      : { value: state.pass.value };
-
   return (
     <form className="auth_form" onSubmit={handleSubmit} noValidate>
-      <input
-        type="email"
-        id="email"
-        placeholder=" "
-        autoComplete="email"
-        value={state.email.value}
-        inputMode="email"
-        onInput={(event) => checkValid(event, "email")}
-        onChange={(event) => updateValue(event, "email")}
-        enterKeyHint="next"
+      <InputEmail
+        state={state}
+        updateValue={updateValue}
+        checkValid={checkValid}
       />
-      <label htmlFor="email">Email</label>
-      <span className="error">{state.email.errors}</span>
-
-      <input
-        type="password"
-        id="pass"
-        placeholder=" "
-        value={state.pass.value}
-        autoComplete={method === "signup" ? "new-password" : "current-password"}
-        onInput={(event) => checkValid(event, "pass")}
-        onChange={(event) => updateValue(event, "pass")}
-        enterKeyHint={method === "signup" ? "next" : "done"}
+      <InputPass
+        state={state}
+        method={method}
+        updateValue={updateValue}
+        checkValid={checkValid}
       />
-      <label htmlFor="pass">Password</label>
-      <span className="error">{state.pass.errors}</span>
-
-      {method !== "login" ? (
-        <>
-          <input
-            type="password"
-            id="pass1"
-            placeholder=" "
-            autoComplete="new-password"
-            {...pass1Value}
-            onInput={(event) => checkValid(event, 2)}
-            onChange={(event) => updateValue(event, "pass1")}
-            enterKeyHint="done"
-          />
-
-          <label htmlFor="pass1">Confirm Password</label>
-          <span className="error">{state.pass1.errors}</span>
-        </>
-      ) : (
-        <></>
+      {method !== "login" && (
+        <InputPass
+          state={state}
+          method={method}
+          updateValue={updateValue}
+          checkValid={checkValid}
+          isConfirmPassword={true}
+        />
       )}
 
       <input

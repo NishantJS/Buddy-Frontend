@@ -12,11 +12,9 @@ const App = () => {
   return (
     <>
       <Router>
-        <header>
-          <Nav />
-        </header>
+        <Nav />
         <main>
-          <Routes/>
+          <Routes />
           <Toast />
         </main>
         <Footer />

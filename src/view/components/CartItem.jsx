@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { Link } from "react-router-dom";
 import { addToast, removeFromCart } from "../services/actions";
 
 const CartItem = ({
@@ -16,6 +17,7 @@ const CartItem = ({
     thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
     sizes: { price = 0, retail_price = 0, size = "Normal" },
     variant = 0,
+    uci,
   } = product;
 
   const incrementCount = () => {
@@ -46,7 +48,9 @@ const CartItem = ({
       <img src={thumbnail} alt={title} />
 
       <div className="info">
-        <span className="title">{title}</span>
+        <Link to={`/product/${_id}?category=${uci}&variant=${variant}`}>
+          <span className="title">{title}</span>
+        </Link>
         <span className="size">{size}</span>
         <div className="price">
           <span className="offer">
@@ -60,10 +64,14 @@ const CartItem = ({
           <del>{retail_price * count}</del>
         </div>
 
-        <span className="add_to" onClick={() => handler(product)}>
+        <span
+          className="add_to"
+          onClick={() => handler(product)}
+          role={"button"}
+        >
           Add to Wishlist
         </span>
-        <span className="remove" onClick={removeItem}>
+        <span className="remove" onClick={removeItem} role={"button"}>
           Remove
         </span>
       </div>

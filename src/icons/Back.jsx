@@ -1,8 +1,8 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useNavigationType } from "react-router-dom";
 
 const Back = ({ isNavigation = true, handler = () => {} }) => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const navType = useNavigationType();
 
   return (
     <svg
@@ -15,9 +15,12 @@ const Back = ({ isNavigation = true, handler = () => {} }) => {
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
+      role={"navigation"}
+      aria-label="back"
+      tabIndex={1}
       onClick={() =>
         isNavigation
-          ? location.state
+          ? navType !== "POP"
             ? navigate(-1)
             : navigate("/")
           : handler()

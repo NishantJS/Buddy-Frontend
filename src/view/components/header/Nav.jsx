@@ -31,23 +31,25 @@ const Nav = () => {
   );
 
   return (
-    <nav>
-      <Switch>
-        {renderMultiRoutes({
-          paths: [
-            "/my_cart",
-            "/my_wishlist",
-            "/my_notifications",
-            "/auth",
-            "/settings",
-            "/product/:id",
-          ],
-          element: <CompactNav />,
-        })}
-        <Route path="*" element={<Ham />} />
-      </Switch>
-      {navToRender}
-    </nav>
+    <header>
+      <nav>
+        <Switch>
+          {renderMultiRoutes({
+            paths: [
+              "/my_cart",
+              "/my_wishlist",
+              "/my_notifications",
+              "/auth",
+              "/settings",
+              "/product/:id",
+            ],
+            element: <CompactNav />,
+          })}
+          <Route path="*" element={<Ham />} />
+        </Switch>
+        {navToRender}
+      </nav>
+    </header>
   );
 };
 

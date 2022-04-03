@@ -13,7 +13,9 @@ const seller = localStorage.getItem("seller") ?? false;
 
 const initialState = {
   isAuthenticated: user || seller ? true : false,
-  user: user ? JSON.parse(user) : { cart: [], wishlist: [], _id: false },
+  user: user
+    ? JSON.parse(user)
+    : { cart: [], wishlist: [], _id: false, address: [], orders: [] },
   seller: seller ? JSON.parse(seller) : { _id: false },
 };
 

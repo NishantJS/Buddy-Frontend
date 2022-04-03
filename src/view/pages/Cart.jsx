@@ -2,8 +2,8 @@ import { useState, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToast, addToWishlist } from "../services/actions";
 import Loading from "./../components/Loading.jsx";
-import "../../styles/cart.scss";
 import SubTotal from "../components/SubTotal";
+import "../../styles/cart.scss";
 const CartItem = lazy(() => import("./../components/CartItem.jsx"));
 const NotFound = lazy(() => import("./NotFound.jsx"));
 
@@ -80,7 +80,7 @@ const CartContent = ({ data, dispatch, handler }) => {
           ))}
       </div>
       <div className="checkout">
-        <SubTotal amount={total} items={counts?.length} />
+        <SubTotal amount={total} items={data?.length} />
       </div>
     </section>
   );

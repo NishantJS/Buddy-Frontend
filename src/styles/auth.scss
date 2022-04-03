@@ -61,7 +61,7 @@
           font-size: 15px;
 
           label {
-            color: $font_color;
+            color: #335;
             z-index: 1;
             transform: scale(1) translate(10px, -33px);
             transition: transform 300ms, color 300ms;
@@ -70,9 +70,11 @@
             position: relative;
             padding: 10px;
             font-family: inherit;
+            width: min(280px, 90vw);
 
             &:focus + label,
             &:not(:placeholder-shown) + label {
+              color: $font_color;
               transform: scale(0.8) translate(-35px, -80px);
             }
 
