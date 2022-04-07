@@ -1,0 +1,57 @@
+[
+  {
+    "id": "name",
+    "type": "text",
+    "placeholder": "Name",
+    "minLength": "5",
+    "maxLength": "30"
+  },
+  {
+    "id": "mobile",
+    "type": "tel",
+    "placeholder": "Mobile Number",
+    "pattern": "[6-9]{1}[0-9]{9}",
+    "message": "Please add 10 digit mobile number without spaces"
+  },
+  {
+    "id": "locality",
+    "type": "text",
+    "minLength": "5",
+    "maxLength": "30",
+    "placeholder": "Your Locality"
+  },
+  {
+    "id": "landmark",
+    "type": "text",
+    "minLength": "5",
+    "maxLength": "30",
+    "placeholder": "Landmark (Optional)",
+    "required": false
+  },
+  {
+    "id": "alternate_mobile",
+    "type": "tel",
+    "pattern": "[6-9]{1}[0-9]{9}",
+    "required": false,
+    "placeholder": "Alternate Phone",
+    "message": "Optional number if your primary number is not accessible"
+  },
+  {
+    "id": "type",
+    "type": "radio",
+    "required": true,
+    "value": "home"
+  },
+  {
+    "id": "type",
+    "type": "radio",
+    "required": true,
+    "value": "work"
+  },
+  {
+    "placeholder": "city/district/town",
+    "id": "city",
+    "type": "text",
+    "required": true
+  }
+]

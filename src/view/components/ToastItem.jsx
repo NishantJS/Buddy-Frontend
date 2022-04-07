@@ -1,12 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { removeToast } from "../services/actions";
 
 const ToastItem = ({ data: { color = "success", message = "Success" } }) => {
   const dispatch = useDispatch();
-  const hide = useRef(null);
   useEffect(() => {
-    hide.current?.classList?.add?.("disappear");
     const timer = setTimeout(() => {
       dispatch(removeToast(message));
     }, 2000);
@@ -18,7 +16,7 @@ const ToastItem = ({ data: { color = "success", message = "Success" } }) => {
   const handleClick = () => dispatch(removeToast(message));
 
   return (
-    <div className={`toast ${color}`} onClick={handleClick} ref={hide}>
+    <div className={`toast ${color}`} onClick={handleClick}>
       {typeof message === "string" && message}
     </div>
   );

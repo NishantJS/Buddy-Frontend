@@ -8,12 +8,7 @@ const Toast = () => {
   return (
     <aside className="toasts">
       {toast &&
-        toast.map((item, index) => (
-          <ToastItem
-            key={index}
-            data={{ color: item.color, message: item.message }}
-          />
-        ))}
+        toast.map((item) => <ToastItem key={item?.message} data={item} />)}
     </aside>
   );
 };

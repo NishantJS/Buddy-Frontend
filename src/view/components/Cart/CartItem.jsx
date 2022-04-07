@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-import { addToast, removeFromCart } from "../services/actions";
+import { addToast, removeFromCart } from "../../services/actions/index.js";
+import { currencyFormatter } from "../../services/factories/formmater.js";
 
 const CartItem = ({
   product,
@@ -36,7 +37,7 @@ const CartItem = ({
   const decrementCount = () => {
     if (count > 1) {
       updateCount(count - 1, index);
-    } else dispatch(removeFromCart(_id, variant));
+    } else removeItem();
   };
 
   const removeItem = () => {
@@ -53,13 +54,7 @@ const CartItem = ({
         </Link>
         <span className="size">{size}</span>
         <div className="price">
-          <span className="offer">
-            {new Intl.NumberFormat("en", {
-              style: "currency",
-              currency: "INR",
-              maximumFractionDigits: 2,
-            }).format(price * count)}
-          </span>
+          <span className="offer">{currencyFormatter(price * count)}</span>
 
           <del>{retail_price * count}</del>
         </div>
@@ -77,9 +72,13 @@ const CartItem = ({
       </div>
 
       <div className="counter">
-        <button onClick={incrementCount}>+</button>
+        <button onClick={incrementCount} aria-label="add quantity">
+          +
+        </button>
         {count}
-        <button onClick={decrementCount}>-</button>
+        <button onClick={decrementCount} aria-label="decrease quantity">
+          -
+        </button>
       </div>
     </div>
   );

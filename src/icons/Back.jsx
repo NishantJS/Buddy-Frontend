@@ -15,7 +15,7 @@ const Back = ({ isNavigation = true, handler = () => {} }) => {
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
-      role={"navigation"}
+      role={isNavigation ? "navigation" : "button"}
       aria-label="back"
       tabIndex={1}
       onClick={() =>

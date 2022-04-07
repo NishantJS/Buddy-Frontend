@@ -1,5 +1,5 @@
 {
-  "name": "buddy",
+  "name": "buddyshop",
   "version": "0.1.0",
   "private": true,
   "license": "ISC",
@@ -13,7 +13,7 @@
     "react-scripts": "^5.0.0",
     "redux-thunk": "^2.4.1"
   },
-  "proxy": "https://localhost:3001",
+  "proxy": "http://localhost:5000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

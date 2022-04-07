@@ -18,6 +18,7 @@
       align-items: center;
       max-width: 550px;
       border-radius: 10px 0 0 0;
+      height: fit-content;
 
       img {
         padding: 10px;
@@ -89,26 +90,131 @@
 
   .checkout {
     width: min(calc(100% - $space * 2), 500px);
-    margin-top: $space;
-    padding: $space;
-    background-color: $bg_color;
-    height: fit-content;
+    position: relative;
 
-    h4 {
-      font-size: small;
+    & > div {
+      margin-top: $space;
+      background-color: $bg_color;
+      height: fit-content;
+      padding: $space;
+    }
 
-      span {
-        color: $success;
+    .subtotal {
+      position: sticky;
+      top: $space;
+      z-index: 1;
+
+      h4 {
+        font-size: small;
+
+        span {
+          color: $success;
+        }
+      }
+      :first-child {
+        span {
+          font-size: large;
+        }
+      }
+      h5 {
+        span {
+          color: $danger;
+        }
+      }
+
+      button {
+        width: 100%;
+        max-width: 400px;
+        margin-top: 10px;
+        display: block;
+        padding: calc($space/2);
+        background-color: $success;
+        border: 0;
+        color: $primary_color;
+        font-weight: 600;
+        outline: 0;
+      }
+
+      ul {
+        font-style: italic;
+        list-style: none;
+        li {
+          font-size: x-small;
+          display: inline;
+          margin: 0 10px;
+        }
       }
     }
-    :first-child {
-      span {
-        font-size: large;
-      }
-    }
-    h5 {
-      span {
-        color: $danger;
+
+    .addresses {
+      article {
+        font-size: small;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+
+        address {
+          padding: calc($space/2) 0;
+          font-style: normal;
+        }
+
+        label {
+          position: relative;
+          margin: 0 10px;
+          display: block;
+          padding-left: 35px;
+          margin-bottom: 12px;
+          cursor: pointer;
+          font-size: 22px;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+
+          &:hover {
+            input ~ .checkmark {
+              background-color: gray;
+            }
+          }
+
+          input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+          }
+
+          .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #ccc;
+            border-radius: 50%;
+
+            &::after {
+              content: "";
+              position: absolute;
+              display: none;
+              top: 9px;
+              left: 9px;
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              background: $bg_color;
+            }
+          }
+
+          input:checked ~ .checkmark {
+            background-color: $success;
+
+            &::after {
+              display: block;
+            }
+          }
+        }
       }
     }
   }
@@ -117,21 +223,29 @@
 @media only screen and (max-width: 700px) {
   .cart {
     flex-direction: column;
+    align-items: center;
+
     .cart_list {
+      justify-content: center;
+    }
+
+    div {
       width: 100%;
     }
   }
 }
 
 @media only screen and (max-width: 500px) {
-  .cart .cart_list {
-    margin-top: $space;
-    .list_item .title {
-      width: max(200px, 50vw);
-    }
+  .cart {
+    .cart_list {
+      margin-top: $space;
+      .list_item {
+        margin-top: 0;
 
-    .checkout {
-      margin: $space;
+        .title {
+          width: max(200px, 50vw);
+        }
+      }
     }
   }
 }

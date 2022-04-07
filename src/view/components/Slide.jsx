@@ -7,6 +7,7 @@ import {
   addToWishlist,
 } from "../services/actions/index.js";
 import { Link } from "react-router-dom";
+import { currencyFormatter } from "../services/factories/formmater.js";
 
 const Slide = ({ product, variant }) => {
   const auth = useSelector((state) => state.auth);
@@ -73,18 +74,21 @@ const Slide = ({ product, variant }) => {
         state={{ ...product, variant }}
       >
         <div className="img">
-          <img src={images[0]} alt={title} onError={handleImageLoadError} />
+          <img
+            src={images[0]}
+            alt={title}
+            onError={handleImageLoadError}
+            width="140"
+            height="140"
+            loading="lazy"
+          />
         </div>
         <div className="desc">
           <span className="size">{currentSize.size || "Normal"}</span>
           <h4>{title}</h4>
           <div className="price">
             <span>
-              <h4>{`${new Intl.NumberFormat("en-IN", {
-                style: "currency",
-                currency: "INR",
-                maximumFractionDigits: 0,
-              }).format(currentSize.price)}`}</h4>
+              <h4>{`${currencyFormatter(currentSize.price)}`}</h4>
               <h6>
                 <del>{currentSize.retail_price}</del>
               </h6>
