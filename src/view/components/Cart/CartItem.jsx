@@ -14,16 +14,22 @@ const CartItem = ({
   const {
     _id = "",
     title = "",
-    allowed = 1,
     thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
-    sizes: { price = 0, retail_price = 0, size = "Normal" },
+    sizes: { price = 0, retail_price = 0, size = "Normal", allowed, stock },
     variant = 0,
     uci,
   } = product;
 
   const incrementCount = () => {
-    if (count < allowed) {
+    if (count < allowed && count < stock) {
       updateCount(count + 1, index);
+    } else if (count >= stock) {
+      dispatch(
+        addToast({
+          message: `Sorry! Only ${stock} items are available in stock`,
+          color: "danger",
+        })
+      );
     } else {
       dispatch(
         addToast({

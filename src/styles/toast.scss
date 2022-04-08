@@ -12,11 +12,10 @@ aside.toasts {
     width: 300px;
     max-width: 400px;
     padding: 20px;
-    // border-radius: 10px 0 0 10px;
     box-shadow: $light_shadow;
     text-transform: lowercase;
-    animation: slide-left 0.4s cubic-bezier(0.445, 0.05, 0.55, 0.95) both,
-      slide-down 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95) 1700ms both;
+    animation: slide-down 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95) 1700ms
+      both;
     position: relative;
 
     &::after {
@@ -26,7 +25,7 @@ aside.toasts {
       right: 0;
       width: 100%;
       height: 2px;
-      animation: scale-down 2000ms ease-in-out forwards;
+      animation: scale-down 1800ms cubic-bezier(0.17, 0.67, 0.83, 1) forwards;
       transform-origin: left;
     }
 
@@ -54,15 +53,6 @@ aside.toasts {
       width: 80vw;
       max-width: 80vw;
     }
-  }
-}
-
-@keyframes slide-left {
-  0% {
-    transform: translateX(50px);
-  }
-  100% {
-    transform: translateX(0);
   }
 }
 

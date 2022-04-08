@@ -1,12 +1,20 @@
 import { useState } from "react";
 import Description from "./Description";
-import Images from "./Images";
-import Sizes from "./Sizes";
+import Images from "./Images.jsx";
+import Sizes from "./Sizes.jsx";
 import { useSelector } from "react-redux";
-import AddTo from "./AddTo";
+import AddTo from "./AddTo.jsx";
+import Title from "./Title.jsx";
 
 const ProductDetails = ({ data, variant = 0 }) => {
-  const { sizes = [], title = "", description = {}, images = [] } = data;
+  const {
+    sizes = [],
+    title = "",
+    description = {},
+    images = [],
+    uci = false,
+    seller = "Buddy",
+  } = data;
 
   const user = useSelector((state) => state.auth.user);
   const isUser = user._id ? true : false;
@@ -20,8 +28,9 @@ const ProductDetails = ({ data, variant = 0 }) => {
 
   return (
     <section className="product">
-      <Images images={images} title={title} />
+      <Images images={images} />
       <Details>
+        <Title title={title} seller={seller} uci={uci} />
         <Sizes
           sizes={sizes}
           updateSelected={updateSelected}

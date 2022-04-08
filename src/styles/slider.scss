@@ -96,11 +96,12 @@
           align-items: center;
           justify-content: space-between;
 
-          h6 {
+          span > h5 {
             font-weight: lighter;
-            margin: 0 5px;
+            margin: 0 10px;
           }
-          h5 {
+          h4,
+          & > h5 {
             color: $success;
           }
         }

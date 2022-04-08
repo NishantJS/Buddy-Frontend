@@ -82,7 +82,6 @@ export const addToCart = (cart_item) => {
         sizes: cart_item?.sizes,
         title: cart_item.title,
         thumbnail: cart_item?.thumbnail || cart_item?.images[0],
-        allowed: cart_item?.allowed,
         variant: cart_item?.variant || 0,
         uci: cart_item?.uci,
       };
@@ -123,7 +122,7 @@ export const removeFromCart = (id, variant = 0) => {
       if (!cartItem) throw new Error("Something went wrong!");
       if (cartItem.data.error) throw new Error(cartItem.data.data);
 
-      dispatch(addToast({ message: cartItem.data.data }));
+      dispatch(addToast({ message: cartItem.data.data, color: "danger" }));
       dispatch(removeCart(id, variant));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));
@@ -139,7 +138,6 @@ export const addToWishlist = (wishlist_item) => {
         sizes: wishlist_item?.sizes,
         title: wishlist_item.title,
         thumbnail: wishlist_item?.thumbnail || wishlist_item?.images[0],
-        allowed: wishlist_item?.allowed,
         variant: wishlist_item?.variant || 0,
         uci: wishlist_item?.uci,
       };
@@ -179,7 +177,7 @@ export const removeFromWishlist = (id, variant = 0) => {
 
       if (!wishlistItem) throw new Error("Something went wrong!");
       if (wishlistItem.data.error) throw new Error(wishlistItem.data.data);
-      dispatch(addToast({ message: wishlistItem.data.data }));
+      dispatch(addToast({ message: wishlistItem.data.data, color: "danger" }));
       dispatch(removeWishlist(id, variant));
     } catch (err) {
       dispatch(addToast({ message: err.message, color: "danger" }));

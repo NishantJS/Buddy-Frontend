@@ -26,6 +26,8 @@ const Images = ({ images, title }) => {
           className="selected_image"
           src={images[selectedImage]}
           alt={title}
+          height={384}
+          loading="lazy"
         />
       </a>
       <div className="image_slider">
@@ -38,11 +40,13 @@ const Images = ({ images, title }) => {
               className={`${selectedImage === index ? "selected" : ""}`}
               onClick={() => updateSelectedImage(index)}
               key={index + image}
+              width={70}
+              height={70}
+              loading="lazy"
             />
           );
         })}
       </div>
-      <h3>{title}</h3>
     </div>
   );
 };

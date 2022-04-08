@@ -89,9 +89,9 @@ const Slide = ({ product, variant }) => {
           <div className="price">
             <span>
               <h4>{`${currencyFormatter(currentSize.price)}`}</h4>
-              <h6>
+              <h5>
                 <del>{currentSize.retail_price}</del>
-              </h6>
+              </h5>
             </span>
             <h5>{`${Math.round(
               Math.abs(

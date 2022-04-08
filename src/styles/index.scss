@@ -7,8 +7,31 @@ body {
   margin: 10px 20px;
 }
 
-h1 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: $heading_color;
+}
+h1 {
+  font-size: 1.5rem;
+}
+h2 {
+  font-size: 1.3rem;
+}
+h3 {
+  font-size: 1.1rem;
+}
+h4 {
+  font-size: 0.9rem;
+}
+h5 {
+  font-size: 0.7rem;
+}
+h6 {
+  font-size: 0.5rem;
 }
 
 a {
@@ -16,11 +39,11 @@ a {
   color: $font_color;
 }
 
-#root{
+#root {
   display: flex;
   flex-direction: column;
 
-  main{
+  main {
     min-height: 80vh;
   }
 }
