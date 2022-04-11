@@ -163,6 +163,10 @@
         background-color: rgba(0, 0, 0, 0.35);
         color: $font_color;
 
+        svg:focus {
+          outline: none;
+        }
+
         &.left {
           border-radius: 0 50% 50% 0;
           left: 0;

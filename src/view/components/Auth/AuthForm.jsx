@@ -8,7 +8,7 @@ import InputPass from "./InputPass.jsx";
 
 const AuthForm = ({ handler, method, isSeller = false }) => {
   const dispatch = useDispatch();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const obj = {
     value: "",

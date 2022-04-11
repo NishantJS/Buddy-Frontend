@@ -10,6 +10,7 @@
     box-shadow: $light-shadow;
     overflow: hidden;
     padding: 10px 0;
+    height: fit-content;
 
     .selected_image {
       height: min(400px, calc(100vh - $nav_height - 20px));
@@ -46,6 +47,7 @@
     margin: $space 0;
 
     .title {
+      box-shadow: $light-shadow;
       padding: $space;
       background-color: $bg_color;
       h4 {
@@ -54,8 +56,57 @@
     }
 
     .desc {
+      padding: $space;
       word-wrap: break-word;
       background-color: $bg_color;
+
+      div {
+        margin-bottom: $space;
+
+        h3 {
+          text-transform: capitalize;
+          color: $font_color;
+        }
+      }
+
+      table {
+        width: 100%;
+
+        tbody tr {
+          &:nth-child(odd) {
+            background-color: $highlight;
+          }
+
+          td {
+            text-align: center;
+            padding: 5px;
+          }
+        }
+      }
+    }
+
+    .add_to {
+      display: flex;
+      justify-content: space-between;
+      margin: $space;
+
+      button {
+        outline: 0;
+        border: 0;
+        background-color: $bg_color;
+        height: 50px;
+        padding: 0 $space;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        text-transform: capitalize;
+        width: min(300px, 40vw);
+        color: $font_color;
+
+        &:hover {
+          box-shadow: $light_shadow;
+        }
+      }
     }
 
     .size {
@@ -87,7 +138,7 @@
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
   .product {
     flex-direction: row;
     max-width: 100vw;
@@ -100,6 +151,13 @@
 
     .details {
       margin: $space 0 0 $space;
+
+      .add_to {
+        margin: $space 0;
+        button {
+          width: min(250px, 50vw);
+        }
+      }
     }
   }
 }

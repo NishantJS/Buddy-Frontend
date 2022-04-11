@@ -1,6 +1,6 @@
 import React from "react";
-import Addresses from "./Addresses";
-import SubTotal from "./SubTotal";
+import Addresses from "./Addresses.jsx";
+import SubTotal from "./SubTotal.jsx";
 
 const Checkout = ({ data, counts }) => {
   const totalAmount = data

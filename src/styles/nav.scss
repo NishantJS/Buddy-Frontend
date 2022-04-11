@@ -10,45 +10,49 @@ nav {
   height: 68px;
   z-index: 10;
   overflow-y: hidden;
+  position: sticky;
+  top: 10px;
+  left: 0;
 
-  .logo{
+  .logo {
     height: 100%;
 
-    .nav_icon{
+    .nav_icon {
       min-width: 35px;
       max-width: 35px;
       margin: 0 10px;
+      &:focus {
+        outline: none;
+      }
     }
   }
-  
+
   .links,
   .logo {
     display: flex;
     flex: 1;
     align-items: center;
-    
+
     a {
       display: flex;
-      // margin: 0 10px;
       height: 100%;
       align-items: center;
 
-      span{
+      span {
         display: inline;
       }
     }
   }
-  
-  .links{
-    a{
+
+  .links {
+    a {
       flex-direction: column;
     }
   }
-  
-  .links>a.link_active{
-    animation: show 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+
+  .links > a.link_active {
+    animation: show 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   }
-  
 
   .logo {
     .ham {
@@ -75,12 +79,12 @@ nav {
 
   .links {
     justify-content: flex-end;
-a{
-margin-left: 2rem;
-  svg {
-    max-width: 40px;
-  }
-}
+    a {
+      margin-left: 2rem;
+      svg {
+        max-width: 40px;
+      }
+    }
   }
 }
 
@@ -95,13 +99,13 @@ margin-left: 2rem;
 }
 
 @media only screen and(max-width: 440px) {
-  nav>.links>a>span{
+  nav > .links > a > span {
     display: none;
   }
 }
 
 @keyframes show {
-  50%{  
+  50% {
     transform: scaleY(0.4);
   }
 }

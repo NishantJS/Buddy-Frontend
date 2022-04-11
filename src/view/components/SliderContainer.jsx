@@ -1,6 +1,7 @@
 import Back from "../../icons/Back.jsx";
 import { useState } from "react";
 import Slide from "./Slide.jsx";
+import "../../styles/slider.scss";
 
 const SlideContainer = ({ slide }) => {
   const { sliderTitle, product } = slide;
@@ -33,7 +34,7 @@ const SlideContainer = ({ slide }) => {
           onWheel={(event) => scroll(event.deltaY > 0)}
         >
           <>
-            <h3 className="title">shop for your {sliderTitle}</h3>
+            <h3 className="title">{sliderTitle}</h3>
             <div
               className="slider"
               ref={(sliderRef) => setSliderRef(sliderRef)}

@@ -26,7 +26,7 @@ const Images = ({ images, title }) => {
           className="selected_image"
           src={images[selectedImage]}
           alt={title}
-          height={384}
+          height={400}
           loading="lazy"
         />
       </a>

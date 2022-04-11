@@ -1,22 +1,16 @@
+import { useSelector } from "react-redux";
 import Category from "../components/Category";
 import Slider from "../components/Slider";
 
 const Home = () => {
+  const product = useSelector((state) => state.product);
+
   return (
     <>
       <Category />
-      <Slider />
+      <Slider product={product} />
     </>
   );
 };
 
 export default Home;
-
-/*
-todo API
-GET http://localhost:9000/shop_for_your_dog/food/?type=wet
-###
-GET http://localhost:9000/shop_for_your_dog/food/?title=Puppy Dog Food
-###
-GET http://localhost:9000/shop_for_your_dog/food/
-*/

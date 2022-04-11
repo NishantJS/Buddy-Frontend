@@ -37,7 +37,7 @@ const Routes = () => {
             method={
               path === "login" || path === "seller_login" ? "login" : "signup"
             }
-            isSeller={isSeller}
+            isSeller={path === "login" || path === "signup" ? false : true}
           />
         }
       />
