@@ -19,8 +19,10 @@ const SubCategory = lazy(() => import("../components/SubCategory.jsx"));
 const Shop = lazy(() => import("./Shop.jsx"));
 const Profile = lazy(() => import("./Profile.jsx"));
 const Dashboard = lazy(() => import("./Dashboard.jsx"));
-const AddProduct = lazy(() => import("../components/AddProduct.jsx"));
-const AuthTemplate = lazy(() => import("../components/Auth/AuthTemplate.jsx"));
+const ProductFormContainer = lazy(() =>
+  import("../components/ProductFormContainer.jsx")
+);
+const AuthTemplate = lazy(() => import("../components/auth/AuthTemplate.jsx"));
 
 const Routes = () => {
   const seller = useSelector((state) => state.auth.seller);
@@ -99,7 +101,7 @@ const Routes = () => {
             <SellerProtectedRoute
               isAuthenticated={isAuthenticated}
               isSeller={isSeller}
-              component={<AddProduct sellerId={seller._id} />}
+              component={<ProductFormContainer />}
             />
           }
         />

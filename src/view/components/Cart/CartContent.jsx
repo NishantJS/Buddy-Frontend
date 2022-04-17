@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CartItem from "./CartItem.jsx";
-import { addToast, addToWishlist } from "../../services/actions/index.js";
-import Checkout from "./Checkout.jsx";
+import { addToWishlist } from "../../services/actions/user";
+import { addToast } from "../../services/actions/toast";
+import CartItem from "./CartItem";
+import Checkout from "./Checkout";
 
 const CartContent = ({ data }) => {
   const [counts, setCounts] = useState(() => data.map(() => 1));

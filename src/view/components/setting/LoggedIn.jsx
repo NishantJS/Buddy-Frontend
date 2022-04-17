@@ -1,4 +1,4 @@
-import { logoutUser } from "../../services/actions/index.js";
+import { logoutUser } from "../../services/actions/auth.js";
 import { useNavigate } from "react-router-dom";
 import { ContentMap } from "./Container.jsx";
 import "../../../styles/setting.scss";

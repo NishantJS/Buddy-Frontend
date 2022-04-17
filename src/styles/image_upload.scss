@@ -1,0 +1,85 @@
+@import "variables";
+
+.wrapper {
+  background-color: $bg_color;
+  padding: $space;
+  max-height: fit-content;
+
+  .image_form {
+    border: 2px dashed $accent;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: $space;
+    width: min(300px, 100vw);
+    cursor: grab;
+    text-align: center;
+
+    input {
+      display: none;
+    }
+
+    svg {
+      width: 100px;
+      fill: $accent;
+    }
+  }
+  .progress-area,
+  .uploaded-area {
+    ol {
+      list-style: none;
+
+      li {
+        display: flex;
+        justify-content: left;
+        margin-top: calc($space/2);
+        background-color: $lighten;
+        position: relative;
+        width: min(300px, 100vw);
+
+        &::after {
+          content: "";
+          width: 3px;
+          height: 100%;
+          background-color: $accent;
+          right: 0;
+          position: absolute;
+          transform: scaleY(0);
+          transition: transform 500ms;
+        }
+
+        &:hover {
+          box-shadow: $light_shadow;
+          &::after {
+            transform: scaleY(1);
+          }
+        }
+
+        img {
+          flex: 1;
+          width: 150px;
+          height: 100px;
+          margin-right: calc($space/2);
+          overflow: hidden;
+          object-fit: contain;
+        }
+
+        .content {
+          flex: 2;
+          // max-width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+
+          .name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+          }
+        }
+      }
+    }
+  }
+}

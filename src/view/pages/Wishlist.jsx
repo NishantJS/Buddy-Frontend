@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
+import { addToCart, removeFromWishlist } from "../services/actions/user";
+import { addToast } from "../services/actions/toast";
 import "../../styles/cart.scss";
-import { addToCart, removeFromWishlist, addToast } from "../services/actions";
-import NotFound from "../pages/NotFound.jsx";
+import NotFound from "../pages/NotFound";
 
 const Wishlist = () => {
   const cart = useSelector((state) => state.auth.user.cart);

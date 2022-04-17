@@ -1,31 +1,30 @@
+import React from "react";
 import { useForm } from "react-hook-form";
-import { images } from "../../data/addProduct.seller.js";
-// import "../../styles/stepper.scss";
+import { images } from "../../../data/addProduct.seller.js";
+// import axios from "axios";
 
-const AddProduct = ({ sellerId }) => {
+const Images = () => {
   const {
     register,
-    handleSubmit,
     formState: { errors },
+    handleSubmit,
   } = useForm();
 
   const onSubmit = (data) => console.log(data);
-  const uploadImage = (data) => {
-    const formData = new FormData();
-    formData.append([data.target.name], data.target.files[0]);
-
-    fetch(`upload/${sellerId}/d`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  // const uploadImage = (data) => {
+  // console.log(data);
+  // const formData = new FormData();
+  // formData.append([data.target.name], data.target.files[0]);
+  // axios
+  //   .post(`/upload/${sellerId}/d`, formData)
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
+  // };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* {general.map((element) => {
@@ -38,7 +37,6 @@ const AddProduct = ({ sellerId }) => {
           </div>
         );
       })} */}
-
       {images.map(({ name, type, accept, required = false }) => {
         return (
           <div key={name}>
@@ -47,7 +45,7 @@ const AddProduct = ({ sellerId }) => {
               type={type}
               accept={accept}
               {...register(name, { required })}
-              onChange={uploadImage}
+              // onChange={uploadImage}
             />
             {errors[name]?.message}
           </div>
@@ -58,8 +56,4 @@ const AddProduct = ({ sellerId }) => {
   );
 };
 
-export default AddProduct;
-
-// const Input = ({label, type, }) => {
-
-// }
+export default Images;

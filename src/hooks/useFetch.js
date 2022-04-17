@@ -19,10 +19,7 @@ export default function useFetch(path = "") {
 
     const fetchPath = async ({ path, options }) => {
       try {
-        const data = await get(
-          `${process.env.REACT_APP_PROXY_URL}${path}`,
-          options
-        );
+        const data = await get(`/${path}`, options);
         setFetchData({
           status: data.status,
           data: data.data,

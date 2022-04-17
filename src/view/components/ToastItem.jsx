@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { removeToast } from "../services/actions";
+import { removeToast } from "../services/actions/toast";
 
 const ToastItem = ({ data: { color = "success", message = "Success" } }) => {
   const dispatch = useDispatch();

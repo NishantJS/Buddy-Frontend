@@ -4,19 +4,22 @@
   --bg-color: #fff;
   --heading-color: #212121;
   --body-color: #f1f1fa;
-  --accent: #83e5fc;
+  --accent: #536dfe;
+  --lighten: rgba(83, 109, 254, 0.15);
   --danger: #f33;
   --success: green;
   --darken: #fffd;
   --highlight: #f2f2f2;
 }
+
 [data-theme="dark"] {
   --primary-color: #222;
   --font-color: #fafafa;
   --bg-color: #334;
   --heading-color: #fff;
   --body-color: #121227;
-  --accent: #01579b;
+  --accent: #458abf;
+  --lighten: rgba(138, 138, 231, 0.05);
   --success: #5f5;
   --darken: #003c;
   --highlight: #333350;

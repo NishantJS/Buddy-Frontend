@@ -3,9 +3,9 @@ import { Navigate } from "react-router-dom";
 const SellerProtectedRoute = ({
   isSeller = false,
   isAuthenticated = false,
-  children,
+  component = <Navigate to="/auth/seller_login" />,
 }) => {
-  if (isAuthenticated && isSeller) return children;
+  if (isAuthenticated && isSeller) return component;
   return <Navigate to="/auth/seller_login" />;
 };
 

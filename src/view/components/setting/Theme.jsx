@@ -1,15 +1,22 @@
 import { useState } from "react";
 import "../../../styles/setting.scss";
-import { addToast } from "../../services/actions/index.js";
+import { addToast } from "../../services/actions/toast";
 
 const Theme = ({ dispatch }) => {
-  const [localTheme, setLocalTheme] = useState(localStorage.getItem("theme") || "system");  
+  const [localTheme, setLocalTheme] = useState(
+    localStorage.getItem("theme") || "system"
+  );
 
-  const themes = ["dark", "light", "system"]
+  const themes = ["dark", "light", "system"];
 
   const changeTheme = (theme) => {
     if (theme === localTheme) {
-      dispatch(addToast({ message: `${theme} theme is already applied`, color: "danger" }));
+      dispatch(
+        addToast({
+          message: `${theme} theme is already applied`,
+          color: "danger",
+        })
+      );
     } else {
       if (theme === "system") {
         if (
@@ -25,17 +32,21 @@ const Theme = ({ dispatch }) => {
       }
 
       localStorage.setItem("theme", theme);
-      dispatch(addToast({message: `${theme} theme is applied`}));
+      dispatch(addToast({ message: `${theme} theme is applied` }));
       setLocalTheme((p) => theme);
     }
   };
-  
+
   return (
     <article className="container">
       <h4 className="title">Theme</h4>
       <div className="box-container">
         {themes.map((theme) => (
-          <div className={`box ${theme===localTheme?"active":""}`} onClick={()=>changeTheme(theme)} key={theme}>
+          <div
+            className={`box ${theme === localTheme ? "active" : ""}`}
+            onClick={() => changeTheme(theme)}
+            key={theme}
+          >
             <span>{theme}</span>
           </div>
         ))}

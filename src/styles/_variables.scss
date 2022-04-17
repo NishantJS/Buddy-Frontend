@@ -13,11 +13,18 @@ $danger: var(--danger);
 $success: var(--success);
 $warning: gold;
 $highlight: var(--highlight);
+$grey: #e0e0e0;
+$lightgrey: rgba(#d3d3d3, 0.5);
 
 $darken: var(--darken);
+$lighten: var(--lighten);
 
 $dark_shadow: rgba(#121227, 0.2) 0px 1px 2px 0px;
 $light_shadow: rgba(#121227, 0.1) 0px 1px 2px 0px;
 
 $nav_height: 68px;
 $space: 1rem;
+
+$circle-size: clamp(1.5rem, 5vw, 3rem);
+$spacing: clamp(0.25rem, 2vw, 0.5rem);
+$size: 3rem;

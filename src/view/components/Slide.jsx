@@ -1,13 +1,10 @@
-import Cart from "../../icons/Cart.jsx";
-import Heart from "../../icons/Heart.jsx";
+import Cart from "../../icons/Cart";
+import Heart from "../../icons/Heart";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  addToast,
-  addToCart,
-  addToWishlist,
-} from "../services/actions/index.js";
+import { addToast } from "../services/actions/toast";
+import { addToCart, addToWishlist } from "../services/actions/user";
 import { Link } from "react-router-dom";
-import { currencyFormatter } from "../services/factories/formmater.js";
+import { currencyFormatter } from "../services/factories/formmater";
 
 const Slide = ({ product, variant }) => {
   const auth = useSelector((state) => state.auth);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import Quote from "../components/Auth/Quote.jsx";
+import Quote from "../components/auth/Quote.jsx";
 import "../../styles/auth.scss";
 
 const Auth = ({ isSeller = false }) => {

@@ -1,12 +1,9 @@
-import { createRoot } from "react-dom/client";
 import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import store from "./store";
-import {
-  fetchUser,
-  fetchProduct,
-  startupWarning,
-} from "./view/services/actions";
+import { startupWarning } from "./view/services/actions";
+import { fetchUser } from "./view/services/actions/auth";
 ////components
 import App from "./view/App";
 ////style
@@ -14,7 +11,6 @@ import "./styles/global.scss";
 import "./styles/index.scss";
 
 store.dispatch(fetchUser());
-store.dispatch(fetchProduct());
 store.dispatch(startupWarning());
 
 const container = document.getElementById("root");

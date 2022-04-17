@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { useSelector } from "react-redux";
 import Loading from "./../components/Loading.jsx";
 import "../../styles/cart.scss";
-const CartContent = lazy(() => import("./../components/Cart/CartContent.jsx"));
+const CartContent = lazy(() => import("../components/cart/CartContent.jsx"));
 const NotFound = lazy(() => import("./NotFound.jsx"));
 
 const Cart = () => {

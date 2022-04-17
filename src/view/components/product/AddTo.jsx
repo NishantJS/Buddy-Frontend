@@ -1,11 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import Cart from "../../../icons/Cart.jsx";
-import Wishlist from "../../../icons/Heart.jsx";
-import {
-  addToast,
-  addToCart,
-  addToWishlist,
-} from "../../services/actions/index.js";
+import { addToCart, addToWishlist } from "../../services/actions/user";
+import { addToast } from "../../services/actions/toast";
+import Cart from "../../../icons/Cart";
+import Wishlist from "../../../icons/Heart";
 
 const AddTo = ({ product, variant }) => {
   const cart = useSelector((state) => state.auth.user.cart);

@@ -2,9 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addToast, addAccount } from "../../services/actions/index.js";
-import InputEmail from "./InputEmail.jsx";
-import InputPass from "./InputPass.jsx";
+import { addAccount } from "../../services/actions/auth";
+import { addToast } from "../../services/actions/toast";
+import InputEmail from "./InputEmail";
+import InputPass from "./InputPass";
 
 const AuthForm = ({ handler, method, isSeller = false }) => {
   const dispatch = useDispatch();
@@ -94,11 +95,7 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
     const options = { validateStatus: (status) => status < 511 };
 
     try {
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_PROXY_URL}${path}`,
-        {},
-        { ...options, auth }
-      );
+      const { data } = await axios.post(`/${path}`, {}, { ...options, auth });
 
       if (!data)
         throw new Error(
