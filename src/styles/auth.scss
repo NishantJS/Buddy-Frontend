@@ -114,8 +114,7 @@
       z-index: -1;
       position: absolute;
       border-radius: 0 0 0 0;
-      background-color: var(--bg-color);
-      box-shadow: $dark_shadow;
+      background-color: $bg_color;
       animation: slide 2s ease-in-out forwards;
     }
   }

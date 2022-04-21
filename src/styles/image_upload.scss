@@ -12,8 +12,12 @@
     flex-direction: column;
     padding: $space;
     width: min(300px, 100vw);
-    cursor: grab;
     text-align: center;
+    cursor: grab;
+
+    & > * {
+      cursor: grab;
+    }
 
     input {
       display: none;
@@ -24,7 +28,7 @@
       fill: $accent;
     }
   }
-  .progress-area,
+
   .uploaded-area {
     ol {
       list-style: none;
@@ -36,8 +40,9 @@
         background-color: $lighten;
         position: relative;
         width: min(300px, 100vw);
+        cursor: move;
 
-        &::after {
+        &::before {
           content: "";
           width: 3px;
           height: 100%;
@@ -50,7 +55,7 @@
 
         &:hover {
           box-shadow: $light_shadow;
-          &::after {
+          &::before {
             transform: scaleY(1);
           }
         }
@@ -66,7 +71,6 @@
 
         .content {
           flex: 2;
-          // max-width: 100%;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
@@ -77,6 +81,11 @@
             display: -webkit-box;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 2;
+          }
+
+          .size_and_remove > span:nth-child(2) {
+            margin-left: $space;
+            cursor: pointer;
           }
         }
       }

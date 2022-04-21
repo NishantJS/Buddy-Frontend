@@ -5,9 +5,8 @@ import Meta from "./productForm/Meta.jsx";
 import Images from "./productForm/Images.jsx";
 import Review from "./productForm/Review";
 import Stepper from "./productForm/Stepper";
-import Switcher from "./productForm/Switcher";
 
-const FormSwitch = ({ step }) => {
+const FormSwitch = ({ step, nextStep, prevStep }) => {
   const [title, setTitle] = useState(() => false);
 
   const updateTitle = (newTitle = false) => {
@@ -16,21 +15,21 @@ const FormSwitch = ({ step }) => {
 
   switch (step) {
     case 0:
-      return <Meta updateTitle={updateTitle} />;
+      return <Meta updateTitle={updateTitle} nextStep={nextStep} />;
     case 1:
-      return <Images />;
+      return <Images prevStep={prevStep} nextStep={nextStep} title={title} />;
     case 2:
-      return <Description />;
+      return <Description prevStep={prevStep} nextStep={nextStep} />;
     case 3:
-      return <Review title={title} />;
+      return <Review title={title} prevStep={prevStep} />;
 
     default:
-      return <Meta />;
+      return <Meta updateTitle={updateTitle} nextStep={nextStep} />;
   }
 };
 
 const ProductFormContainer = () => {
-  const [step, setStep] = useState(() => 2);
+  const [step, setStep] = useState(() => 1);
 
   const prevStep = () => {
     if (step <= 0) return;
@@ -42,20 +41,10 @@ const ProductFormContainer = () => {
     setStep((p) => p + 1);
   };
 
-  const submitData = (data) => {
-    console.log(data);
-  };
-
   return (
     <section className="product_form">
       <Stepper step={step} />
-      <FormSwitch step={step} />
-      <Switcher
-        prevStep={prevStep}
-        nextStep={nextStep}
-        step={step}
-        handleSubmit={submitData}
-      />
+      <FormSwitch prevStep={prevStep} nextStep={nextStep} step={step} />
     </section>
   );
 };

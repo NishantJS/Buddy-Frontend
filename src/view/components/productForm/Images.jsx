@@ -1,58 +1,86 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { images } from "../../../data/addProduct.seller.js";
-// import axios from "axios";
+import { useState } from "react";
+import "../../../styles/image_upload.scss";
+import { addToast } from "../../services/actions/toast.js";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import ImageList from "./ImageList.jsx";
+import Switcher from "./Switcher.jsx";
+import DropImage from "./DropImage";
 
-const Images = () => {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+const Images = ({ prevStep, nextStep, title = false }) => {
+  const [images, setImages] = useState(() => []);
 
-  const onSubmit = (data) => console.log(data);
-  // const uploadImage = (data) => {
-  // console.log(data);
-  // const formData = new FormData();
-  // formData.append([data.target.name], data.target.files[0]);
-  // axios
-  //   .post(`/upload/${sellerId}/d`, formData)
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
-  // };
+  const dispatch = useDispatch();
+  const addMessage = (message = "", color = "danger") => {
+    dispatch(
+      addToast({
+        message,
+        color,
+      })
+    );
+  };
+  const removeImage = (index) => {
+    setImages((prev) => prev.filter((_, prev_index) => prev_index !== index));
+  };
+
+  const updateImages = (files) => {
+    setImages((prev) => [...prev, ...files]);
+  };
+
+  const moveImages = (arr = [], index, draggedIndex) => {
+    const middleElement = images[draggedIndex];
+    setImages(() => {
+      let array = [...arr];
+      array.splice(draggedIndex, 1);
+      return [...array.slice(0, index), middleElement, ...array.slice(index)];
+    });
+  };
+
+  const uploadImages = async () => {
+    try {
+      if (!title) return prevStep();
+      const formData = new FormData();
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+        validateStatus: (status) => status < 513,
+        onUploadProgress: (progressEvent) =>
+          console.log(
+            Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          ),
+      };
+
+      images.forEach((image) => formData.append("product_image", image));
+      const { data } = await axios.post(
+        `/seller/upload/${title}`,
+        formData,
+        config
+      );
+      if (data.error) throw new Error(data.data);
+      addMessage(data.data);
+      nextStep();
+    } catch (error) {
+      addMessage(error?.message || "File upload failed! Please try again!");
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* {general.map((element) => {
-        let { name, type } = element;
-        return (
-          <div key={name}>
-            <label>{name}</label>
-            <input type={type} {...register(name, element)} />
-            {errors[name]?.message}
-          </div>
-        );
-      })} */}
-      {images.map(({ name, type, accept, required = false }) => {
-        return (
-          <div key={name}>
-            <label>{name}</label>
-            <input
-              type={type}
-              accept={accept}
-              {...register(name, { required })}
-              // onChange={uploadImage}
-            />
-            {errors[name]?.message}
-          </div>
-        );
-      })}
-      <input type="submit" />
-    </form>
+    <>
+      <div className="wrapper">
+        <DropImage
+          images={images}
+          addMessage={addMessage}
+          updateImages={updateImages}
+        />
+        <ImageList
+          images={images}
+          removeImage={removeImage}
+          moveImages={moveImages}
+        />
+      </div>
+      <Switcher prevStep={prevStep} nextStep={uploadImages} />
+    </>
   );
 };
 

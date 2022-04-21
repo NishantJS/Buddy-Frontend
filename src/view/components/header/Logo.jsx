@@ -5,7 +5,7 @@ const Logo = () => {
   return (
     <>
       <LogoSvg fill="currentColor" />
-      <h1 className="logo_txt">Buddy</h1>
+      <h1 className="logo_txt">BuddyShop</h1>
     </>
   );
 };

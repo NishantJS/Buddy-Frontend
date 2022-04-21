@@ -1,11 +1,15 @@
 import React from "react";
 
-const Switcher = ({ step, prevStep, nextStep, handleSubmit }) => {
+const Switcher = ({
+  prevStep = false,
+  nextStep = false,
+  handleSubmit = false,
+}) => {
   return (
     <div className="switcher">
-      {step > 0 && <button onClick={prevStep}>Previous Step</button>}
-      {step < 3 && <button onClick={nextStep}>Next Step</button>}
-      {step === 3 && (
+      {prevStep && <button onClick={prevStep}>Previous Step</button>}
+      {nextStep && <button onClick={nextStep}>Next Step</button>}
+      {handleSubmit && (
         <button type="submit" onClick={handleSubmit}>
           Submit
         </button>

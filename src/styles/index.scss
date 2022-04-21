@@ -1,10 +1,35 @@
 @import "variables";
 
+html,
+body,
+header,
+nav,
+ol,
+ul,
+li,
+div,
+section,
+article,
+aside,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: $poppins;
   color: $font_color;
   background-color: $body_color;
   margin: 10px 20px;
+  padding: 0;
 }
 
 h1,
@@ -46,12 +71,6 @@ a {
   main {
     min-height: 80vh;
   }
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
 
 @media only screen and (max-width: 580px) {

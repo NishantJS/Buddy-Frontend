@@ -1,10 +1,14 @@
 import React from "react";
+import Switcher from "./Switcher";
 
-const Meta = () => {
+const Meta = ({ updateTitle, nextStep, step }) => {
   return (
-    <label>
-      <input type="text" />
-    </label>
+    <>
+      <label>
+        <input type="text" />
+      </label>
+      <Switcher nextStep={nextStep} step={step} />
+    </>
   );
 };
 

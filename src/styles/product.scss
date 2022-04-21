@@ -21,7 +21,7 @@
 
     .image_slider {
       height: 70px;
-      overflow: hidden;
+      margin-bottom: 5px;
 
       img {
         cursor: pointer;
@@ -56,6 +56,7 @@
     }
 
     .desc {
+      box-shadow: $light-shadow;
       padding: $space;
       word-wrap: break-word;
       background-color: $bg_color;
@@ -102,9 +103,10 @@
         text-transform: capitalize;
         width: min(300px, 40vw);
         color: $font_color;
+        box-shadow: $light_shadow;
 
         &:hover {
-          box-shadow: $light_shadow;
+          box-shadow: $dark_shadow;
         }
       }
     }
@@ -116,22 +118,20 @@
 
       .box {
         min-width: 80px;
-        border: 2px solid transparent;
         display: flex;
         align-items: center;
         margin: 10px;
         flex-direction: column;
-        background-color: transparent;
         cursor: pointer;
-        padding: 0 10px;
+        padding: 5px 15px;
 
         .name {
           text-transform: capitalize;
         }
 
         &.selected {
-          background-color: $bg_color;
-          border-color: $success;
+          background-color: $font_color;
+          color: $bg_color;
         }
       }
     }
