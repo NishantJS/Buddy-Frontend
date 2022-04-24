@@ -12,7 +12,6 @@ const FetchProductDetails = ({ search, pathname }) => {
   const { data, loading, error } = useFetch(
     `shop/${product_id}?category=${category}`
   );
-  console.log({ data, loading, error });
 
   const toRender = loading ? (
     <Loading />

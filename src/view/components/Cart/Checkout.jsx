@@ -2,7 +2,7 @@ import React from "react";
 import Addresses from "./Addresses.jsx";
 import SubTotal from "./SubTotal.jsx";
 
-const Checkout = ({ data, counts }) => {
+const Checkout = ({ data, counts = [0, 0] }) => {
   const totalAmount = data
     .map(({ sizes = {} }, index) => sizes?.price * counts[index])
     .reduce((prev, current) => prev + current);

@@ -38,7 +38,7 @@ const Images = ({ prevStep, nextStep, title = false }) => {
 
   const uploadImages = async () => {
     try {
-      if (!title) return prevStep();
+      // if (!title) return prevStep();
       const formData = new FormData();
       const config = {
         headers: {

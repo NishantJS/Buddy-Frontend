@@ -19,6 +19,7 @@ const SubCategory = lazy(() => import("../components/SubCategory.jsx"));
 const Shop = lazy(() => import("./Shop.jsx"));
 const Profile = lazy(() => import("./Profile.jsx"));
 const Dashboard = lazy(() => import("./Dashboard.jsx"));
+const Redirect = lazy(() => import("./Redirect.jsx"));
 const ProductFormContainer = lazy(() =>
   import("../components/ProductFormContainer.jsx")
 );
@@ -39,7 +40,11 @@ const Routes = () => {
             method={
               path === "login" || path === "seller_login" ? "login" : "signup"
             }
-            isSeller={path === "login" || path === "signup" ? false : true}
+            isSeller={
+              path === "seller_login" || path === "seller_register"
+                ? true
+                : false
+            }
           />
         }
       />
@@ -113,6 +118,7 @@ const Routes = () => {
         </Route>
         <Route path="/shop_for/:type" element={<SubCategory />} />
         <Route path="/shop_for/:type/:sub" element={<Shop />} />
+        <Route path="/auth_redirect" element={<Redirect />} />
         <Route path="*" element={<NotFound />} />
       </Switch>
     </Suspense>

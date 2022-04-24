@@ -28,13 +28,17 @@ const Slide = ({ product, variant }) => {
   const favHandler = () => {
     const isAlreadyInWishlist = () => {
       return wishlist.some(
-        (item) => item._id === product._id && item.variant === variant
+        (item) => item.id === product._id && item.variant === variant
       );
     };
 
     if (!isAlreadyInWishlist()) {
       dispatch(
-        addToWishlist({ ...product, sizes: product?.currentSize, variant })
+        addToWishlist({
+          ...product,
+          sizes: product?.currentSize,
+          variant,
+        })
       );
     } else {
       toastMessage("Product already exists in Wishlist");
@@ -44,12 +48,18 @@ const Slide = ({ product, variant }) => {
   const cartHandler = () => {
     const isAlreadyInCart = () => {
       return cart.some(
-        (item) => item._id === product._id && item.variant === variant
+        (item) => item.id === product._id && item.variant === variant
       );
     };
 
     if (!isAlreadyInCart()) {
-      dispatch(addToCart({ ...product, sizes: product?.currentSize, variant }));
+      dispatch(
+        addToCart({
+          ...product,
+          sizes: product?.currentSize,
+          variant,
+        })
+      );
     } else {
       toastMessage("Product already exists in cart");
     }
@@ -60,6 +70,7 @@ const Slide = ({ product, variant }) => {
   };
 
   const { title = "", images = [], currentSize = {}, _id, uci = 0 } = product;
+
   const urlTitle = title.split(" ").join("_");
 
   return (

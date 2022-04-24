@@ -22,7 +22,7 @@ const ProductDetails = ({ data, variant = 0 }) => {
   const user = useSelector((state) => state.auth.user);
   const isUser = user._id ? true : false;
   const [selectedSize, setSelectedSize] = useState(
-    variant < sizes.length ? variant : 0
+    variant < sizes.length && variant >= 0 ? variant : 0
   );
 
   const updateSelected = (index) => {

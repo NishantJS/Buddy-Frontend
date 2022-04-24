@@ -18,7 +18,11 @@ const AuthTemplate = ({ method, isSeller = false }) => {
             isSeller={isSeller}
           />
         ) : (
-          <Authenticate method={method} handler={updateIsEmail} />
+          <Authenticate
+            method={method}
+            handler={updateIsEmail}
+            isSeller={isSeller}
+          />
         )}
       </div>
     </>

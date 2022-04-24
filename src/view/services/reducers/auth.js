@@ -6,6 +6,7 @@ import {
   ADD_SELLER,
   REMOVE_CART,
   REMOVE_WISHLIST,
+  UPDATE_CART_QUANTITY,
 } from "../constants";
 
 const user = localStorage.getItem("user") ?? false;
@@ -19,17 +20,29 @@ const initialState = {
   seller: seller ? JSON.parse(seller) : { _id: false },
 };
 
-function checkDuplicate(array, payload) {
-  return array.some((value) => {
-    return value._id === payload._id && value.variant === payload.variant;
+const checkDuplicate = (array, payload) => {
+  return array.some((item) => {
+    return item.id === payload.id && item.variant === payload.variant;
   });
-}
+};
 
-function removeItem(array, payload) {
+const removeItem = (array, payload) => {
   return array.filter(
-    (item) => !(item._id === payload.id && item.variant === payload.variant)
+    (item) => !(item.id === payload.id && item.variant === payload.variant)
   );
-}
+};
+
+const updateArray = (array, payload) => {
+  return array.map((item) => {
+    if (item.id === payload.id && item.variant === payload.variant) {
+      const quantity = payload.isIncrement
+        ? item.quantity + 1
+        : item.quantity - 1;
+      return { ...item, quantity };
+    }
+    return item;
+  });
+};
 
 export default function auth(state = initialState, action) {
   const { payload, type } = action;
@@ -57,6 +70,15 @@ export default function auth(state = initialState, action) {
         user: {
           ...state.user,
           cart: removeItem(state.user.cart, payload),
+        },
+      };
+
+    case UPDATE_CART_QUANTITY:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          cart: updateArray(state.user.cart, payload),
         },
       };
 

@@ -2,7 +2,7 @@ import {
   ADD_PRODUCT_FORM_SECTION,
   REMOVE_PRODUCT_FORM_SECTIONS,
 } from "../constants/";
-import axios from "axios";
+// import axios from "axios";
 
 export const addProductSection = (payload = {}) => {
   return {

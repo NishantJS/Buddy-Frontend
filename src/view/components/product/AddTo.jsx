@@ -13,13 +13,17 @@ const AddTo = ({ product, variant }) => {
   const cartHandler = () => {
     const isAlreadyInCart = () => {
       return cart.some(
-        (item) => item._id === product._id && item.variant === variant
+        (item) => item.id === product._id && item.variant === variant
       );
     };
 
     if (!isAlreadyInCart()) {
       dispatch(
-        addToCart({ ...product, sizes: product?.sizes[variant], variant })
+        addToCart({
+          ...product,
+          sizes: product?.sizes[variant],
+          variant,
+        })
       );
     } else {
       dispatch(
@@ -31,7 +35,7 @@ const AddTo = ({ product, variant }) => {
   const wishlistHandler = () => {
     const isAlreadyInWishlist = () => {
       return wishlist.some(
-        (item) => item._id === product._id && item.variant === variant
+        (item) => item.id === product._id && item.variant === variant
       );
     };
 

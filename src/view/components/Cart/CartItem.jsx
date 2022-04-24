@@ -1,36 +1,30 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { addToast } from "../../services/actions/toast";
-import { removeFromCart } from "../../services/actions/user";
+import { removeFromCart, updateQuantity } from "../../services/actions/user";
 import { currencyFormatter } from "../../services/factories/formmater";
 
-const CartItem = ({
-  product,
-  dispatch,
-  handler,
-  updateCount,
-  count,
-  index,
-}) => {
+const CartItem = ({ product, dispatch, handler }) => {
   const {
-    _id = "",
+    id = "",
     title = "",
     thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
     sizes: { price = 0, retail_price = 0, size = "Normal", allowed, stock },
     variant = 0,
     uci,
+    quantity = 1,
   } = product;
 
   const incrementCount = () => {
-    if (count < allowed && count < stock) {
-      updateCount(count + 1, index);
-    } else if (count >= stock) {
+    if (quantity >= stock) {
       dispatch(
         addToast({
           message: `Sorry! Only ${stock} items are available in stock`,
           color: "danger",
         })
       );
+    } else if (quantity < allowed) {
+      dispatch(updateQuantity(id, variant, true));
     } else {
       dispatch(
         addToast({
@@ -42,13 +36,13 @@ const CartItem = ({
   };
 
   const decrementCount = () => {
-    if (count > 1) {
-      updateCount(count - 1, index);
+    if (quantity > 1) {
+      dispatch(updateQuantity(id, variant, false));
     } else removeItem();
   };
 
   const removeItem = () => {
-    dispatch(removeFromCart(_id, variant));
+    dispatch(removeFromCart(id, variant));
   };
 
   return (
@@ -56,14 +50,16 @@ const CartItem = ({
       <img src={thumbnail} alt={title} />
 
       <div className="info">
-        <Link to={`/product/${_id}?category=${uci}&variant=${variant}`}>
+        <Link
+          to={`/product/${id}?title=${title}&category=${uci}&variant=${variant}`}
+        >
           <span className="title">{title}</span>
         </Link>
         <span className="size">{size}</span>
         <div className="price">
-          <span className="offer">{currencyFormatter(price * count)}</span>
+          <span className="offer">{currencyFormatter(price * quantity)}</span>
 
-          <del>{retail_price * count}</del>
+          <del>{retail_price * quantity}</del>
         </div>
 
         <span
@@ -82,7 +78,7 @@ const CartItem = ({
         <button onClick={incrementCount} aria-label="add quantity">
           +
         </button>
-        {count}
+        {quantity}
         <button onClick={decrementCount} aria-label="decrease quantity">
           -
         </button>

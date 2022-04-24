@@ -1,7 +1,7 @@
 import Google from "../../../icons/Google.jsx";
 import Facebook from "../../../icons/Facebook.jsx";
-import Twitter from "../../../icons/Twitter.jsx";
 import Email from "../../../icons/Email.jsx";
+import { useNavigate } from "react-router-dom";
 
 const authData = [
   {
@@ -13,25 +13,40 @@ const authData = [
     icon: <Facebook />,
   },
   {
-    label: "Twitter",
-    icon: <Twitter />,
-  },
-  {
     label: "Email",
     icon: <Email />,
   },
 ];
 
-const Authenticate = ({ method, handler }) => {
+const Authenticate = ({ method, handler, isSeller }) => {
+  let navigate = useNavigate();
+  const openChildWindow = (url, windowName, w, h) => {
+    const y = window.top.outerHeight / 2 + window.top.screenY - h / 2;
+    const x = window.top.outerWidth / 2 + window.top.screenX - w / 2;
+    return window.open(
+      url,
+      windowName,
+      `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${w}, height=${h}, top=${y}, left=${x}`
+    );
+  };
   const clickHandler = (index) => {
-    switch (index) {
-      case 0:
-        break;
-      case 3:
-        handler();
-        break;
-      default:
-    }
+    if (index === 2) return handler();
+    if (!(index === 0 || index === 1)) return;
+    const provider = index === 0 ? "google" : "facebook";
+    const role = isSeller ? "seller" : "user";
+    const win = openChildWindow(
+      `http://localhost:5000/v1/auth/${provider}/${role}`,
+      "Buddyshop login",
+      500,
+      500
+    );
+    // win.focus();
+    const timer = setInterval(() => {
+      if (win.closed) {
+        clearInterval(timer);
+        navigate("/auth_redirect");
+      }
+    }, 100);
   };
 
   return (
