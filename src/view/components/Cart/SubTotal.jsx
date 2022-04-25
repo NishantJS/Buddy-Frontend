@@ -1,6 +1,7 @@
 import { currencyFormatter } from "../../services/factories/formmater.js";
+import Pay from "./Pay.jsx";
 
-const SubTotal = ({ totalAmount, totalItems, handler }) => {
+const SubTotal = ({ totalAmount, totalItems }) => {
   const freeAbove = Number.parseInt(process.env.REACT_APP_FREE_DELIVERY_ABOVE);
   const isFreeDelivery = totalAmount > freeAbove;
   const deleiveryAmount = isFreeDelivery ? 0 : 50;
@@ -24,9 +25,11 @@ const SubTotal = ({ totalAmount, totalItems, handler }) => {
           <span>+ {currencyFormatter(50)}</span> Shipping
         </h5>
       )}
-      <button onClick={handler}>
-        Pay {currencyFormatter(totalAmount + deleiveryAmount)}
-      </button>
+      <Pay
+        currencyFormatter={currencyFormatter}
+        totalAmount={totalAmount}
+        deleiveryAmount={deleiveryAmount}
+      />
       <ul>
         <li>Secure</li>
         <li>Easy Return</li>

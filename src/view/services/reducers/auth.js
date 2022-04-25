@@ -6,7 +6,7 @@ import {
   ADD_SELLER,
   REMOVE_CART,
   REMOVE_WISHLIST,
-  UPDATE_CART_QUANTITY,
+  SUCCESSFUL_CHECKOUT,
 } from "../constants";
 
 const user = localStorage.getItem("user") ?? false;
@@ -30,18 +30,6 @@ const removeItem = (array, payload) => {
   return array.filter(
     (item) => !(item.id === payload.id && item.variant === payload.variant)
   );
-};
-
-const updateArray = (array, payload) => {
-  return array.map((item) => {
-    if (item.id === payload.id && item.variant === payload.variant) {
-      const quantity = payload.isIncrement
-        ? item.quantity + 1
-        : item.quantity - 1;
-      return { ...item, quantity };
-    }
-    return item;
-  });
 };
 
 export default function auth(state = initialState, action) {
@@ -73,12 +61,12 @@ export default function auth(state = initialState, action) {
         },
       };
 
-    case UPDATE_CART_QUANTITY:
+    case SUCCESSFUL_CHECKOUT:
       return {
         ...state,
         user: {
           ...state.user,
-          cart: updateArray(state.user.cart, payload),
+          cart: [],
         },
       };
 

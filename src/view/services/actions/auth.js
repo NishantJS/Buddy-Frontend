@@ -23,7 +23,7 @@ export const logoutUser = ({ message = false, isDelete = false }) => {
         const {
           data: { data, error },
         } = await axios.delete("/session", {
-          validateStatus: (status) => status < 512,
+          validateStatus: () => true,
         });
 
         if (error) throw new Error("Error removing session");
@@ -47,7 +47,7 @@ export const fetchUser = () => {
   return async (dispatch) => {
     try {
       const reqData = await axios.get("/session", {
-        validateStatus: (status) => status < 512,
+        validateStatus: () => true,
       });
       const { data, error, seller, user } = reqData.data;
 

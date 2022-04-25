@@ -1,10 +1,17 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { addToast } from "../../services/actions/toast";
-import { removeFromCart, updateQuantity } from "../../services/actions/user";
+import { removeFromCart } from "../../services/actions/user";
 import { currencyFormatter } from "../../services/factories/formmater";
 
-const CartItem = ({ product, dispatch, handler }) => {
+const CartItem = ({
+  product,
+  dispatch,
+  handler,
+  count,
+  index,
+  updateCount,
+}) => {
   const {
     id = "",
     title = "",
@@ -12,19 +19,18 @@ const CartItem = ({ product, dispatch, handler }) => {
     sizes: { price = 0, retail_price = 0, size = "Normal", allowed, stock },
     variant = 0,
     uci,
-    quantity = 1,
   } = product;
 
   const incrementCount = () => {
-    if (quantity >= stock) {
+    if (count >= stock) {
       dispatch(
         addToast({
           message: `Sorry! Only ${stock} items are available in stock`,
           color: "danger",
         })
       );
-    } else if (quantity < allowed) {
-      dispatch(updateQuantity(id, variant, true));
+    } else if (count < allowed) {
+      updateCount(count + 1, index);
     } else {
       dispatch(
         addToast({
@@ -36,8 +42,8 @@ const CartItem = ({ product, dispatch, handler }) => {
   };
 
   const decrementCount = () => {
-    if (quantity > 1) {
-      dispatch(updateQuantity(id, variant, false));
+    if (count > 1) {
+      updateCount(count - 1, index);
     } else removeItem();
   };
 
@@ -57,9 +63,9 @@ const CartItem = ({ product, dispatch, handler }) => {
         </Link>
         <span className="size">{size}</span>
         <div className="price">
-          <span className="offer">{currencyFormatter(price * quantity)}</span>
+          <span className="offer">{currencyFormatter(price * count)}</span>
 
-          <del>{retail_price * quantity}</del>
+          <del>{retail_price * count}</del>
         </div>
 
         <span
@@ -78,7 +84,7 @@ const CartItem = ({ product, dispatch, handler }) => {
         <button onClick={incrementCount} aria-label="add quantity">
           +
         </button>
-        {quantity}
+        {count}
         <button onClick={decrementCount} aria-label="decrease quantity">
           -
         </button>

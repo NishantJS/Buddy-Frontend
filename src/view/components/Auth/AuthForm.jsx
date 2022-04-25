@@ -92,7 +92,7 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
       username: state.email.value,
       password: state.pass.value,
     };
-    const options = { validateStatus: (status) => status < 511 };
+    const options = { validateStatus: () => true };
 
     try {
       const { data } = await axios.post(`/${path}`, {}, { ...options, auth });

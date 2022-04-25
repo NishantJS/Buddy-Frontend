@@ -5,7 +5,7 @@ import {
   REMOVE_USER,
   REMOVE_WISHLIST,
   ADD_WISHLIST,
-  UPDATE_CART_QUANTITY,
+  SUCCESSFUL_CHECKOUT,
 } from "../constants/";
 import axios from "axios";
 import { addToast } from "./toast";
@@ -18,11 +18,6 @@ export const addCart = (cart_item) => ({
 export const removeCart = (id, variant = 0) => ({
   type: REMOVE_CART,
   payload: { id, variant },
-});
-
-export const updateCartQuantity = (id, variant = 0, isIncrement = true) => ({
-  type: UPDATE_CART_QUANTITY,
-  payload: { id, variant, isIncrement },
 });
 
 export const addWishlist = (item) => ({
@@ -48,6 +43,12 @@ export const removeUser = () => {
   };
 };
 
+export const successfulCheckout = () => {
+  return {
+    type: SUCCESSFUL_CHECKOUT,
+  };
+};
+
 export const addToCart = (cart_item) => {
   return async (dispatch) => {
     try {
@@ -62,7 +63,7 @@ export const addToCart = (cart_item) => {
       };
 
       const cartItem = await axios.patch("/user/cart", body, {
-        validateStatus: (status) => status < 513,
+        validateStatus: () => true,
       });
 
       if (!cartItem) throw new Error("Something went wrong!");
@@ -84,7 +85,7 @@ export const removeFromCart = (id, variant = 0) => {
           id,
           variant,
         },
-        validateStatus: (status) => status < 513,
+        validateStatus: () => true,
       });
 
       if (!cartItem) throw new Error("Something went wrong!");
@@ -111,7 +112,7 @@ export const addToWishlist = (wishlist_item) => {
       };
 
       const wishlistItem = await axios.patch("/user/wishlist", body, {
-        validateStatus: (status) => status < 513,
+        validateStatus: () => true,
       });
 
       if (!wishlistItem) throw new Error("Something went wrong!");
@@ -133,7 +134,7 @@ export const removeFromWishlist = (id, variant = 0) => {
           id,
           variant,
         },
-        validateStatus: (status) => status < 513,
+        validateStatus: () => true,
       });
 
       if (!wishlistItem) throw new Error("Something went wrong!");
@@ -146,25 +147,11 @@ export const removeFromWishlist = (id, variant = 0) => {
   };
 };
 
-export const updateQuantity = (id, variant = 0, isIncrement = true) => {
+export const onSuccessfulCheckout = () => {
   return async (dispatch) => {
     try {
-      const cartItem = await axios.patch(
-        "/user/cart/quantity",
-        {
-          id,
-          variant,
-          isIncrement,
-        },
-        {
-          validateStatus: (status) => status < 513,
-        }
-      );
-
-      if (!cartItem) throw new Error("Something went wrong!");
-      if (cartItem?.data?.error) throw new Error(cartItem?.data?.data);
-      dispatch(updateCartQuantity(id, variant, isIncrement));
-      dispatch(addToast({ message: cartItem?.data?.data, color: "success" }));
+      dispatch(addToast({ message: "Order placed successfully" }));
+      dispatch(successfulCheckout());
     } catch (error) {
       dispatch(addToast({ message: error?.message, color: "danger" }));
     }

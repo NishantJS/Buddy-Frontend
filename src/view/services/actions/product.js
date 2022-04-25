@@ -14,7 +14,7 @@ export const fetchProduct = () => {
   return async (dispatch) => {
     try {
       const product = await axios.get("/shop", {
-        validateStatus: (status) => status < 513,
+        validateStatus: () => true,
       });
 
       if (!product) throw new Error(message);

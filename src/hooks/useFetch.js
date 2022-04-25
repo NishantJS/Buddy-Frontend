@@ -14,7 +14,7 @@ export default function useFetch(path = "") {
 
     const options = {
       cancelToken: token,
-      validateStatus: (status) => status < 513,
+      validateStatus: () => true,
     };
 
     const fetchPath = async ({ path, options }) => {

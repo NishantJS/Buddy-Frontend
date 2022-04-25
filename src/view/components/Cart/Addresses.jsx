@@ -9,7 +9,12 @@ const Addresses = () => {
     address.length < 1 ? (
       <EmptyAddress />
     ) : (
-      <SelectAddress addresses={address} />
+      <>
+        <SelectAddress addresses={address} />
+        <Link to="/profile#address">
+          <h5>or add another...</h5>
+        </Link>
+      </>
     );
   return <div className="addresses">{toRender}</div>;
 };
@@ -23,7 +28,7 @@ const Address = ({ address, index }) => {
     isPrimary = false,
     line1,
     line2,
-    pincode,
+    pin,
     state,
     isHome = true,
   } = address;
@@ -58,7 +63,7 @@ const Address = ({ address, index }) => {
         </div>
         {line1 + ", " + line2}
         <br />
-        {state + " " + pincode}
+        {state + " " + pin}
         <br />
         <span>{isHome ? "Home" : "Work"}</span>
       </address>
@@ -74,11 +79,9 @@ const SelectAddress = ({ addresses = [] }) => {
 
 const EmptyAddress = () => {
   return (
-    <>
-      <Link to="/profile#address">
-        <h4>Add Address</h4>
-      </Link>
+    <Link to="/profile#address">
+      <h4>Add Address</h4>
       <h5>Please add an address to continue</h5>
-    </>
+    </Link>
   );
 };

@@ -23,7 +23,7 @@ const Review = () => {
         headers: {
           "content-type": "multipart/form-data",
         },
-        validateStatus: (status) => status < 513,
+        validateStatus: () => true,
         onUploadProgress: (progressEvent) =>
           console.log(
             Math.round((progressEvent.loaded * 100) / progressEvent.total)
