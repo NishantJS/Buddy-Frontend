@@ -59,7 +59,7 @@ export const addToCart = (cart_item) => {
         thumbnail: cart_item?.thumbnail || cart_item?.images[0],
         variant: cart_item?.variant || 0,
         uci: cart_item?.uci,
-        quantity: cart_item?.quantity || 1,
+        seller: cart_item?.seller,
       };
 
       const cartItem = await axios.patch("/user/cart", body, {
@@ -109,6 +109,7 @@ export const addToWishlist = (wishlist_item) => {
         thumbnail: wishlist_item?.thumbnail || wishlist_item?.images[0],
         variant: wishlist_item?.variant || 0,
         uci: wishlist_item?.uci,
+        seller: wishlist_item?.seller,
       };
 
       const wishlistItem = await axios.patch("/user/wishlist", body, {

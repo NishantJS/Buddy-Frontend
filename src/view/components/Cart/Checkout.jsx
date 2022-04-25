@@ -2,10 +2,10 @@ import React from "react";
 import Addresses from "./Addresses.jsx";
 import SubTotal from "./SubTotal.jsx";
 
-const Checkout = ({ data, counts = [0, 0], dispatch }) => {
+const Checkout = ({ data, counts = [0, 0] }) => {
   const totalAmount = data
-    .map(({ sizes = {} }, index) => sizes?.price * counts[index])
-    .reduce((prev, current) => prev + current);
+    ?.map(({ sizes = {} }, index) => sizes?.price * counts[index])
+    ?.reduce((prev, current) => prev + current);
 
   counts.length = data.length;
 
@@ -13,7 +13,12 @@ const Checkout = ({ data, counts = [0, 0], dispatch }) => {
 
   return (
     <div className="checkout">
-      <SubTotal totalAmount={totalAmount} totalItems={totalItems} />
+      <SubTotal
+        totalAmount={totalAmount}
+        totalItems={totalItems}
+        data={data}
+        counts={counts}
+      />
       <Addresses />
     </div>
   );

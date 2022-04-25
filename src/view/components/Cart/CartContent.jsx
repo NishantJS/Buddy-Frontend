@@ -6,7 +6,7 @@ import Checkout from "./Checkout";
 import { useState } from "react";
 
 const CartContent = ({ data }) => {
-  const [counts, setCounts] = useState(() => data.map(() => 1));
+  const [counts, setCounts] = useState(() => data?.map(() => 1));
 
   const updateCounts = (child_count, index) => {
     setCounts((prev) => {
@@ -41,7 +41,7 @@ const CartContent = ({ data }) => {
     <section className="cart">
       <div className="cart_list">
         {data &&
-          data.map((item, index) => (
+          data?.map((item, index) => (
             <CartItem
               product={item}
               key={item["id"] + item["variant"]}
@@ -53,7 +53,7 @@ const CartContent = ({ data }) => {
             />
           ))}
       </div>
-      <Checkout data={data} counts={counts} dispatch={dispatch} />
+      <Checkout data={data} counts={counts} />
     </section>
   );
 };
