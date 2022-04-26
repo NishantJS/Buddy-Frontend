@@ -20,8 +20,8 @@ const Pay = ({
     const script = document.createElement("script");
     script.src = src;
     script.async = true;
-    script.integrity =
-      "sha384-GAdNOhResEX9ACZZqU2hBnD03IV4Ic/IzhsS2ToFvEpkwIcrNEHrlc914Hfn4KoQ";
+    // script.integrity =
+    // "sha384-GAdNOhResEX9ACZZqU2hBnD03IV4Ic/IzhsS2ToFvEpkwIcrNEHrlc914Hfn4KoQ";
     script.crossOrigin = "anonymous";
     return script;
   };
@@ -75,22 +75,17 @@ const Pay = ({
     const script = loadScript("https://checkout.razorpay.com/v1/checkout.js");
     document.body.appendChild(script);
     script.onerror = () => {
-      dispatch(
-        addToast({
-          message: "Error loading razorpay payment script",
-          color: "danger",
-        })
-      );
+      console.warn("Error loading razorpay payment link");
     };
 
     return () => {
-      // script && document.body.removeChild(script);
-      // const elements = document.getElementsByClassName("razorpay-container");
-      // while (elements.length > 0) {
-      //   document.body.removeChild(elements[0]);
-      // }
+      script && document.body.removeChild(script);
+      const elements = document.getElementsByClassName("razorpay-container");
+      while (elements.length > 0) {
+        document.body.removeChild(elements[0]);
+      }
     };
-  });
+  }, []);
 
   const checkoutHandler = async () => {
     const getIndex = () => {

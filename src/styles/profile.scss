@@ -1,22 +1,76 @@
 @import "./variables";
 
+.profile {
+  .add_address {
+    & > button {
+      padding: $space;
+      background-color: $font_color;
+      outline: 0;
+      border: 0;
+      color: $bg_color;
+      border-radius: 10px;
+      cursor: pointer;
+    }
 
-div.img_upload{
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    form {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      font-size: 15px;
+      width: min(400px, 90vw);
 
-  img{
-    width: 100%;
-    max-width: 400px;
+      input {
+        padding: 10px;
+        font-family: inherit;
+        width: 100%;
+
+        &[type="submit"] {
+          margin: $space 0;
+        }
+
+        &[type="submit"]:not(:disabled) {
+          cursor: pointer;
+          border: 1px solid $font_color;
+          color: $font_color;
+          background-color: transparent;
+          font-weight: bold;
+        }
+      }
+
+      .error {
+        width: 100%;
+        font-size: 10px;
+        transform: translateY(-18px);
+      }
+    }
+
+    .list {
+      width: fit-content;
+      overflow-x: hidden;
+
+      address {
+        background-color: $bg_color;
+        font-style: normal;
+        padding: calc($space/2);
+        margin: calc($space/2) 0;
+
+        .primary {
+          display: inline;
+          margin-left: 20px;
+          font-size: x-small;
+          text-decoration: underline;
+        }
+
+        span {
+          display: block;
+        }
+      }
+    }
   }
-  
-  canvas{
-    width: 100%;
-    max-width: 400px;
-    border: 3px dashed red;
-    // background-color: red;
+}
+
+@media only screen and(max-width: 450px) {
+  .add_address {
+    margin: $space;
   }
 }

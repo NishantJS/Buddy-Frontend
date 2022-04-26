@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Loading from "../components/Loading";
 import SellerProtectedRoute from "./SellerProtected.Routes.jsx";
 import UserProtectedRoute from "./UserProtected.Routes";
+import ProtectedRoute from "./Protected.Routes";
 
 ////components
 const Wishlist = lazy(() => import("./Wishlist.jsx"));
@@ -58,7 +59,16 @@ const Routes = () => {
           element={isAuthenticated && isSeller ? <Dashboard /> : <Home />}
         />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute
+              isAuthenticated={isAuthenticated}
+              isSeller={isSeller}
+              component={<Profile isSeller={isSeller} />}
+            />
+          }
+        />
         <Route path="/product/:id" element={<Product />} />
         <Route
           path="/my_wishlist"
