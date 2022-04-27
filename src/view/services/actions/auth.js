@@ -1,5 +1,5 @@
 import setAuthToken from "../factories/setAuthToken";
-import { REMOVE_USER } from "../constants/";
+import { ADD_ADDRESS, REMOVE_ADDRESS, REMOVE_USER } from "../constants/";
 import axios from "axios";
 import { addSeller } from "./seller";
 import { addToast } from "./toast";
@@ -11,6 +11,17 @@ export const removeUser = () => {
     type: REMOVE_USER,
   };
 };
+
+export const addAddress = ({ address, isSeller }) => ({
+  type: ADD_ADDRESS,
+  payload: address,
+  isSeller,
+});
+
+export const removeAddress = (index) => ({
+  type: REMOVE_ADDRESS,
+  payload: index,
+});
 
 export const logoutUser = ({ message = false, isDelete = false }) => {
   return async (dispatch) => {
@@ -102,6 +113,29 @@ export const addAccount = ({ isSeller = false, user, seller, message }) => {
       }
     } catch (error) {
       dispatch(addToast({ message: error?.message }));
+    }
+  };
+};
+
+export const removeFromAddress = (_id, isSeller) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.delete(
+        `/${isSeller ? "seller" : "user"}/address/remove/`,
+        {
+          params: {
+            index: _id,
+          },
+          validateStatus: () => true,
+        }
+      );
+
+      if (!response) throw new Error("Something went wrong!");
+      if (response.data.error) throw new Error(response.data.data);
+      dispatch(addToast({ message: response.data.data, color: "danger" }));
+      dispatch(removeAddress({ _id, isSeller }));
+    } catch (error) {
+      dispatch(addToast({ message: error?.message, color: "danger" }));
     }
   };
 };

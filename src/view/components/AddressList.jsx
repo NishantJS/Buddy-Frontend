@@ -1,8 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { removeFromAddress } from "../services/actions/auth.js";
 
-const AddressList = ({ isSeller }) => {
-  const data = useSelector((state) => state.auth[isSeller ? "seller" : "user"]);
+const AddressList = ({ data, dispatch, isSeller }) => {
+  const removeAddress = (id) => {
+    dispatch(removeFromAddress(id, isSeller));
+  };
+
   return data.address?.map((address) => {
     return (
       <address key={address.full_name + address?.line1}>
@@ -20,6 +23,9 @@ const AddressList = ({ isSeller }) => {
         </span>
         <span>{address?.pin}</span>
         {address?.phone.join(", ")}
+        <span className="delete" onClick={() => removeAddress(address._id)}>
+          &#128473;
+        </span>
       </address>
     );
   });

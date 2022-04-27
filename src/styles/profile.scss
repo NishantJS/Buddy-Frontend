@@ -53,6 +53,7 @@
         font-style: normal;
         padding: calc($space/2);
         margin: calc($space/2) 0;
+        position: relative;
 
         .primary {
           display: inline;
@@ -63,6 +64,13 @@
 
         span {
           display: block;
+
+          &.delete {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+          }
         }
       }
     }

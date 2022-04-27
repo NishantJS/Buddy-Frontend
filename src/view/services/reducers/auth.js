@@ -7,6 +7,8 @@ import {
   REMOVE_CART,
   REMOVE_WISHLIST,
   SUCCESSFUL_CHECKOUT,
+  ADD_ADDRESS,
+  REMOVE_ADDRESS,
 } from "../constants";
 
 const user = localStorage.getItem("user") ?? false;
@@ -28,14 +30,18 @@ const checkDuplicate = (array, payload) => {
 
 const removeItem = (array, payload) => {
   return array.filter(
-    (item) => !(item.id === payload.id && item.variant === payload.variant)
+    (item) => !(item?.id === payload?.id && item?.variant === payload?.variant)
   );
+};
+
+const removeAddress = (array, payload) => {
+  return array.filter((item) => item?._id === payload?._id);
 };
 
 export default function auth(state = initialState, action) {
   const { payload, type } = action;
 
-  let isDuplicate;
+  let isDuplicate, role;
   switch (type) {
     case ADD_CART:
       isDuplicate = checkDuplicate(state.user.cart, payload);
@@ -52,12 +58,34 @@ export default function auth(state = initialState, action) {
         return { ...state };
       }
 
+    case ADD_ADDRESS:
+      role = action.isSeller ? "seller" : "user";
+
+      return {
+        ...state,
+        [role]: {
+          ...state[role],
+          address: [...state[role]["address"], payload],
+        },
+      };
+
     case REMOVE_CART:
       return {
         ...state,
         user: {
           ...state.user,
           cart: removeItem(state.user.cart, payload),
+        },
+      };
+
+    case REMOVE_ADDRESS:
+      role = payload.isSeller ? "seller" : "user";
+
+      return {
+        ...state,
+        [role]: {
+          ...state[role],
+          address: removeAddress(state[role]["address"], payload),
         },
       };
 
