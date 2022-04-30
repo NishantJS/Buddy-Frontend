@@ -2,7 +2,7 @@ import React from "react";
 import "../../../styles/stepper.scss";
 
 const Stepper = ({ step = 0 }) => {
-  const items = ["Meta", "Images", "Description", "Review"];
+  const items = ["Meta", "Sizes", "Review", "Images"];
 
   return (
     <ol className="stepper">

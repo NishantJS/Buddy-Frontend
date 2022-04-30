@@ -9,6 +9,7 @@ import {
   SUCCESSFUL_CHECKOUT,
   ADD_ADDRESS,
   REMOVE_ADDRESS,
+  ADD_PRODUCT,
 } from "../constants";
 
 const user = localStorage.getItem("user") ?? false;
@@ -150,6 +151,15 @@ export default function auth(state = initialState, action) {
         isAuthenticated: false,
         user: { _id: false, cart: [] },
         seller: { _id: false },
+      };
+
+    case ADD_PRODUCT:
+      return {
+        ...state,
+        seller: {
+          ...state.seller,
+          products: [...state.seller.products, payload],
+        },
       };
 
     default:

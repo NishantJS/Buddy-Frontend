@@ -21,7 +21,12 @@ p,
 span,
 label,
 input,
-form {
+form textarea,
+select,
+option,
+dl,
+dd,
+dt {
   margin: 0;
   padding: 0;
   box-sizing: border-box;

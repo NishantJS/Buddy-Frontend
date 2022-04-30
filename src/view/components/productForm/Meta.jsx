@@ -1,13 +1,118 @@
 import React from "react";
 import Switcher from "./Switcher";
+import { useForm } from "react-hook-form";
+import Title from "./Title.Meta";
+import { useDispatch, useSelector } from "react-redux";
+import { addToast } from "../../services/actions/toast";
 
-const Meta = ({ updateTitle, nextStep, step }) => {
+const Meta = ({ updateMeta, nextStep, step, data }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: data,
+  });
+  const products = useSelector((state) => state.auth.seller.products);
+  const dispatch = useDispatch();
+
+  const onSubmit = (data) => {
+    const isAlreadyUploaded = products.filter(
+      (item) => item.title === data.title
+    ).length;
+    if (isAlreadyUploaded) {
+      dispatch(
+        addToast({
+          message:
+            "Product with same name already uploaded! Either edit it or add different product!",
+          color: "danger",
+        })
+      );
+      return;
+    }
+    updateMeta(data, "meta");
+    nextStep();
+  };
+
+  const options = (pattern, minLength, maxLength, required) => {
+    const option = {};
+    if (pattern)
+      option.pattern = {
+        value: /^[a-zA-z0-9]+([\s][a-zA-Z0-9]+)+$/,
+        message:
+          "Invalid Input! Title should be multi-word with no special characters",
+      };
+    if (minLength)
+      option.minLength = {
+        value: minLength,
+        message: `Length should be more than ${minLength}`,
+      };
+    if (maxLength)
+      option.maxLength = {
+        value: maxLength,
+        message: `Length should not be more than ${maxLength}`,
+      };
+    if (required) option.required = `${required} field is required`;
+    return option;
+  };
+
   return (
     <>
-      <label>
-        <input type="text" />
-      </label>
-      <Switcher nextStep={nextStep} step={step} />
+      <form>
+        <Title errors={errors} register={register} options={options} />
+
+        <div>
+          <label>
+            Description
+            <textarea
+              {...register("description", {
+                ...options(false, 50, 300, "Description"),
+              })}
+              rows={3}
+            />
+          </label>
+          {errors["description"] && (
+            <span className="error">{errors["description"]["message"]}</span>
+          )}
+        </div>
+
+        <div>
+          <label>
+            Category
+            <select
+              {...register("category", {
+                required: "category is required field",
+              })}
+            >
+              <option value="Dog">Dog</option>
+              <option value="Cat">Cat</option>
+            </select>
+          </label>
+          {errors["category"] && (
+            <span className="error">{errors["category"]["message"]}</span>
+          )}
+        </div>
+        <div>
+          <label>
+            Sub-Category
+            <select
+              {...register("sub_category", {
+                required: "sub category is required field",
+              })}
+            >
+              <option value="Food">Food</option>
+              <option value="Treats">Treats</option>
+              <option value="Health">Health</option>
+              <option value="Toys">Toys</option>
+              <option value="Grooming">Grooming</option>
+            </select>
+          </label>
+          {errors["sub_category"] && (
+            <span className="error">{errors["sub_category"]["message"]}</span>
+          )}
+        </div>
+      </form>
+      <Switcher step={step} nextStep={handleSubmit(onSubmit)} />
     </>
   );
 };

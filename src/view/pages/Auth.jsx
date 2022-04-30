@@ -27,13 +27,9 @@ const Auth = ({ isSeller = false }) => {
     </>
   );
 
-  const path_to = isSeller
-    ? onLogin
-      ? "/auth/seller_register"
-      : "/auth/seller_login"
-    : onLogin
-    ? "/auth/register"
-    : "/auth/login";
+  const path_to = `/auth${isSeller ? "/seller/_" : "/"}${
+    onLogin ? "register" : "login"
+  }`;
 
   const updateOnLogin = () => {
     setOnLogin((p) => !p);

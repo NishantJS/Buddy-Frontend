@@ -1,16 +1,19 @@
 import { useState } from "react";
 import "../../../styles/image_upload.scss";
 import { addToast } from "../../services/actions/toast.js";
+import { addProduct } from "../../services/actions/seller.js";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import ImageList from "./ImageList.jsx";
 import Switcher from "./Switcher.jsx";
 import DropImage from "./DropImage";
+import { useNavigate } from "react-router-dom";
 
-const Images = ({ prevStep, nextStep, title = false }) => {
+const Images = ({ prevStep, state }) => {
   const [images, setImages] = useState(() => []);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const addMessage = (message = "", color = "danger") => {
     dispatch(
       addToast({
@@ -38,29 +41,32 @@ const Images = ({ prevStep, nextStep, title = false }) => {
 
   const uploadImages = async () => {
     try {
-      // if (!title) return prevStep();
       const formData = new FormData();
+
       const config = {
         headers: {
           "content-type": "multipart/form-data",
         },
         validateStatus: () => true,
-        onUploadProgress: (progressEvent) =>
-          console.log(
-            Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          ),
       };
 
-      images.forEach((image) => formData.append("product_image", image));
+      images?.forEach((image) => formData.append("product_image", image));
+      Object.keys(state.meta)?.forEach((key) =>
+        formData.append(key, state["meta"][key])
+      );
+      formData.append("sizes", JSON.stringify(state.sizes));
+
       const { data } = await axios.post(
-        `/seller/upload/${title}`,
+        `/seller/product/add`,
         formData,
         config
       );
       if (data.error) throw new Error(data.data);
-      addMessage(data.data);
-      nextStep();
+      dispatch(addProduct({ id: data.product._id, title: data.product.title }));
+      addMessage(data.data, "success");
+      navigate("/dashboard");
     } catch (error) {
+      console.log(error);
       addMessage(error?.message || "File upload failed! Please try again!");
     }
   };
@@ -79,7 +85,7 @@ const Images = ({ prevStep, nextStep, title = false }) => {
           moveImages={moveImages}
         />
       </div>
-      <Switcher prevStep={prevStep} nextStep={uploadImages} />
+      <Switcher prevStep={prevStep} handleSubmit={uploadImages} />
     </>
   );
 };

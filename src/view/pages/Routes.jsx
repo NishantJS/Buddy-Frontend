@@ -22,7 +22,7 @@ const Profile = lazy(() => import("./Profile.jsx"));
 const Dashboard = lazy(() => import("./Dashboard.jsx"));
 const Redirect = lazy(() => import("./Redirect.jsx"));
 const ProductFormContainer = lazy(() =>
-  import("../components/ProductFormContainer.jsx")
+  import("../components/productForm/Container.jsx")
 );
 const AuthTemplate = lazy(() => import("../components/auth/AuthTemplate.jsx"));
 

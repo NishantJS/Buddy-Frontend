@@ -9,21 +9,21 @@ const DropImage = ({ images, addMessage, updateImages }) => {
       );
     };
 
-    const dataTransfer = event.dataTransfer || false;
+    const dataTransfer = event?.dataTransfer || false;
     const targetFiles = dataTransfer ? dataTransfer.files : event.target.files;
-    let length = targetFiles.length;
-    if (length + images.length > 5) {
-      length = 5;
-      addMessage("Image limit exceeds! Please select less than 5 Images!");
+    let length = targetFiles?.length;
+    if (length + images?.length > 3) {
+      length = 3;
+      addMessage("Image limit exceeds! Please select less than 3 Images!");
     }
     const files = [];
     for (let i = 0; i < length; i++) {
-      if (targetFiles[i].type !== "image/png")
+      if (targetFiles[i]?.type !== "image/png")
         addMessage(
           "Unsupported file type! Please only use PNG transparent images"
         );
       else if (alreadyAdded(targetFiles[i])) addMessage("Image already Added");
-      else files.push(targetFiles[i]);
+      else files?.push(targetFiles[i]);
     }
     if (files) updateImages(files);
   };

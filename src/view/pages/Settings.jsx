@@ -2,7 +2,6 @@ import "../../styles/setting.scss";
 import { useSelector, useDispatch } from "react-redux";
 import LoggedIn from "../components/setting/LoggedIn.jsx";
 import Theme from "../components/setting/Theme.jsx";
-import { connect } from "react-redux";
 import Container from "../components/setting/Container.jsx";
 
 const Settings = () => {
