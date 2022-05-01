@@ -32,7 +32,7 @@ const ProductDetails = ({ data, variant = 0 }) => {
   return (
     <>
       <section className="product">
-        <Images images={images} />
+        <Images images={images} title={title} seller={seller} />
         <Details>
           <Title title={title} seller={seller} uci={uci} />
           <Sizes

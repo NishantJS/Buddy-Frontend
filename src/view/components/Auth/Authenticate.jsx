@@ -35,12 +35,12 @@ const Authenticate = ({ method, handler, isSeller }) => {
     const provider = index === 0 ? "google" : "facebook";
     const role = isSeller ? "seller" : "user";
     const win = openChildWindow(
-      `http://localhost:8080/v1/auth/${provider}/${role}`,
+      `https://buddyshop.in/v1/auth/${provider}/${role}`,
       "Buddyshop login",
       500,
       500
     );
-    win.focus();
+    // win.focus();
     const timer = setInterval(() => {
       if (win.closed) {
         clearInterval(timer);

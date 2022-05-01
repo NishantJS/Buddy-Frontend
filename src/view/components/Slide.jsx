@@ -69,9 +69,10 @@ const Slide = ({ product, variant }) => {
     event.target.src = process.env.REACT_APP_PLACEHOLDER_IMAGE;
   };
 
-  const { title = "", images = [], currentSize = {}, _id, uci = 0 } = product;
+  const { title = "", currentSize = {}, _id, uci = 0, seller } = product;
 
-  const urlTitle = title.split(" ").join("_");
+  const urlTitle = title.split(" ").join("+");
+  const imageURL = `${process.env.REACT_APP_IMAGES_PATH}${seller}/${urlTitle}0`;
 
   return (
     <div className="slide" title={title}>
@@ -83,7 +84,7 @@ const Slide = ({ product, variant }) => {
       >
         <div className="img">
           <img
-            src={images[0]}
+            src={imageURL}
             alt={title}
             onError={handleImageLoadError}
             width="140"

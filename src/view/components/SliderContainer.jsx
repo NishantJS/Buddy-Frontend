@@ -39,8 +39,8 @@ const SlideContainer = ({ slide }) => {
               className="slider"
               ref={(sliderRef) => setSliderRef(sliderRef)}
             >
-              {product.data.map((item) => {
-                return item?.sizes.map((sizes, index) => (
+              {product?.data?.map((item) => {
+                return item?.sizes?.map((sizes, index) => (
                   <Slide
                     product={{ ...item, currentSize: sizes }}
                     key={item._id + index}

@@ -9,7 +9,7 @@ const Title = ({ errors, register, options }) => {
           name="title"
           type="text"
           aria-invalid={errors["title"] ? "true" : "false"}
-          {...register("title", { ...options(true, 3, 30, "Title") })}
+          {...register("title", { ...options( 3, 30, "Title") })}
         />
       </label>
       {errors["title"] && (

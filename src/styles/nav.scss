@@ -79,6 +79,7 @@ nav {
 
   .links {
     justify-content: flex-end;
+
     a {
       margin-left: 2rem;
       svg {
@@ -100,6 +101,12 @@ nav {
 
 @media only screen and(max-width: 450px) {
   nav > .links > a > span {
+    display: none;
+  }
+}
+
+@media only screen and(max-width: 350px) {
+  nav .logo svg {
     display: none;
   }
 }

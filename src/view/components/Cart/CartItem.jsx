@@ -15,11 +15,14 @@ const CartItem = ({
   const {
     id = "",
     title = "",
-    thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
     sizes: { price = 0, retail_price = 0, size = "Normal", allowed, stock },
     variant = 0,
     uci,
+    seller,
   } = product;
+
+  const urlTitle = title.split(" ").join("+");
+  const imageURL = `${process.env.REACT_APP_IMAGES_PATH}${seller}/${urlTitle}0`;
 
   const incrementCount = () => {
     if (count >= stock) {
@@ -53,7 +56,7 @@ const CartItem = ({
 
   return (
     <div className="list_item">
-      <img src={thumbnail} alt={title} />
+      <img src={imageURL} alt={title} />
 
       <div className="info">
         <Link

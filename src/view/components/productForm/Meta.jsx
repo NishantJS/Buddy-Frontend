@@ -34,14 +34,8 @@ const Meta = ({ updateMeta, nextStep, step, data }) => {
     nextStep();
   };
 
-  const options = (pattern, minLength, maxLength, required) => {
+  const options = (minLength, maxLength, required) => {
     const option = {};
-    if (pattern)
-      option.pattern = {
-        value: /^[a-zA-z0-9]+([\s][a-zA-Z0-9]+)+$/,
-        message:
-          "Invalid Input! Title should be multi-word with no special characters",
-      };
     if (minLength)
       option.minLength = {
         value: minLength,
@@ -66,7 +60,7 @@ const Meta = ({ updateMeta, nextStep, step, data }) => {
             Description
             <textarea
               {...register("description", {
-                ...options(false, 50, 300, "Description"),
+                ...options(50, 300, "Description"),
               })}
               rows={3}
             />

@@ -3,6 +3,7 @@ import { addToCart, removeFromWishlist } from "../services/actions/user";
 import { addToast } from "../services/actions/toast";
 import "../../styles/cart.scss";
 import NotFound from "../pages/NotFound";
+import { Link } from "react-router-dom";
 
 const Wishlist = () => {
   const cart = useSelector((state) => state.auth.user.cart);
@@ -63,21 +64,29 @@ const WishlistItem = ({ product, dispatch, handler }) => {
   const {
     id = "",
     title = "",
-    thumbnail = process.env.REACT_APP_PLACEHOLDER_IMAGE,
     sizes: { price = 0, retail_price = 0, size = "Normal" },
     variant = 0,
+    seller,
+    uci,
   } = product;
 
   const removeItem = () => {
     dispatch(removeFromWishlist(id, variant));
   };
 
+  const urlTitle = title.split(" ").join("+");
+  const imageURL = `${process.env.REACT_APP_IMAGES_PATH}${seller}/${urlTitle}0`;
+
   return (
     <div className="list_item">
-      <img src={thumbnail} alt={title} />
+      <img src={imageURL} alt={title} />
 
       <div className="info">
-        <span className="title">{title}</span>
+        <Link
+          to={`/product/${id}?title=${title}&category=${uci}&variant=${variant}`}
+        >
+          <span className="title">{title}</span>
+        </Link>
         <span className="size">{size}</span>
         <div className="price">
           <span className="offer">
