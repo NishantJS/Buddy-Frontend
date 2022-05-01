@@ -13,7 +13,7 @@ const ProductDetails = ({ data, variant = 0 }) => {
     sizes = [],
     title = "",
     description = {},
-    images = [],
+    images,
     uci = false,
     seller = "Buddy",
     _id,
