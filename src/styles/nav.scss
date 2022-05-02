@@ -105,12 +105,6 @@ nav {
   }
 }
 
-@media only screen and(max-width: 350px) {
-  nav .logo svg {
-    display: none;
-  }
-}
-
 @keyframes show {
   50% {
     transform: scaleY(0.4);

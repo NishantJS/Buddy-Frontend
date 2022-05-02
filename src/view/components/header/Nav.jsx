@@ -1,12 +1,14 @@
-import { Routes as Switch, Route, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import CompactNav from "./CompactNav.jsx";
 import { memo } from "react";
-import LoggedIn from "./LoggedIn.jsx";
-import LoggedInSeller from "./LoggedInSeller.jsx";
-import LoggedOut from "./LoggedOut.jsx";
-import Ham from "./Ham.jsx";
-////style
+import { useSelector } from "react-redux";
+
+import { Routes as Switch, Route, useLocation } from "react-router-dom";
+
+import CompactNav from "./CompactNav";
+import LoggedIn from "./LoggedIn";
+import LoggedInSeller from "./LoggedInSeller";
+import LoggedOut from "./LoggedOut";
+import Ham from "./Ham";
+
 import "../../../styles/nav.scss";
 
 const renderMultiRoutes = ({ element, paths }) =>
@@ -17,8 +19,6 @@ const Nav = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const seller = useSelector((state) => state.auth.seller);
   const isSeller = seller._id ? true : false;
-
-  // activeClassName = "link_active";
 
   const navToRender = isAuthenticated ? (
     isSeller ? (

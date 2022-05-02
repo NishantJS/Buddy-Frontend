@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import AddressFormData from "../../data/addAddress.js";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { addToast } from "../services/actions/toast.js";
-import AddressList from "./AddressList.jsx";
-import { addAddress } from "../services/actions/auth.js";
+import { addToast } from "../services/actions/toast";
+import AddressList from "./AddressList";
+import { addAddress } from "../services/actions/auth";
 
 const AddAddress = ({ isSeller }) => {
   const data = useSelector((state) => state.auth[isSeller ? "seller" : "user"]);

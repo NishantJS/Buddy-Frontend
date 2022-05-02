@@ -33,22 +33,7 @@ const Routes = () => {
 
   const AuthTemplateGenerator = ({ paths = [] }) => {
     return paths.map((path) => (
-      <Route
-        path={path}
-        key={path}
-        element={
-          <AuthTemplate
-            method={
-              path === "login" || path === "seller_login" ? "login" : "signup"
-            }
-            isSeller={
-              path === "seller_login" || path === "seller_register"
-                ? true
-                : false
-            }
-          />
-        }
-      />
+      <Route path={path} key={path} element={<AuthTemplate path={path} />} />
     ));
   };
   return (
@@ -121,7 +106,7 @@ const Routes = () => {
           }
         />
         <Route path="/categories" element={<CategoryPage />} />
-        <Route path="auth" element={<Auth />}>
+        <Route path="/auth" element={<Auth />}>
           {AuthTemplateGenerator({
             paths: ["register", "login", "seller_login", "seller_register"],
           })}

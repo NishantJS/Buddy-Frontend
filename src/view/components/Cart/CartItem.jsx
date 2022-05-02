@@ -1,7 +1,9 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
+
 import { addToast } from "../../services/actions/toast";
 import { removeFromCart } from "../../services/actions/user";
+
 import { currencyFormatter } from "../../services/factories/formmater";
 
 const CartItem = ({

@@ -1,5 +1,6 @@
 import { currencyFormatter } from "../../services/factories/formmater.js";
-import Pay from "./Pay.jsx";
+
+import Pay from "./Pay";
 
 const SubTotal = ({ totalAmount, totalItems, data, counts, address }) => {
   const freeAbove = Number.parseInt(process.env.REACT_APP_FREE_DELIVERY_ABOVE);

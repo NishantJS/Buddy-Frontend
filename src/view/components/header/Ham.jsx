@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
+
 import Logo from "./Logo";
 
 const Ham = () => {
@@ -11,7 +12,7 @@ const Ham = () => {
           <span></span>
         </div>
       </Link>
-      <Link to="/" aria-label="back to homepage">
+      <Link to="/" aria-label="back to homepage" className="logo_image">
         <Logo />
       </Link>
     </div>

@@ -13,9 +13,7 @@ const Title = ({ title, seller, uci }) => {
     }
   };
 
-  const getSubCategory = (
-    sub_category = parseInt((uci + "")[1], (uci + "")[2])
-  ) => {
+  const getSubCategory = (sub_category = parseInt((uci + "")[2])) => {
     switch (sub_category) {
       case 0:
         return "food";

@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
 import { memo } from "react";
-import Back from "../../../icons/Back.jsx";
-import Logo from "./Logo.jsx";
+import { Link } from "react-router-dom";
+
+import Back from "../../../icons/Back";
+import Logo from "./Logo";
 
 const CompactNav = () => {
   return (
     <div className="logo">
       <Back />
-      <Link to="/">
+      <Link to="/" className="logo_image">
         <Logo />
       </Link>
     </div>

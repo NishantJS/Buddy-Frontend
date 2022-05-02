@@ -1,9 +1,11 @@
-import React, { memo, useEffect } from "react";
-import { addToast } from "../../services/actions/toast.js";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { onSuccessfulCheckout } from "../../services/actions/user";
+
+import { memo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import { addToast } from "../../services/actions/toast.js";
+import { onSuccessfulCheckout } from "../../services/actions/user";
 
 const Pay = ({
   currencyFormatter,

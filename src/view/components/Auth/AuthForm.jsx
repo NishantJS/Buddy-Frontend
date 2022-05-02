@@ -1,9 +1,12 @@
-import { useState } from "react";
 import axios from "axios";
+
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import { addAccount } from "../../services/actions/auth";
 import { addToast } from "../../services/actions/toast";
+
 import InputEmail from "./InputEmail";
 import InputPass from "./InputPass";
 
@@ -144,11 +147,11 @@ const AuthForm = ({ handler, method, isSeller = false }) => {
 
       <input
         type="submit"
-        value={method.charAt(0).toUpperCase() + method.slice(1)}
+        value={method?.charAt(0).toUpperCase() + method.slice(1)}
         disabled={isValidtoSubmit()}
       />
 
-      <p onClick={handler}>Click here for Quick {method}</p>
+      <p onClick={handler}>Click here for quick {method}</p>
     </form>
   );
 };

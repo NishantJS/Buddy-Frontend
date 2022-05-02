@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { NavLink } from "react-router-dom";
+
 import Cart from "../../../icons/Cart";
 import Heart from "../../../icons/Heart";
 import Notification from "../../../icons/Notification";
@@ -7,7 +8,7 @@ import Notification from "../../../icons/Notification";
 const LoggedIn = () => {
   return (
     <div className="links">
-      <NavLink to="/my_notifications">
+      <NavLink to="/my_notifications" className="animated">
         <Notification />
         <span>Notifications</span>
       </NavLink>

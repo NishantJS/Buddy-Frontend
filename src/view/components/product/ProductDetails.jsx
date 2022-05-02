@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import AddTo from "./AddTo.jsx";
 import Title from "./Title.jsx";
 import Similar from "./Similar";
-import MoreBy from "./MoreBy";
 
 const ProductDetails = ({ data, variant = 0 }) => {
   const {
@@ -47,7 +46,6 @@ const ProductDetails = ({ data, variant = 0 }) => {
         </Details>
       </section>
       <Similar uci={uci} id={_id} />
-      <MoreBy uci={uci} id={_id} />
     </>
   );
 };

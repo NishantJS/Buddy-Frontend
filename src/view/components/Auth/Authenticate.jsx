@@ -1,6 +1,8 @@
-import Google from "../../../icons/Google.jsx";
-import Facebook from "../../../icons/Facebook.jsx";
-import Email from "../../../icons/Email.jsx";
+//? icons
+import Google from "../../../icons/Google";
+import Facebook from "../../../icons/Facebook";
+import Email from "../../../icons/Email";
+
 import { useNavigate } from "react-router-dom";
 
 const authData = [

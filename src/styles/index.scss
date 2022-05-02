@@ -71,6 +71,28 @@ a {
   text-decoration: none;
   color: $font_color;
 }
+.animated {
+  position: relative;
+
+  &::after {
+    content: "";
+    left: 0;
+    bottom: 0;
+    height: 0.1em;
+    width: 100%;
+    background: linear-gradient(90deg, #7878ff, $accent);
+    position: absolute;
+    transform: scaleX(0);
+    transition: transform 200ms;
+    transform-origin: right;
+  }
+
+  &:hover {
+    &::after {
+      transform: scaleX(1);
+    }
+  }
+}
 
 #root {
   display: flex;

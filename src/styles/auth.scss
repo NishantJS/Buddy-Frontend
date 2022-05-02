@@ -25,6 +25,28 @@
       margin-top: 20px;
       align-self: center;
 
+      .message {
+        display: flex;
+        flex-direction: column;
+        justify-content: right;
+        align-items: flex-end;
+
+        blockquote {
+          line-height: 2rem;
+          margin: 0;
+
+          &::before {
+            content: '"';
+            font-size: 2rem;
+          }
+        }
+
+        span {
+          display: inline;
+          width: max-content;
+        }
+      }
+
       .authenticate {
         margin-top: 20px;
         display: flex;
@@ -127,18 +149,5 @@
   to {
     border-radius: 0 0 100% 0;
     height: 33%;
-  }
-}
-
-blockquote {
-  line-height: 2rem;
-
-  span {
-    text-decoration-line: underline;
-  }
-
-  &::before {
-    content: '"';
-    font-size: 2rem;
   }
 }

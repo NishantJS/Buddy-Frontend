@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+
 import { Link } from "react-router-dom";
+
+import EmptyAddress from "./EmptyAddress";
 
 const Addresses = () => {
   const address = useSelector((state) => state.auth.user.address);
@@ -75,13 +78,4 @@ const SelectAddress = ({ addresses = [] }) => {
   return addresses.map((address, index) => (
     <Address address={address} key={index} index={index} />
   ));
-};
-
-const EmptyAddress = () => {
-  return (
-    <Link to="/profile#address">
-      <h4>Add Address</h4>
-      <h5>Please add an address to continue</h5>
-    </Link>
-  );
 };

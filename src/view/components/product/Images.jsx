@@ -1,6 +1,6 @@
 import { memo, useState, useEffect } from "react";
 
-const Images = ({ images = 2, title, seller }) => {
+const Images = ({ images = 1, title, seller }) => {
   const urlTitle = title.split(" ").join("+");
   const imageURL = `${process.env.REACT_APP_IMAGES_PATH}${seller}/${urlTitle}`;
 
@@ -10,7 +10,7 @@ const Images = ({ images = 2, title, seller }) => {
   };
 
   const updateSelectedImage = () => {
-    const index = selectedImage === images - 1 ? 0 : selectedImage + 1;
+    const index = selectedImage >= images - 1 ? 0 : selectedImage + 1;
     setSelectedImage(index);
   };
 

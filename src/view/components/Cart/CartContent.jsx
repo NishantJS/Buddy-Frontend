@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { addToWishlist } from "../../services/actions/user";
 import { addToast } from "../../services/actions/toast";
+
 import CartItem from "./CartItem";
 import Checkout from "./Checkout";
-import { useState } from "react";
 
 const CartContent = ({ data }) => {
   const [counts, setCounts] = useState(() => data?.map(() => 1));
